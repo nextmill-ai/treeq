@@ -839,6 +839,8 @@
 let SPECIES_LIST = [];        // [{key, name, group}, ...]
 let SPECIES_BY_KEY = {};      // {key: {name, group}}
 
+const API_BASE = (window.__TREEQ_API_BASE__ ?? '').replace(/\/$/, '');
+
 /* =================== ID QUIZ DATA ===================
    References species KEYS only — no calibration values.
    Safe to keep client-side. */
@@ -1040,7 +1042,7 @@ function formatTime(sec) {
 
 /* =================== INITIAL LOAD =================== */
 async function loadSpecies() {
-  const resp = await fetch('/api/species');
+  const resp = await fetch(API_BASE + '/api/species');
   if (!resp.ok) throw new Error('Failed to load species list');
   const data = await resp.json();
   SPECIES_LIST = data.species;
@@ -1091,7 +1093,7 @@ async function fetchEstimate() {
 
   const speciesKey = speciesSel.value;
   const dbh = parseFloat(dbhSlider.value);
-  const url = `/api/estimate?species=${encodeURIComponent(speciesKey)}&dbh=${dbh}&trim=${trimPct}`;
+  const url = `${API_BASE}/api/estimate?species=${encodeURIComponent(speciesKey)}&dbh=${dbh}&trim=${trimPct}`;
 
   try {
     const resp = await fetch(url, { signal: ac.signal });

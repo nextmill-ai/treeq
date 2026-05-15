@@ -5,7 +5,10 @@
   "description": "Spartan Aerial Cut Estimator — Cloudflare Pages + Workers split deployment.",
   "scripts": {
     "dev": "wrangler pages dev public",
-    "deploy": "wrangler pages deploy public --project-name=spartan-cut-estimator"
+    "deploy": "wrangler pages deploy public --project-name=treeqapp"
+  },
+  "dependencies": {
+    "jose": "^5.9.6"
   },
   "devDependencies": {
     "wrangler": "^3.80.0"

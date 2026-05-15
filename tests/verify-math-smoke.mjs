@@ -1,11 +1,25 @@
-// Compares compute(silver_maple, 18, 0) between current index.html and v1.8 baseline.
+// Compares compute(silver_maple, 18, 0) between root index.html (browser) and
+// deploy/functions/lib/math.js (server). The old index-v1.8-pre-picker.html
+// baseline was truncated in-repo; server math is the canonical split-deploy source.
 import { chromium } from 'playwright';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { compute as computeServer } from '../deploy/functions/lib/math.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-async function getCompute(filePath, speciesKey, dbh, trimPct) {
+function pick(r) {
+  return {
+    totalSec: r.totalSec,
+    brushSecTotal: r.brushSecTotal,
+    logSec: r.logSec,
+    brushCuts: r.brushCuts,
+    logCutsTotal: r.logCutsTotal,
+    totalCuts: r.totalCuts
+  };
+}
+
+async function getComputeBrowser(filePath, speciesKey, dbh, trimPct) {
   const browser = await chromium.launch();
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -27,20 +41,21 @@ async function getCompute(filePath, speciesKey, dbh, trimPct) {
   return out;
 }
 
-const newIdx = resolve(__dirname, '..', 'index.html');
-const oldIdx = resolve(__dirname, '..', 'index-v1.8-pre-picker.html');
-
+const idx = resolve(__dirname, '..', 'index.html');
 const speciesKey = 'silver_maple';
 const dbh = 18, trim = 0;
 
-const a = await getCompute(newIdx, speciesKey, dbh, trim);
-const b = await getCompute(oldIdx, speciesKey, dbh, trim);
+const browserOut = await getComputeBrowser(idx, speciesKey, dbh, trim);
+const serverOut = pick(computeServer(speciesKey, dbh, trim));
 
-console.log('current :', JSON.stringify(a));
-console.log('v1.8    :', JSON.stringify(b));
+console.log('browser (index.html) :', JSON.stringify(browserOut));
+console.log('server (math.js)     :', JSON.stringify(serverOut));
 
-if (a.error || b.error) { console.error('compute() not exposed in one of the files'); process.exit(2); }
+if (browserOut.error) {
+  console.error('compute() not exposed in index.html');
+  process.exit(2);
+}
 const tolSec = 0.001;
-const dt = Math.abs((a.totalSec || 0) - (b.totalSec || 0));
+const dt = Math.abs((browserOut.totalSec || 0) - (serverOut.totalSec || 0));
 console.log(`|Δ totalSec| = ${dt.toFixed(6)}s  (tol ±${tolSec})`);
 process.exit(dt <= tolSec ? 0 : 1);

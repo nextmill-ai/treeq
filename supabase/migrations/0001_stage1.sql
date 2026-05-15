@@ -214,9 +214,7 @@ create table vendors (
   preferred boolean not null default false,
   notes text,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint vendors_service_offerings_valid
-    check (service_offerings <@ (select array_agg(value) from vendor_service_offerings))
+  updated_at timestamptz not null default now()
 );
 create index vendors_org_idx on vendors(org_id);
 create index vendors_org_category_idx on vendors(org_id, category);
@@ -242,9 +240,7 @@ create table dump_spots (
   field_contact_vendor_id uuid references vendors(id) on delete set null,
   notes text,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint dump_spots_materials_valid
-    check (materials_accepted <@ (select array_agg(value) from dump_material_types))
+  updated_at timestamptz not null default now()
 );
 create index dump_spots_org_idx on dump_spots(org_id);
 create index dump_spots_org_geo_idx on dump_spots(org_id, lat, lng);
@@ -268,11 +264,7 @@ create table subcontractors (
   phone text,
   notes text,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint subs_services_valid
-    check (services <@ (select array_agg(value) from subcontractor_services)),
-  constraint subs_equipment_valid
-    check (equipment <@ (select array_agg(value) from subcontractor_equipment))
+  updated_at timestamptz not null default now()
 );
 create index subs_org_idx on subcontractors(org_id);
 create index subs_org_status_idx on subcontractors(org_id, status);
@@ -325,9 +317,7 @@ create table pickup_spots (
   contact_phone text,
   notes text,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint pickup_materials_valid
-    check (materials_available <@ (select array_agg(value) from pickup_material_types))
+  updated_at timestamptz not null default now()
 );
 create index pickup_spots_org_idx on pickup_spots(org_id);
 create index pickup_spots_org_geo_idx on pickup_spots(org_id, lat, lng);

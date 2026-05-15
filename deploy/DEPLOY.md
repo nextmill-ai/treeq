@@ -1,21 +1,15 @@
-# Deploying the Spartan Cut Estimator (Cloudflare Pages + Worker)
+# Deploying TreeQ (Cloudflare Pages + Functions)
 
-> **Status: Parked.** TreeQ is currently deployed as the single-file
-> `index.html` (in the TreeQ root, not this `deploy/` folder) on Netlify at
-> [treeqapp.com](https://treeqapp.com). The Cloudflare Pages + Worker
-> path described below is preserved for a future migration when IP
-> protection of the calibration becomes a priority. Don't follow these
-> steps unless that migration is the active task.
+This folder is the **split deployment**: a thin frontend on Cloudflare Pages
+that calls Pages Functions for species listing and estimates. The species
+database, biomass coefficients, and cut-time rules live server-side and never
+reach the browser. You can optionally gate the site with Cloudflare Access so
+only allow-listed accounts reach the UI.
 
-This is option **#3** from our planning conversation: a thin frontend on
-Cloudflare Pages that calls a Cloudflare Worker (Pages Function) for all the
-math. The species database, biomass coefficients, and cut-time rules live
-server-side and never reach the browser. Cloudflare Access gates the URL so
-only emails you list can even reach the page.
-
-End state: a private URL like `https://spartan-cut-estimator.pages.dev` that
-only opens for accounts on your allow-list, with all the calibration
-math hidden behind an API.
+End state: a URL like `https://treeqapp.pages.dev` (or your custom domain) with
+calibration math hidden behind `/api/*`. Public routes `/api/species` and
+`/api/estimate` work without a login token; any other `/api/*` route requires a
+valid Supabase user JWT (`Authorization: Bearer …`).
 
 ---
 
@@ -32,7 +26,7 @@ deploy/
 │   └── lib/
 │       ├── species-db.js     # SERVER ONLY — coefficients, calibration
 │       └── math.js           # SERVER ONLY — compute(), biomass, cuts
-├── wrangler.toml             # Cloudflare Pages config
+├── wrangler.toml             # Cloudflare Pages config (project name: treeqapp)
 ├── package.json              # `npm run dev` and `npm run deploy`
 ├── .gitignore
 └── DEPLOY.md                 # This file
@@ -42,6 +36,22 @@ deploy/
 exporting `onRequest*` handlers become URLs. The IP-bearing files
 (species-db.js, math.js) are private code that only the API endpoints
 can import.
+
+---
+
+## Required environment variables (production)
+
+Set these in the Cloudflare dashboard for your Pages project (**Settings →
+Environment variables**) or via Wrangler secrets / vars as appropriate:
+
+| Variable | Purpose |
+|----------|---------|
+| `SUPABASE_URL` | Supabase project URL (e.g. `https://xxxx.supabase.co`). Used as the JWT `iss` prefix when verifying user tokens. |
+| `SUPABASE_JWT_SECRET` | Supabase **JWT secret** (Settings → API → JWT Settings). Used with HS256 to verify `Authorization: Bearer` tokens on protected `/api/*` routes. |
+| `SUPABASE_ANON_KEY` | Supabase **anon** public key. Required for future client-side Supabase usage (documented here so it is provisioned alongside auth). |
+
+The thin client can set `window.__TREEQ_API_BASE__` before scripts run if the API
+is hosted on a different origin than the static HTML.
 
 ---
 
@@ -64,7 +74,7 @@ version).
 In PowerShell, navigate to this folder:
 
 ```powershell
-cd "C:\Users\camer\My Drive (cameron@spartantreeny.com)\Olympus Holdings\Claude Cowork\TreeQ\deploy"
+cd "C:\Users\camer\Projects\Claude Cowork\TreeQ\deploy"
 npm install
 ```
 
@@ -104,9 +114,9 @@ npm run deploy
 
 Wrangler will:
 1. Create the Pages project on first run (you may be prompted to confirm the
-   project name `spartan-cut-estimator`).
+   project name `treeqapp`).
 2. Upload `public/` and `functions/`.
-3. Print a URL like `https://spartan-cut-estimator.pages.dev` — that's your
+3. Print a URL like `https://treeqapp.pages.dev` — that's your
    live site.
 
 At this point the URL is **publicly accessible.** Lock it down before
@@ -124,8 +134,8 @@ reach the page (everyone else gets a sign-in screen).
      a team name like `spartan-tree`. The free plan covers up to 50 users.
 2. In the left sidebar: **Access → Applications → Add an application**.
 3. Choose **Self-hosted**.
-4. **Application name:** `Spartan Cut Estimator`
-5. **Application domain:** enter `spartan-cut-estimator.pages.dev`
+4. **Application name:** `TreeQ`
+5. **Application domain:** enter `treeqapp.pages.dev`
    (or your custom domain if you've added one).
 6. Leave **Path** blank to gate the entire site.
 7. Click **Next**, then **Add a policy**.
@@ -150,7 +160,7 @@ Anyone not on the allow-list can't even see the HTML.
 If you want a `cuts.spartantreeny.com` style URL instead of
 `*.pages.dev`:
 
-1. In the Cloudflare dashboard, go to **Pages → spartan-cut-estimator → Custom
+1. In the Cloudflare dashboard, go to **Pages → treeqapp → Custom
    domains → Set up a custom domain**.
 2. Enter the domain. Cloudflare walks you through adding a CNAME record at
    your domain registrar.
