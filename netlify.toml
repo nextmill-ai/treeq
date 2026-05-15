@@ -22,6 +22,10 @@
 #   NOTION_DB_PLANT_PRICES, NOTION_DB_PICKUP_SPOTS — Notion DB IDs
 #   TREEQ_AUTH_ENABLED           — "true" to flip the auth gate on (default false)
 #   JOBBER_WEBHOOK_SECRET        — for Jobber webhook signature verification (later)
+#
+# Netlify is the canonical static + Functions deployment (treeqapp.com / previews).
+# Cloudflare Pages under deploy/ mirrors the thin calculator + edge APIs only —
+# kept for optional CDN experiments; methodology changes must land here first.
 
 [build]
   publish = "."
@@ -51,7 +55,19 @@
 [functions."jobber-webhook"]
   timeout = 30
 
-# Friendly API aliases — POST /api/treeq-ai ⇒ /.netlify/functions/treeq-ai, etc.
+# Friendly API aliases — /api/* ⇒ /.netlify/functions/* (thin calculator: species, estimate).
+[[redirects]]
+  from = "/api/species"
+  to   = "/.netlify/functions/species"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/estimate"
+  to   = "/.netlify/functions/estimate"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/api/treeq-ai"
   to   = "/.netlify/functions/treeq-ai"

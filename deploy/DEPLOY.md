@@ -1,20 +1,18 @@
-# Deploying TreeQ (Cloudflare Pages + Functions)
+# Deploying TreeQ (Cloudflare Pages — **beta / staging**, Netlify — **production**)
 
-This folder is the **split deployment**: a thin frontend on Cloudflare Pages
-that calls Pages Functions for species listing and estimates. The species
-database, biomass coefficients, and cut-time rules live server-side and never
-reach the browser. You can optionally gate the site with Cloudflare Access so
-only allow-listed accounts reach the UI.
+**Release flow:** **`https://treeqapp.pages.dev`** (this `deploy/` bundle on Cloudflare Pages) is **where we beta-test** before production. **`https://treeqapp.com`** (Netlify, repo root **`netlify.toml`**, **`publish = "."`**) gets the same **`master`** timeline after beta looks good — use Netlify previews or promote when ready.
 
-End state: a URL like `https://treeqapp.pages.dev` (or your custom domain) with
-calibration math hidden behind `/api/*`. Public routes `/api/species` and
-`/api/estimate` work without a login token; any other `/api/*` route requires a
-valid Supabase user JWT (`Authorization: Bearer …`).
+**What lives where:**
+- **Cloudflare beta:** Thin **`public/index.html`** (mirror of repo root **`/index.html`**) plus Pages Functions (**`/api/species`**, **`/api/estimate`**, gated **`/api/*`**).
+- **Netlify prod:** Full static app (**`dashboard.html`**, **`admin.html`**, …), same **`/api/species`** + **`/api/estimate`** via Netlify Functions, plus treeq-ai, sync, etc.
+
+**Calibration source of truth:** **`deploy/functions/lib/species-db.js`** and **`deploy/functions/lib/math.js`**. Copies for Netlify live under **`netlify/functions/_lib/estimator/`** — refresh with **`npm run sync:estimator-libs`** when you edit the deploy-side originals.
+
+Beta URL notes: **`/api/species`** and **`/api/estimate`** are public anonymously; other **`/api/*`** routes require Supabase Bearer auth per **`functions/_middleware.js`**. Cloudflare Access is optional for a private smoke-test audience.
 
 ---
 
 ## What's in this folder
-
 ```
 deploy/
 ├── public/

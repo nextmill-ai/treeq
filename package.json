@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "netlify dev",
     "deploy": "netlify deploy --prod",
+    "sync:estimator-libs": "node -e \"const fs=require('fs'); fs.cpSync('deploy/functions/lib/species-db.js','netlify/functions/_lib/estimator/species-db.js'); fs.cpSync('deploy/functions/lib/math.js','netlify/functions/_lib/estimator/math.js'); console.log('estimator libs synced');\"",
     "cap:sync": "cap sync",
     "cap:open:ios": "cap open ios",
     "cap:open:android": "cap open android"

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>TreeQ — v1.8</title>
+<title>TreeQ — v2.3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 </script>
 <style>
   /* =========================================================
-     SPARTAN / NEXT MILLION — Mobile Cut Estimator v1.8
+     SPARTAN / NEXT MILLION — Mobile Cut Estimator v2.3
      Light theme, forest-on-cream, Jobber-style layout grammar.
      ========================================================= */
   :root {
@@ -433,7 +433,7 @@
   }
   .oversize-toggle:hover { color: var(--ink-3); }
 
-  /* ---------- Row description ---------- */
+  /* ---------- Row description (small helper text under the row label) ---------- */
   .row-desc {
     font-size: 11px; font-weight: 500;
     color: var(--ink-faint);
@@ -539,33 +539,26 @@
   /* ---------- Modal (ID Quiz) ---------- */
   .modal-bg {
     position: fixed; inset: 0;
-    background: rgba(20, 36, 27, 0.55);
+    background: rgba(20, 36, 27, 0.60);
     display: none;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     z-index: 100;
-    padding: 0;
+    padding: 16px;
   }
   .modal-bg.open { display: flex; }
   .modal {
     background: var(--surface);
     width: 100%;
-    max-width: 480px;
-    max-height: 90vh;
+    max-width: 448px;
+    max-height: 88vh;
     overflow-y: auto;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    padding: 16px var(--pad) 24px;
+    border-radius: var(--r-lg);
+    padding: 20px var(--pad) 28px;
     position: relative;
+    box-shadow: 0 8px 40px rgba(20,36,27,0.28);
   }
-  .modal::before {
-    content: '';
-    display: block;
-    width: 36px; height: 4px;
-    background: var(--line);
-    border-radius: 999px;
-    margin: 0 auto 14px;
-  }
+  .modal::before { display: none; }
   .modal-close {
     position: absolute; top: 12px; right: 12px;
     width: 36px; height: 36px;
@@ -577,10 +570,46 @@
     font-family: inherit;
   }
   .modal-close:active { background: var(--line); }
+
+  /* ---------- Help me ID — inline button between crown & trim ---------- */
+  .help-id-wrap {
+    padding: 4px var(--pad) 4px;
+    display: flex;
+    justify-content: center;
+  }
+  .help-id-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px;
+    background: var(--forest);
+    color: #fff;
+    border: 0;
+    border-radius: var(--r-pill);
+    font-size: 15px; font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(45,90,61,0.28);
+    transition: background 0.14s, transform 0.1s;
+  }
+  .help-id-btn:hover  { background: var(--forest-tint); }
+  .help-id-btn:active { background: var(--forest-deep); transform: scale(0.97); }
+  .help-id-btn svg    { flex-shrink: 0; }
+
   .modal h2 {
     font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
     color: var(--ink); margin-bottom: 6px;
     padding-right: 40px;
+  }
+  .quiz-q {
+    font-size: 16px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px; line-height: 1.35;
+  }
+  .quiz-hint {
+    font-size: 12px; color: var(--ink-3); line-height: 1.45;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: var(--surface-2);
+    border-radius: var(--r-sm);
+    border-left: 3px solid var(--forest-tint);
   }
   .modal p {
     font-size: var(--t-meta); color: var(--ink-3);
@@ -653,482 +682,6 @@
     text-transform: uppercase;
   }
   .quiz-back:active { background: var(--surface-2); }
-
-
-/* ============================================================
-   Species picker (P1) — drop-in module.
-   Trigger replaces the native select; selection writes back to
-   the (now hidden) #species element so existing compute logic
-   keeps working unchanged.
-   ============================================================ */
-.species-picker-trigger {
-  width: 100%;
-  height: var(--tap, 48px);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm, 8px);
-  padding: 0 12px;
-  font-family: inherit;
-  font-size: var(--t-body, 16px);
-  color: var(--ink);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  text-align: left;
-}
-.species-picker-trigger:hover { border-color: var(--forest-tint, #3d7050); }
-.species-picker-trigger:focus { outline: 2px solid var(--forest, #2d5a3d); outline-offset: 1px; }
-.species-picker-chevron { color: var(--ink-3, #6a7e72); font-size: 12px; }
-
-.species-picker-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  padding: 0;
-}
-.species-picker-modal.hidden { display: none; }
-.species-picker-content {
-  position: relative;
-  background: var(--bg, #f4f8f1);
-  width: 100%;
-  max-width: 520px;
-  max-height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-.species-picker-close {
-  position: absolute;
-  top: 12px; right: 14px;
-  width: 36px; height: 36px;
-  background: rgba(255,255,255,0.18);
-  color: white;
-  border: 0;
-  border-radius: 999px;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  z-index: 11;
-  display: grid;
-  place-items: center;
-  font-family: inherit;
-  padding: 0;
-}
-.species-picker-close:hover { background: rgba(255,255,255,0.3); }
-
-/* The picker's internal .picker-app container (CSS-scoped clone of original .app) */
-.species-picker-modal .picker-app {
-  background: var(--bg, #f4f8f1);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.species-picker-modal /* ------- Top bar ------- */
-.topbar {
-  background: var(--forest);
-  color: white;
-  padding: 16px 16px 18px;
-  position: sticky; top: 0; z-index: 10;
-}
-.species-picker-modal .topbar h1 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  letter-spacing: -0.01em;
-}
-.species-picker-modal .topbar h1 span { color: var(--gold-bright); }
-
-.species-picker-modal /* ------- Search bar (explicit positioning, .species-picker-modal no flex tricks) ------- */
-.search-wrap {
-  position: relative;
-  width: 100%;
-}
-.species-picker-modal .search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  color: var(--ink-faint);
-  pointer-events: none;
-  display: block;
-}
-.species-picker-modal .search-input {
-  width: 100%;
-  padding: 12px 14px 12px 44px;   /* 44px left clears the icon */
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: var(--surface);
-  font-size: 15px;
-  font-family: inherit;
-  color: var(--ink);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.species-picker-modal .search-input::placeholder { color: var(--ink-faint); }
-.species-picker-modal .search-input:focus {
-  border-color: var(--forest-tint);
-  box-shadow: 0 0 0 3px rgba(61,112,80,0.18);
-}
-
-.species-picker-modal /* ------- Pills ------- */
-.pills {
-  display: flex;
-  gap: 8px;
-  padding: 14px 16px 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.species-picker-modal .pills::-webkit-scrollbar { display: none; }
-.species-picker-modal .pill {
-  flex-shrink: 0;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  color: var(--ink-2);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: inherit;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.species-picker-modal .pill:hover { border-color: var(--forest-tint); }
-.species-picker-modal .pill.active {
-  background: var(--forest);
-  color: white;
-  border-color: var(--forest);
-}
-.species-picker-modal .pill .count { opacity: 0.7; margin-left: 4px; font-weight: 400; }
-
-.species-picker-modal /* ------- Genus grid ------- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 10px 16px 24px;
-}
-.species-picker-modal .tile {
-  position: relative;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 22px 14px 14px;
-  cursor: pointer;
-  text-align: center;
-  font-family: inherit;
-  color: inherit;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.1s ease, box-shadow 0.15s, border-color 0.15s;
-}
-.species-picker-modal .tile:hover { border-color: var(--forest-tint); }
-.species-picker-modal .tile:active { transform: scale(0.98); }
-
-.species-picker-modal .tile-leaf {
-  width: 56px;
-  height: 56px;
-  color: var(--forest);
-  margin-bottom: 10px;
-  display: block;
-}
-.species-picker-modal .tile-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-.species-picker-modal .tile-latin {
-  font-size: 12px;
-  font-style: italic;
-  color: var(--ink-3);
-}
-.species-picker-modal .tile-count {
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  font-size: 11px;
-  color: var(--ink-faint);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-}
-
-.species-picker-modal /* ------- Heart button (explicit SVG, .species-picker-modal two paths, .species-picker-modal class-toggle) ------- */
-.heart-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 0;
-  background: rgba(255,255,255,0.92);
-  cursor: pointer;
-  color: var(--ink-faint);
-  padding: 0;
-  display: grid;
-  place-items: center;
-  transition: color 0.15s, background 0.15s, transform 0.1s;
-  font-family: inherit;
-}
-.species-picker-modal .heart-btn:hover { color: var(--rose); background: white; }
-.species-picker-modal .heart-btn:active { transform: scale(0.92); }
-.species-picker-modal .heart-btn.active { color: var(--rose); background: var(--rose-bg); }
-
-.species-picker-modal /* The button contains BOTH a hollow heart and a filled heart;
-   CSS hides one based on .active state. */
-.heart-btn svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-.species-picker-modal .heart-btn .heart-filled { display: none; }
-.species-picker-modal .heart-btn.active .heart-empty { display: none; }
-.species-picker-modal .heart-btn.active .heart-filled { display: block; }
-
-.species-picker-modal /* ------- Species view (drill-down) ------- */
-.species-view {
-  padding: 16px;
-}
-.species-picker-modal .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: 0;
-  color: var(--forest);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 0;
-  cursor: pointer;
-  font-family: inherit;
-  margin-bottom: 8px;
-}
-.species-picker-modal .back-btn svg { width: 16px; height: 16px; }
-.species-picker-modal .species-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-.species-picker-modal .species-subtitle {
-  font-size: 13px;
-  color: var(--ink-3);
-  margin-bottom: 16px;
-}
-.species-picker-modal .species-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.species-picker-modal .species-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: border-color 0.15s, transform 0.1s;
-}
-.species-picker-modal .species-row:hover { border-color: var(--forest-tint); }
-.species-picker-modal .species-row:active { transform: scale(0.99); }
-.species-picker-modal .species-row .row-leaf {
-  width: 36px;
-  height: 36px;
-  color: var(--forest);
-  flex-shrink: 0;
-  display: block;
-}
-.species-picker-modal .species-row .info { flex: 1; min-width: 0; }
-.species-picker-modal .species-row .name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.species-picker-modal .species-row .latin {
-  font-size: 12px;
-  font-style: italic;
-  color: var(--ink-3);
-  margin-top: 2px;
-}
-.species-picker-modal .species-flag {
-  display: inline-block;
-  background: var(--warn-bg);
-  color: var(--warn-fg);
-  font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
-  font-style: normal;
-}
-.species-picker-modal .photo-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--surface-2);
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  color: var(--ink-3);
-  flex-shrink: 0;
-  font-family: inherit;
-  padding: 0;
-}
-.species-picker-modal .photo-btn:hover { color: var(--forest); border-color: var(--forest-tint); }
-.species-picker-modal .photo-btn svg { width: 18px; height: 18px; }
-
-.species-picker-modal /* Heart in species row uses inline variant */
-.heart-btn.inline {
-  position: static;
-  width: 36px;
-  height: 36px;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  flex-shrink: 0;
-}
-
-.species-picker-modal /* ------- Empty state ------- */
-.empty {
-  padding: 48px 24px;
-  text-align: center;
-  color: var(--ink-3);
-  grid-column: 1 / -1;
-}
-.species-picker-modal .empty-icon {
-  width: 48px;
-  height: 48px;
-  color: var(--ink-faint);
-  margin: 0 auto 12px;
-  display: block;
-}
-.species-picker-modal .empty h3 { font-size: 16px; color: var(--ink-2); margin-bottom: 4px; font-weight: 600; }
-.species-picker-modal .empty p { font-size: 13px; max-width: 280px; margin: 0 auto; }
-
-.species-picker-modal /* ------- Toast for selection feedback ------- */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--ink);
-  color: white;
-  padding: 12px 18px;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.25s, opacity 0.25s;
-  z-index: 100;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-}
-.species-picker-modal .toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.species-picker-modal .hidden { display: none !important; }
-
-.species-picker-modal /* ------- Flag explanation modal ------- */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(20, 36, 27, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  padding: 16px;
-  animation: fadeIn 0.15s ease;
-}
-.species-picker-modal .modal-backdrop.hidden { display: none !important; }
-@keyframes fadeIn { .species-picker-modal from { opacity: 0 } .species-picker-modal to { opacity: 1 } }
-.species-picker-modal .modal-content {
-  position: relative;
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 28px 20px 22px;
-  max-width: 360px;
-  width: 100%;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.22);
-}
-.species-picker-modal .modal-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  border: 0;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-  color: var(--ink-3);
-  cursor: pointer;
-  border-radius: 8px;
-  font-family: inherit;
-  padding: 0;
-}
-.species-picker-modal .modal-close:hover { background: var(--surface-2); color: var(--ink); }
-.species-picker-modal #modal-token {
-  display: inline-block;
-  background: var(--warn-bg);
-  color: var(--warn-fg);
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.species-picker-modal #modal-description {
-  font-size: 14px;
-  color: var(--ink-2);
-  line-height: 1.55;
-}
-.species-picker-modal .modal-source {
-  font-size: 11px;
-  color: var(--ink-faint);
-  margin-top: 16px;
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
-  font-style: italic;
-}
-
-.species-picker-modal /* species-flag is now a button — give it explicit affordance */
-.species-flag {
-  cursor: pointer;
-  border: 0;
-  font-family: inherit;
-  transition: filter 0.15s, transform 0.08s;
-}
-.species-picker-modal .species-flag:hover { filter: brightness(0.92); }
-.species-picker-modal .species-flag:active { transform: scale(0.94); }
-
-
 </style>
 </head>
 <body>
@@ -1155,7 +708,7 @@
           <button type="button" class="text-btn" id="btn-sign-out">Sign out</button>
         </div>
       </div>
-      <div class="topbar-version">v1.8</div>
+      <div class="topbar-version">v2.3</div>
     </div>
   </header>
 
@@ -1217,17 +770,21 @@
   </div>
 
   <!-- Species -->
-  <div class="card">
+  <div class="card" id="species-card">
     <div class="card-row">
       <span class="row-label">Species</span>
-      <button class="text-btn" id="openQuiz">Help me ID</button>
     </div>
-    <div class="card-content select-wrap">
-      <button id="species-picker-btn" type="button" class="species-picker-trigger" aria-haspopup="dialog">
-        <span id="species-picker-label">Silver Maple</span>
-        <span class="species-picker-chevron" aria-hidden="true">&#9662;</span>
-      </button>
-      <select id="species" hidden></select>
+    <div class="card-content select-wrap" id="species-picker-wrap">
+      <select id="species"></select>
+    </div>
+    <div class="card-content" id="species-id-hint" hidden>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--surface-2);border-radius:var(--r-md);border:1px solid var(--line);margin-top:4px;">
+        <span style="font-size:20px;line-height:1.2;">🌳</span>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;">Fill in the measurements below</div>
+          <div style="font-size:13px;color:var(--ink-3);line-height:1.45;">Enter DBH, height, and crown radius — then tap <strong>Help me ID</strong> to narrow the species list.</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1280,6 +837,14 @@
       </div>
       <div class="auto-tag" id="crownTag">Auto from species + DBH</div>
     </div>
+  </div>
+
+  <!-- Help me ID — between crown radius and pre-existing trim -->
+  <div class="help-id-wrap">
+    <button type="button" class="help-id-btn" id="openQuiz">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Help me ID
+    </button>
   </div>
 
   <!-- Pre-existing trim -->
@@ -1345,7 +910,7 @@
   </div>
 
   <footer>
-    TreeQ · Spartan Tree &amp; Landscape · Next Million · v1.8 · Per-class cut times + branch absorption
+    TreeQ · Spartan Tree &amp; Landscape · Next Million · v2.3 · Calibration values are server-side
   </footer>
 </div>
 
@@ -1354,7 +919,7 @@
   <div class="modal">
     <button class="modal-close" id="quizClose" aria-label="Close">×</button>
     <h2>Help Me Identify</h2>
-    <p>Answer a few quick questions to narrow down the species.</p>
+    <p id="quizSubtitle">Answer a few quick questions to narrow down the species.</p>
     <div id="quizBody"></div>
   </div>
 </div>
@@ -1373,858 +938,240 @@ const sbClient = (function () {
 })();
 
 /* ============================================================
-   SPECIES DATABASE — v1.3 (Rochester NY)
-   biomass: Chojnacky 2014 [ln(kg) = b0 + b1*ln(DBH_cm)]
+   SPARTAN CUT ESTIMATOR — Frontend v2.0 (thin client)
+
+   Canonical copy for Netlify (repo root). Mirror to deploy/public/index.html
+   when publishing the Cloudflare bundle.
+   The species database, biomass coefficients, brush-handling
+   profiles, and math engine are NOT in this file. They live on
+   the server at /api/* and never touch the browser. View Source
+   on this page reveals only the UI shell + the ID quiz tree.
    ============================================================ */
-/* ===== CUT TIME RULES (v1.7) =====
-   Brush time is per-class (not per-handling-profile). Logs use 2/3/4 minute
-   rates for the three diameter classes. ===== */
-const BRUSH_SEC_PER_CUT = {
-  lt4:    20,
-  '4to8': 30,
-  '8to12': 60
-};
-const LOG_SEC_PER_CUT = {
-  '12to18': 120,
-  '18to24': 180,
-  '24plus': 240
-};
 
-/* ===== ABSORPTION PROFILES =====
-   Three patterns based on tree structure:
-     hardwood     — hierarchical branching. Larger limbs carry many
-                    subbranches that come down with one cut.
-     soft_branch  — most conifers (pine, spruce, hemlock): every branch is
-                    cut whole at the trunk; almost all smaller wood comes
-                    down with that branch cut.
-     lead_only    — cedars / arborvitae / redwoods: only the primary or
-                    secondary leads need cuts; small branches come off with
-                    the leads.
-   Mass is still tracked (for chip volume etc.) — only the cut COUNT is
-   reduced. ===== */
-const ABSORB_PROFILES = {
-  hardwood:    { lt4: 0.65, '4to8': 0.50 },
-  soft_branch: { lt4: 0.90, '4to8': 0.75 },
-  lead_only:   { lt4: 0.97, '4to8': 0.92 }
-};
+let SPECIES_LIST = [];        // [{key, name, group}, ...]
+let SPECIES_BY_KEY = {};      // {key: {name, group}}
 
-const SPECIES = {
-  // ===== MAPLES =====
-  silver_maple: {
-    name: "Silver Maple", group: "Maples",
-    b0: -2.0470, b1: 2.3852, sg: 0.44,
-    moisture: 1.85, brushFrac: 0.45, foliageFrac: 0.15,
-    heightA: 100, heightB: 0.040,
-    crownIntercept: 8, crownSlope: 2.20,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-  red_maple: {
-    name: "Red Maple", group: "Maples",
-    b0: -2.0470, b1: 2.3852, sg: 0.49,
-    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 90, heightB: 0.040,
-    crownIntercept: 6, crownSlope: 1.70,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  norway_maple: {
-    name: "Norway Maple", group: "Maples",
-    b0: -1.8011, b1: 2.3852, sg: 0.55,
-    moisture: 1.65, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 80, heightB: 0.045,
-    crownIntercept: 6, crownSlope: 1.60,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  sugar_maple: {
-    name: "Sugar Maple", group: "Maples",
-    b0: -1.8011, b1: 2.3852, sg: 0.56,
-    moisture: 1.65, brushFrac: 0.38, foliageFrac: 0.12,
-    heightA: 100, heightB: 0.035,
-    crownIntercept: 6, crownSlope: 1.70,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  black_maple: {
-    name: "Black Maple", group: "Maples",
-    b0: -1.8011, b1: 2.3852, sg: 0.55,
-    moisture: 1.65, brushFrac: 0.38, foliageFrac: 0.12,
-    heightA: 95, heightB: 0.035,
-    crownIntercept: 6, crownSlope: 1.65,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  freeman_maple: {
-    name: "Freeman/Autumn Blaze Maple", group: "Maples",
-    b0: -2.0470, b1: 2.3852, sg: 0.48,
-    moisture: 1.75, brushFrac: 0.42, foliageFrac: 0.14,
-    heightA: 90, heightB: 0.040,
-    crownIntercept: 6, crownSlope: 1.80,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  boxelder: {
-    name: "Boxelder", group: "Maples",
-    b0: -2.0470, b1: 2.3852, sg: 0.42,
-    moisture: 1.80, brushFrac: 0.50, foliageFrac: 0.14,
-    heightA: 70, heightB: 0.045,
-    crownIntercept: 5, crownSlope: 1.60,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
+const API_BASE = (window.__TREEQ_API_BASE__ ?? '').replace(/\/$/, '');
 
-  // ===== OAKS =====
-  red_oak: {
-    name: "Red Oak", group: "Oaks",
-    b0: -2.0705, b1: 2.4410, sg: 0.56,
-    moisture: 1.80, brushFrac: 0.30, foliageFrac: 0.12,
-    heightA: 120, heightB: 0.035,
-    crownIntercept: 8, crownSlope: 2.00,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-  white_oak: {
-    name: "White Oak", group: "Oaks",
-    b0: -2.0705, b1: 2.4410, sg: 0.60,
-    moisture: 1.78, brushFrac: 0.28, foliageFrac: 0.11,
-    heightA: 110, heightB: 0.034,
-    crownIntercept: 8, crownSlope: 2.10,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-  pin_oak: {
-    name: "Pin Oak", group: "Oaks",
-    b0: -2.0705, b1: 2.4410, sg: 0.58,
-    moisture: 1.78, brushFrac: 0.32, foliageFrac: 0.12,
-    heightA: 105, heightB: 0.038,
-    crownIntercept: 7, crownSlope: 1.85,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-  bur_oak: {
-    name: "Bur Oak", group: "Oaks",
-    b0: -2.0705, b1: 2.4410, sg: 0.58,
-    moisture: 1.78, brushFrac: 0.28, foliageFrac: 0.11,
-    heightA: 110, heightB: 0.034,
-    crownIntercept: 8, crownSlope: 2.20,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-  swamp_white_oak: {
-    name: "Swamp White Oak", group: "Oaks",
-    b0: -2.0705, b1: 2.4410, sg: 0.56,
-    moisture: 1.80, brushFrac: 0.30, foliageFrac: 0.12,
-    heightA: 110, heightB: 0.035,
-    crownIntercept: 8, crownSlope: 2.00,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
+/* =================== ID QUIZ DATA ===================
+   References species KEYS only — no calibration values.
+   Safe to keep client-side. */
+/* ============================================================
+   QUIZ v2 — bark / structure-first IVR routing
+   Works on dead & leafless trees. Leaf questions are
+   a late-stage optional refinement, not the primary axis.
 
-  // ===== ASHES =====
-  white_ash: {
-    name: "White Ash", group: "Ashes",
-    b0: -1.8384, b1: 2.3524, sg: 0.55,
-    moisture: 1.65, brushFrac: 0.38, foliageFrac: 0.12,
-    heightA: 105, heightB: 0.035,
-    crownIntercept: 6, crownSlope: 1.60,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  green_ash: {
-    name: "Green Ash", group: "Ashes",
-    b0: -2.0314, b1: 2.3524, sg: 0.53,
-    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 90, heightB: 0.040,
-    crownIntercept: 5, crownSlope: 1.50,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  black_ash: {
-    name: "Black Ash", group: "Ashes",
-    b0: -2.0314, b1: 2.3524, sg: 0.45,
-    moisture: 1.85, brushFrac: 0.42, foliageFrac: 0.13,
-    heightA: 90, heightB: 0.040,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-
-  // ===== BIRCHES =====
-  white_birch: {
-    name: "White Birch (Paper)", group: "Birches",
-    b0: -2.5932, b1: 2.5349, sg: 0.48,
-    moisture: 1.75, brushFrac: 0.45, foliageFrac: 0.13,
-    heightA: 70, heightB: 0.040,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  river_birch: {
-    name: "River Birch", group: "Birches",
-    b0: -2.5932, b1: 2.5349, sg: 0.48,
-    moisture: 1.80, brushFrac: 0.45, foliageFrac: 0.13,
-    heightA: 80, heightB: 0.040,
-    crownIntercept: 5, crownSlope: 1.50,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  yellow_birch: {
-    name: "Yellow Birch", group: "Birches",
-    b0: -2.5932, b1: 2.5349, sg: 0.55,
-    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.12,
-    heightA: 85, heightB: 0.038,
-    crownIntercept: 5, crownSlope: 1.50,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  gray_birch: {
-    name: "Gray Birch", group: "Birches",
-    b0: -2.5932, b1: 2.5349, sg: 0.45,
-    moisture: 1.75, brushFrac: 0.45, foliageFrac: 0.13,
-    heightA: 50, heightB: 0.045,
-    crownIntercept: 3, crownSlope: 1.10,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-
-  // ===== WALNUTS / NUTS =====
-  black_walnut: {
-    name: "Black Walnut", group: "Walnuts & Hickories",
-    b0: -2.5095, b1: 2.5437, sg: 0.51,
-    moisture: 1.65, brushFrac: 0.32, foliageFrac: 0.12,
-    heightA: 100, heightB: 0.038,
-    crownIntercept: 6, crownSlope: 1.80,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-  butternut: {
-    name: "Butternut (White Walnut)", group: "Walnuts & Hickories",
-    b0: -2.5095, b1: 2.5437, sg: 0.36,
-    moisture: 1.85, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 75, heightB: 0.040,
-    crownIntercept: 6, crownSlope: 1.70,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  shagbark_hickory: {
-    name: "Shagbark Hickory", group: "Walnuts & Hickories",
-    b0: -2.5095, b1: 2.5437, sg: 0.64,
-    moisture: 1.60, brushFrac: 0.30, foliageFrac: 0.11,
-    heightA: 95, heightB: 0.035,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'upright', diamGroup: 'hardwood_heavy'
-  },
-
-  // ===== LOCUSTS =====
-  black_locust: {
-    name: "Black Locust", group: "Locusts",
-    b0: -2.5095, b1: 2.5437, sg: 0.66,
-    moisture: 1.55, brushFrac: 0.30, foliageFrac: 0.10,
-    heightA: 90, heightB: 0.040,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'upright', diamGroup: 'hardwood_heavy'
-  },
-  honey_locust: {
-    name: "Honey Locust", group: "Locusts",
-    b0: -2.5095, b1: 2.5437, sg: 0.60,
-    moisture: 1.55, brushFrac: 0.35, foliageFrac: 0.10,
-    heightA: 95, heightB: 0.038,
-    crownIntercept: 6, crownSlope: 1.65,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-
-  // ===== CHERRIES =====
-  black_cherry: {
-    name: "Black Cherry", group: "Cherries & Plums",
-    b0: -2.2118, b1: 2.4133, sg: 0.50,
-    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 90, heightB: 0.038,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  choke_cherry: {
-    name: "Choke Cherry", group: "Cherries & Plums",
-    b0: -2.2118, b1: 2.4133, sg: 0.50,
-    moisture: 1.75, brushFrac: 0.50, foliageFrac: 0.14,
-    heightA: 35, heightB: 0.050,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  ornamental_cherry: {
-    name: "Ornamental Cherry (Kwanzan/Yoshino)", group: "Cherries & Plums",
-    b0: -2.2118, b1: 2.4133, sg: 0.45,
-    moisture: 1.75, brushFrac: 0.50, foliageFrac: 0.14,
-    heightA: 30, heightB: 0.060,
-    crownIntercept: 4, crownSlope: 1.30,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-
-  // ===== PEARS / APPLES / ROSACEAE =====
-  callery_pear: {
-    name: "Bradford / Callery Pear", group: "Pears & Apples",
-    b0: -2.2118, b1: 2.4133, sg: 0.50,
-    moisture: 1.70, brushFrac: 0.45, foliageFrac: 0.14,
-    heightA: 45, heightB: 0.055,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  pear: {
-    name: "Pear (fruit)", group: "Pears & Apples",
-    b0: -2.2118, b1: 2.4133, sg: 0.55,
-    moisture: 1.65, brushFrac: 0.50, foliageFrac: 0.14,
-    heightA: 35, heightB: 0.055,
-    crownIntercept: 4, crownSlope: 1.10,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  apple: {
-    name: "Apple", group: "Pears & Apples",
-    b0: -2.2118, b1: 2.4133, sg: 0.55,
-    moisture: 1.65, brushFrac: 0.55, foliageFrac: 0.15,
-    heightA: 30, heightB: 0.060,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-  crabapple: {
-    name: "Crabapple", group: "Pears & Apples",
-    b0: -2.2118, b1: 2.4133, sg: 0.50,
-    moisture: 1.65, brushFrac: 0.55, foliageFrac: 0.15,
-    heightA: 22, heightB: 0.060,
-    crownIntercept: 4, crownSlope: 1.10,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-  hawthorn: {
-    name: "Hawthorn", group: "Pears & Apples",
-    b0: -2.2118, b1: 2.4133, sg: 0.55,
-    moisture: 1.65, brushFrac: 0.55, foliageFrac: 0.14,
-    heightA: 25, heightB: 0.060,
-    crownIntercept: 3, crownSlope: 1.00,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-
-  // ===== OTHER HARDWOODS =====
-  american_elm: {
-    name: "American Elm", group: "Elm",
-    b0: -2.2118, b1: 2.4133, sg: 0.50,
-    moisture: 1.75, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 110, heightB: 0.034,
-    crownIntercept: 7, crownSlope: 1.90,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  basswood: {
-    name: "Basswood / American Linden", group: "Other Hardwoods",
-    b0: -2.4108, b1: 2.4177, sg: 0.37,
-    moisture: 1.85, brushFrac: 0.42, foliageFrac: 0.14,
-    heightA: 100, heightB: 0.035,
-    crownIntercept: 6, crownSlope: 1.60,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  littleleaf_linden: {
-    name: "Littleleaf Linden", group: "Other Hardwoods",
-    b0: -2.4108, b1: 2.4177, sg: 0.40,
-    moisture: 1.80, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 75, heightB: 0.038,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  sycamore: {
-    name: "Sycamore", group: "Sycamore",
-    b0: -2.2118, b1: 2.4133, sg: 0.46,
-    moisture: 1.80, brushFrac: 0.35, foliageFrac: 0.12,
-    heightA: 120, heightB: 0.034,
-    crownIntercept: 8, crownSlope: 2.10,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  tulip_poplar: {
-    name: "Tulip Poplar / Yellow Poplar", group: "Tulip Tree",
-    b0: -2.2118, b1: 2.4133, sg: 0.40,
-    moisture: 1.85, brushFrac: 0.32, foliageFrac: 0.11,
-    heightA: 130, heightB: 0.030,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  beech: {
-    name: "American Beech", group: "Beech",
-    b0: -2.0705, b1: 2.4410, sg: 0.64,
-    moisture: 1.65, brushFrac: 0.32, foliageFrac: 0.12,
-    heightA: 100, heightB: 0.034,
-    crownIntercept: 6, crownSlope: 1.80,
-    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
-  },
-  cottonwood: {
-    name: "Cottonwood", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.37,
-    moisture: 1.95, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 120, heightB: 0.034,
-    crownIntercept: 7, crownSlope: 1.90,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  poplar_aspen: {
-    name: "Poplar / Aspen", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.38,
-    moisture: 1.90, brushFrac: 0.42, foliageFrac: 0.13,
-    heightA: 80, heightB: 0.040,
-    crownIntercept: 4, crownSlope: 1.30,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  willow: {
-    name: "Willow", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.36,
-    moisture: 2.00, brushFrac: 0.55, foliageFrac: 0.15,
-    heightA: 70, heightB: 0.045,
-    crownIntercept: 6, crownSlope: 1.80,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-  mulberry: {
-    name: "Mulberry", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.59,
-    moisture: 1.65, brushFrac: 0.50, foliageFrac: 0.14,
-    heightA: 50, heightB: 0.050,
-    crownIntercept: 5, crownSlope: 1.50,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-  magnolia: {
-    name: "Magnolia", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.46,
-    moisture: 1.75, brushFrac: 0.50, foliageFrac: 0.15,
-    heightA: 40, heightB: 0.050,
-    crownIntercept: 4, crownSlope: 1.40,
-    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
-  },
-  catalpa: {
-    name: "Catalpa", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.41,
-    moisture: 1.75, brushFrac: 0.40, foliageFrac: 0.14,
-    heightA: 60, heightB: 0.045,
-    crownIntercept: 5, crownSlope: 1.50,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  hackberry: {
-    name: "Hackberry", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.49,
-    moisture: 1.75, brushFrac: 0.42, foliageFrac: 0.13,
-    heightA: 80, heightB: 0.038,
-    crownIntercept: 6, crownSlope: 1.60,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  ginkgo: {
-    name: "Ginkgo", group: "Other Hardwoods",
-    b0: -2.2118, b1: 2.4133, sg: 0.45,
-    moisture: 1.70, brushFrac: 0.35, foliageFrac: 0.13,
-    heightA: 80, heightB: 0.034,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'upright', diamGroup: 'hardwood_normal'
-  },
-  chinese_chestnut: {
-    name: "Chinese Chestnut", group: "Other Hardwoods",
-    b0: -2.0705, b1: 2.4410, sg: 0.48,
-    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
-    heightA: 60, heightB: 0.040,
-    crownIntercept: 6, crownSlope: 1.70,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-  horse_chestnut: {
-    name: "Horse Chestnut / Buckeye", group: "Other Hardwoods",
-    b0: -2.4108, b1: 2.4177, sg: 0.38,
-    moisture: 1.80, brushFrac: 0.45, foliageFrac: 0.16,
-    heightA: 80, heightB: 0.038,
-    crownIntercept: 6, crownSlope: 1.70,
-    brushHandling: 'wide', diamGroup: 'hardwood_normal'
-  },
-
-  // ===== CONIFERS =====
-  white_pine: {
-    name: "Eastern White Pine", group: "Conifers",
-    b0: -2.6177, b1: 2.4638, sg: 0.34,
-    moisture: 2.00, brushFrac: 0.60, foliageFrac: 0.25,
-    heightA: 130, heightB: 0.030,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  red_pine: {
-    name: "Red Pine", group: "Conifers",
-    b0: -3.0506, b1: 2.6465, sg: 0.41,
-    moisture: 1.85, brushFrac: 0.50, foliageFrac: 0.20,
-    heightA: 90, heightB: 0.035,
-    crownIntercept: 4, crownSlope: 1.10,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  scotch_pine: {
-    name: "Scotch Pine", group: "Conifers",
-    b0: -3.0506, b1: 2.6465, sg: 0.42,
-    moisture: 1.85, brushFrac: 0.55, foliageFrac: 0.22,
-    heightA: 75, heightB: 0.040,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  norway_spruce: {
-    name: "Norway Spruce", group: "Conifers",
-    b0: -2.1364, b1: 2.3233, sg: 0.37,
-    moisture: 1.95, brushFrac: 0.62, foliageFrac: 0.30,
-    heightA: 110, heightB: 0.035,
-    crownIntercept: 4, crownSlope: 1.20,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  white_spruce: {
-    name: "White Spruce", group: "Conifers",
-    b0: -2.1364, b1: 2.3233, sg: 0.36,
-    moisture: 1.95, brushFrac: 0.62, foliageFrac: 0.30,
-    heightA: 90, heightB: 0.035,
-    crownIntercept: 3, crownSlope: 1.00,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  blue_spruce: {
-    name: "Colorado Blue Spruce", group: "Conifers",
-    b0: -2.1364, b1: 2.3233, sg: 0.38,
-    moisture: 1.90, brushFrac: 0.60, foliageFrac: 0.28,
-    heightA: 70, heightB: 0.040,
-    crownIntercept: 4, crownSlope: 1.10,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  hemlock: {
-    name: "Eastern Hemlock", group: "Conifers",
-    b0: -2.3480, b1: 2.3876, sg: 0.40,
-    moisture: 1.95, brushFrac: 0.55, foliageFrac: 0.28,
-    heightA: 100, heightB: 0.032,
-    crownIntercept: 5, crownSlope: 1.40,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'soft_branch'
-  },
-  arborvitae: {
-    name: "Arborvitae / White Cedar", group: "Conifers",
-    b0: -2.7765, b1: 2.4195, sg: 0.31,
-    moisture: 2.00, brushFrac: 0.65, foliageFrac: 0.35,
-    heightA: 50, heightB: 0.045,
-    crownIntercept: 2, crownSlope: 0.70,
-    brushHandling: 'conifer', diamGroup: 'conifer', absorbProfile: 'lead_only'
-  }
-};
-
-const BRUSH_DIAM_DIST = {
-  hardwood_heavy: { d_avg_lt4: 2.0, d_avg_4to8: 5.5, d_avg_8to12: 9.5,
-                    frac_lt4: 0.35, frac_4to8: 0.30, frac_8to12: 0.35 },
-  hardwood_normal: { d_avg_lt4: 2.0, d_avg_4to8: 5.5, d_avg_8to12: 9.5,
-                     frac_lt4: 0.45, frac_4to8: 0.30, frac_8to12: 0.25 },
-  conifer:        { d_avg_lt4: 1.5, d_avg_4to8: 5.0, d_avg_8to12: 9.0,
-                    frac_lt4: 0.65, frac_4to8: 0.25, frac_8to12: 0.10 }
-};
-
-/* =================== ID QUIZ DATA =================== */
-/* Builds a small decision tree to narrow species. Each node has either
-   options (forking questions) or matches (terminal species suggestions). */
+   Decision order:
+     1. Conifer vs deciduous  (structural, permanent)
+     2. Dead giveaways        (persistent features → instant ID)
+     3. Branching pattern     (opposite vs alternate, works bare)
+     4. Crown / growth form   (silhouette visible at 50 ft)
+     5. Bark texture          (most reliable year-round trait)
+     6. Twig / bud            (close-up disambiguation)
+   ============================================================ */
 const QUIZ = {
   start: {
-    q: "Leaves or needles?",
+    q: "Needles / scales, or bare / broadleaf?",
+    hint: "This works on dead trees — look at the branch structure, not the leaves.",
     options: [
-      { label: "Needles or scale-like (evergreen)", next: 'conifer' },
-      { label: "Broad leaves (deciduous)", next: 'deciduous' }
+      { label: "Needles or scale-like leaves (conifer/evergreen)", next: 'conifer' },
+      { label: "Bare twigs or broad leaves (deciduous)", next: 'giveaway' }
     ]
   },
+
+  /* ── CONIFERS ── */
   conifer: {
-    q: "What kind of needles?",
+    q: "Needle or scale type?",
     options: [
-      { label: "Long needles in clusters of 2–5 (pine)", next: 'pine' },
-      { label: "Short single needles, square cross-section (spruce)", next: 'spruce' },
-      { label: "Short flat needles, soft (hemlock/fir)", matches: ['hemlock'] },
-      { label: "Tiny scale-like leaves (cedar/arborvitae)", matches: ['arborvitae'] }
+      { label: "Long needles in bundles of 2–5 (pine)", next: 'pine' },
+      { label: "Short, single needles — square, sharp, roll between fingers (spruce)", next: 'spruce' },
+      { label: "Short flat needles, soft — two white stripes underneath (hemlock/fir)", matches: ['hemlock'] },
+      { label: "Tiny overlapping scales, flat fan-like sprays (arborvitae/cedar)", matches: ['arborvitae'] }
     ]
   },
   pine: {
-    q: "Pine needle count per bundle?",
+    q: "How many needles per bundle?",
     options: [
-      { label: "5 needles (soft, blue-green)", matches: ['white_pine'] },
-      { label: "2 needles (long, reddish bark)", matches: ['red_pine'] },
-      { label: "2 needles (short, twisted, orange bark)", matches: ['scotch_pine'] }
+      { label: "5 needles — soft, blue-green (white pine)", matches: ['white_pine'] },
+      { label: "2 needles — long 4–6\", reddish bark (red pine)", matches: ['red_pine'] },
+      { label: "2 needles — short 1.5–3\", twisted, orangish bark (Scotch pine)", matches: ['scotch_pine'] }
     ]
   },
   spruce: {
-    q: "Spruce color/feel?",
+    q: "Spruce appearance?",
     options: [
-      { label: "Dark green, drooping branches", matches: ['norway_spruce'] },
-      { label: "Light blue-green, sharp needles", matches: ['blue_spruce'] },
-      { label: "Pale green/grayish", matches: ['white_spruce'] }
+      { label: "Dark green, gracefully drooping branches (Norway spruce)", matches: ['norway_spruce'] },
+      { label: "Blue-silver needles, stiff and sharp (blue spruce)", matches: ['blue_spruce'] },
+      { label: "Pale green, smaller cones (white spruce)", matches: ['white_spruce'] }
     ]
   },
-  deciduous: {
-    q: "Leaf arrangement on twig?",
+
+  /* ── STEP 2: DEAD GIVEAWAYS ── */
+  giveaway: {
+    q: "Any of these visible right now?",
+    hint: "Check the trunk, branches, and ground underneath. These are instant IDs.",
     options: [
-      { label: "Opposite (leaves directly across from each other)", next: 'opposite' },
-      { label: "Alternate (leaves staggered)", next: 'alternate' }
+      { label: "Large branched thorns growing from trunk or main limbs", matches: ['honey_locust'] },
+      { label: "Small paired spines at each bud, white flower smell in memory", matches: ['black_locust'] },
+      { label: "Bright white or chalky-white peeling bark", matches: ['white_birch'] },
+      { label: "Mottled green-cream-tan peeling bark (camouflage pattern)", matches: ['sycamore'] },
+      { label: "Shaggy bark in long vertical curling strips", matches: ['shagbark_hickory'] },
+      { label: "Spiky round gumball fruits on ground or hanging", matches: ['sweetgum'] },
+      { label: "Single-wing samaras in bunches still hanging (ash)", next: 'ash_bark' },
+      { label: "Paired winged seeds (helicopters) still on tree", next: 'maple_bark' },
+      { label: "None of the above — continue", next: 'branching' }
     ]
   },
-  opposite: {
-    q: "Leaf shape?",
+
+  /* ── STEP 3: BRANCHING PATTERN (works on bare / dead trees) ── */
+  branching: {
+    q: "Are the buds / branch stubs OPPOSITE each other or STAGGERED?",
+    hint: "Look where small twigs meet a branch. Opposite = directly across. Alternate = staggered up the branch. One question eliminates ~80% of species.",
     options: [
-      { label: "Lobed (like a maple)", next: 'maple' },
-      { label: "Compound, pinnate (multiple leaflets in a row — ash)", next: 'ash' },
-      { label: "Compound, palmate (5–7 leaflets in a hand shape — horse chestnut)", matches: ['horse_chestnut'] },
-      { label: "Heart-shaped, large", matches: ['catalpa'] }
+      { label: "Opposite — buds directly across from each other", next: 'opposite_crown' },
+      { label: "Alternate — buds stagger up the twig", next: 'alternate_crown' }
     ]
   },
-  maple: {
-    q: "Maple specifics?",
+
+  /* ── STEP 4a: CROWN FORM — opposite branching ── */
+  opposite_crown: {
+    q: "Crown shape? (opposite trees: maple, ash, dogwood, horse chestnut)",
     options: [
-      { label: "Deeply cut leaves, silvery underside", matches: ['silver_maple'] },
-      { label: "Compound leaves, irregular form, leans", matches: ['boxelder'] },
-      { label: "Leaves wider than long, dark, sap is milky", matches: ['norway_maple'] },
-      { label: "Classic 5-lobe, U-shaped notches, red fall", matches: ['sugar_maple', 'black_maple'] },
-      { label: "Smaller leaves, red flowers in spring, red fall", matches: ['red_maple', 'freeman_maple'] }
+      { label: "Round and spreading, dense — typical street tree shape", next: 'maple_bark' },
+      { label: "Oval to vase-shaped, compound leaves, diamond-pattern bark", next: 'ash_bark' },
+      { label: "Small tree, horizontal layered branches, understory", matches: ['dogwood'] },
+      { label: "Stout limbs, large compound leaves, sticky buds", matches: ['horse_chestnut'] }
     ]
   },
-  ash: {
-    q: "Ash specifics?",
+
+  /* ── STEP 4b: CROWN FORM — alternate branching ── */
+  alternate_crown: {
+    q: "Crown / growth form?",
+    hint: "Stand back 30–50 ft and look at the overall silhouette.",
     options: [
-      { label: "Diamond-pattern bark, larger size", matches: ['white_ash'] },
-      { label: "Wet sites, thinner bark", matches: ['black_ash', 'green_ash'] }
+      { label: "Classic vase — branches sweep up and outward", matches: ['american_elm'] },
+      { label: "Round, spreading, heavy limbs — large shade tree", next: 'alternate_bark' },
+      { label: "Pyramidal / conical — strong central leader", next: 'oak_bark' },
+      { label: "Irregular, gnarled, twisting limbs", next: 'irregular_alt' },
+      { label: "Small / understory tree (under ~30 ft)", next: 'small_alt' }
     ]
   },
-  alternate: {
-    q: "Leaf shape?",
+
+  /* ── STEP 5: BARK — maples ── */
+  maple_bark: {
+    q: "Bark texture — look at chest height on the trunk:",
     options: [
-      { label: "Lobed (like an oak)", next: 'oak' },
-      { label: "Compound (walnut, locust, hickory)", next: 'compound' },
-      { label: "Simple, toothed (cherry, birch, etc.)", next: 'simple_alt' },
-      { label: "Simple, smooth-edged", next: 'smooth_alt' },
-      { label: "Star/tulip shaped", matches: ['tulip_poplar'] },
-      { label: "Fan-shaped (no other tree like it)", matches: ['ginkgo'] },
-      { label: "Long toothed leaf, spiny burr fruit (chestnut)", matches: ['chinese_chestnut'] }
+      { label: "Flaky / scaly patches, lighter gray (silver maple)", matches: ['silver_maple'] },
+      { label: "Gray, furrowed long interlacing ridges (sugar/Norway maple)", next: 'maple_detail' },
+      { label: "Deeply furrowed, dark, rope-twist ridges", matches: ['black_maple'] },
+      { label: "Smooth gray-brown, shallow furrows", next: 'maple_detail' }
     ]
   },
-  oak: {
-    q: "Oak leaf type?",
+  maple_detail: {
+    q: "Any visible maple clue?",
     options: [
-      { label: "Pointed lobes with bristles (red oak group)", next: 'red_oak_group' },
-      { label: "Rounded lobes, no bristles (white oak group)", next: 'white_oak_group' }
+      { label: "Wide-spreading limbs, V-crotches, silver leaf underside", matches: ['silver_maple'] },
+      { label: "Leaves (if present) wider than long — milky sap", matches: ['norway_maple'] },
+      { label: "Classic round crown, 5-lobe leaves, U-shaped notches", matches: ['sugar_maple', 'black_maple'] },
+      { label: "Smaller leaves, red-tinged twigs, red spring flowers", matches: ['red_maple', 'freeman_maple'] }
     ]
   },
-  red_oak_group: {
-    q: "Red oak details?",
+
+  /* ── STEP 5: BARK — ash ── */
+  ash_bark: {
+    q: "Ash bark pattern:",
+    hint: "Most ash in Rochester are dead or dying from EAB. Look for woodpecker holes and S-shaped galleries under loose bark.",
     options: [
-      { label: "Tall, smooth gray bark with stripes, large leaves", matches: ['red_oak'] },
-      { label: "Strongly pyramidal shape, drooping lower branches", matches: ['pin_oak'] }
+      { label: "Diamond / interlocking ridge pattern, larger tree", matches: ['white_ash'] },
+      { label: "Shallower furrows, often near wet / low areas", matches: ['black_ash', 'green_ash'] },
+      { label: "Bark being stripped by woodpeckers, S-galleries visible (EAB)", matches: ['white_ash', 'green_ash', 'black_ash'] }
     ]
   },
-  white_oak_group: {
-    q: "White oak details?",
+
+  /* ── STEP 5: BARK — alternate round/spreading ── */
+  alternate_bark: {
+    q: "Bark texture — large round-spreading alternate tree:",
     options: [
-      { label: "Pale gray flaky bark, deeply lobed leaves", matches: ['white_oak'] },
-      { label: "Massive limbs, corky bark, large acorns with fringed cap", matches: ['bur_oak'] },
-      { label: "Wet sites, peeling bark", matches: ['swamp_white_oak'] }
+      { label: "Dark, blocky, nearly black — like burnt cornflakes (black cherry)", matches: ['black_cherry'] },
+      { label: "Light gray, scaly or blocky flat-topped ridges (oak)", next: 'oak_bark' },
+      { label: "Rough corky ridges or warts on branches (hackberry)", matches: ['hackberry'] },
+      { label: "Smooth gray, muscle-like ripples / sinews", matches: ['hornbeam', 'musclewood'] },
+      { label: "Smooth elephant-gray, never furrowed even when large (beech)", matches: ['beech'] }
     ]
   },
-  compound: {
-    q: "Compound leaf details?",
+
+  /* ── STEP 5: BARK — oak ── */
+  oak_bark: {
+    q: "Oak bark and silhouette:",
     options: [
-      { label: "Long compound, walnut smell, dark furrowed bark", matches: ['black_walnut'] },
-      { label: "Like walnut but lighter, husk is sticky", matches: ['butternut'] },
-      { label: "Large leaflets, shaggy peeling bark (hickory)", matches: ['shagbark_hickory'] },
-      { label: "Thorny trunk, big seed pods (locust)", next: 'locust' }
+      { label: "Light gray, blocky flat-topped ridges — often pyramidal when young (white oak)", matches: ['white_oak'] },
+      { label: "Dark gray-brown, vertical furrows — large round spreading crown (red oak)", matches: ['red_oak'] },
+      { label: "Strongly pyramidal, lower branches droop (pin oak)", matches: ['pin_oak'] },
+      { label: "Shaggy corky bark, large acorns with fringed cap (bur oak)", matches: ['bur_oak'] },
+      { label: "Flaky grayish-brown bark, often near water (swamp white oak)", matches: ['swamp_white_oak'] }
     ]
   },
-  locust: {
-    q: "Locust thorns?",
+
+  /* ── Irregular / gnarled ── */
+  irregular_alt: {
+    q: "Irregular-form tree — any of these?",
     options: [
-      { label: "Big branched thorns, dark bark", matches: ['honey_locust'] },
-      { label: "Small paired thorns, fragrant white flowers", matches: ['black_locust'] }
+      { label: "Dark rope-twist furrows, long compound leaves, walnut smell", matches: ['black_walnut'] },
+      { label: "Shaggy peeling bark, compound leaves, no thorns (shagbark hickory)", matches: ['shagbark_hickory'] },
+      { label: "Warty corky bark on branches, asymmetric leaves (hackberry)", matches: ['hackberry'] },
+      { label: "Lighter fissured bark, compound leaves like walnut (butternut)", matches: ['butternut'] }
     ]
   },
-  simple_alt: {
-    q: "Bark or other clues?",
+
+  /* ── Small / understory ── */
+  small_alt: {
+    q: "Small / understory tree:",
     options: [
-      { label: "White peeling bark", matches: ['white_birch'] },
-      { label: "Reddish papery peeling bark, wet sites", matches: ['river_birch'] },
-      { label: "Yellow/bronze peeling bark", matches: ['yellow_birch'] },
-      { label: "Smooth gray-white bark, smaller tree", matches: ['gray_birch'] },
-      { label: "Reddish-brown horizontal bark stripes (cherry-like)", next: 'cherry' },
-      { label: "Glossy leaves, white flowers in spring (pear/apple)", next: 'pear_apple' },
-      { label: "Mottled green/cream peeling bark, big leaves", matches: ['sycamore'] },
-      { label: "Smooth gray bark, beech-like", matches: ['beech'] },
-      { label: "Heart-shaped leaves, sweet flowers (linden)", next: 'linden' },
-      { label: "Triangular leaves, fluffy seeds, wet sites", matches: ['cottonwood', 'poplar_aspen'] },
-      { label: "Long narrow leaves, droopy, by water", matches: ['willow'] },
-      { label: "Heart-shaped leaves, edible berries (mulberry)", matches: ['mulberry'] },
-      { label: "Rough corky/warty bark, asymmetric leaf base", matches: ['hackberry'] }
+      { label: "White to gray peeling bark", matches: ['white_birch', 'gray_birch'] },
+      { label: "Reddish-tan papery peeling layers (river birch)", matches: ['river_birch'] },
+      { label: "Horizontal reddish-brown lenticel stripes", next: 'cherry_small' },
+      { label: "Ornamental flowers / glossy leaves (crabapple, pear)", next: 'pear_apple' },
+      { label: "Thorny, small red fruits in clusters (hawthorn)", matches: ['hawthorn'] },
+      { label: "Long narrow drooping leaves near water (willow)", matches: ['willow'] }
     ]
   },
-  cherry: {
-    q: "Cherry size?",
+  cherry_small: {
+    q: "Cherry-family size?",
     options: [
-      { label: "Large mature tree, dark scaly bark", matches: ['black_cherry'] },
-      { label: "Small shrubby tree", matches: ['choke_cherry'] },
-      { label: "Showy pink/white flowers in spring", matches: ['ornamental_cherry'] }
+      { label: "Mature tree, dark scaly platy bark (black cherry)", matches: ['black_cherry'] },
+      { label: "Small multi-stem shrubby form", matches: ['choke_cherry'] },
+      { label: "Ornamental — showy pink/white flowers in spring", matches: ['ornamental_cherry'] }
     ]
   },
   pear_apple: {
-    q: "Tree form?",
+    q: "Ornamental tree type?",
     options: [
-      { label: "Tight teardrop shape, white flowers, smelly", matches: ['callery_pear'] },
-      { label: "Older fruit tree, irregular shape", matches: ['pear', 'apple'] },
-      { label: "Small ornamental, pink flowers", matches: ['crabapple'] },
-      { label: "Thorny, small red fruits", matches: ['hawthorn'] }
-    ]
-  },
-  linden: {
-    q: "Linden size?",
-    options: [
-      { label: "Large native, big leaves", matches: ['basswood'] },
-      { label: "Smaller leaves, tighter form, often street tree", matches: ['littleleaf_linden'] }
-    ]
-  },
-  smooth_alt: {
-    q: "Other features?",
-    options: [
-      { label: "Smooth gray bark, beech nuts", matches: ['beech'] },
-      { label: "Vase shape, classic American street tree", matches: ['american_elm'] },
-      { label: "Big saucer flowers, large glossy leaves", matches: ['magnolia'] },
-      { label: "Tall, fan-shaped leaves", matches: ['ginkgo'] }
+      { label: "Tight teardrop silhouette, white flowers, smells bad (Callery/Bradford pear)", matches: ['callery_pear'] },
+      { label: "Spreading older fruit tree, irregular shape", matches: ['pear', 'apple'] },
+      { label: "Small, pink or white flowers, round fruits (crabapple)", matches: ['crabapple'] },
+      { label: "Thorny branches, small red berry-like fruits (hawthorn)", matches: ['hawthorn'] }
     ]
   }
 };
 
-/* =================== MATH ENGINE =================== */
-function greenWeightLbs(sp, dbh_in) {
-  const dbh_cm = dbh_in * 2.54;
-  const dryKg = Math.exp(sp.b0 + sp.b1 * Math.log(dbh_cm));
-  return dryKg * sp.moisture * 2.20462;
-}
-function autoHeightFt(sp, dbh_in) {
-  return Math.round(4.5 + sp.heightA * (1 - Math.exp(-sp.heightB * dbh_in)));
-}
-function autoCrownRadiusFt(sp, dbh_in) {
-  return Math.round((sp.crownIntercept + sp.crownSlope * dbh_in) / 2);
-}
-function greenDensityLbsPerFt3(sp) {
-  return sp.sg * 62.4 * sp.moisture;
-}
-function cutsFromMass(massLbs, avgDiamIn, cutLengthFt, density, forkMult) {
-  if (massLbs <= 0) return 0;
-  const radiusFt = (avgDiamIn / 2) / 12;
-  const xsArea = Math.PI * radiusFt * radiusFt;
-  const volume = massLbs / density;
-  const linearFt = volume / xsArea;
-  return Math.max(1, Math.round((linearFt / cutLengthFt) * forkMult));
-}
-function logCuts(massLbs, avgDiamIn, cutLengthFt, density) {
-  if (massLbs <= 0) return 0;
-  const radiusFt = (avgDiamIn / 2) / 12;
-  const xsArea = Math.PI * radiusFt * radiusFt;
-  const volume = massLbs / density;
-  const linearFt = volume / xsArea;
-  return Math.max(1, Math.round(linearFt / cutLengthFt));
-}
-function splitLogMassByClass(dbh_in, totalLogMass) {
-  if (dbh_in <= 18) return { c12_18: totalLogMass, c18_24: 0, c24plus: 0 };
-  if (dbh_in <= 24) return { c12_18: totalLogMass * 0.40, c18_24: totalLogMass * 0.60, c24plus: 0 };
-  return { c12_18: totalLogMass * 0.30, c18_24: totalLogMass * 0.35, c24plus: totalLogMass * 0.35 };
-}
 
-function compute(speciesKey, dbh_in, trimPct) {
-  const sp = SPECIES[speciesKey];
-  const grp = sp.diamGroup;
-  const brushDist = BRUSH_DIAM_DIST[grp];
-  const absorb = ABSORB_PROFILES[sp.absorbProfile] || ABSORB_PROFILES.hardwood;
-
-  const totalGreen = greenWeightLbs(sp, dbh_in);
-  const density = greenDensityLbsPerFt3(sp);
-
-  // Pre-existing trim reduces total tree mass proportionally — applies to both
-  // brush and log mass since trim work can include lead removal, not just
-  // small branches.
-  const trimMult = 1 - (trimPct / 100);
-  const brushMass = totalGreen * sp.brushFrac * trimMult;
-  const logMass = totalGreen * (1 - sp.brushFrac) * trimMult;
-  const woodyBrushMass = brushMass * (1 - sp.foliageFrac);
-
-  // Raw mass distribution by diameter class
-  const m_lt4_raw  = woodyBrushMass * brushDist.frac_lt4;
-  const m_4to8_raw = woodyBrushMass * brushDist.frac_4to8;
-  const m_8to12    = woodyBrushMass * brushDist.frac_8to12;
-
-  // Absorption: smaller-class mass that's structurally attached to larger
-  // limbs comes down with the larger cut. Subtract before counting cuts so
-  // we don't double-count cuts on the same physical section.
-  const m_4to8 = m_4to8_raw * (1 - absorb['4to8']);
-  const m_lt4  = m_lt4_raw  * (1 - absorb.lt4);
-
-  const fork_lt4 = grp === 'conifer' ? 1.20 : 1.50;
-  const fork_4to8 = grp === 'conifer' ? 1.10 : 1.30;
-  const fork_8to12 = 1.15;
-
-  const cuts_lt4   = cutsFromMass(m_lt4,   brushDist.d_avg_lt4,   15, density, fork_lt4);
-  const cuts_4to8  = cutsFromMass(m_4to8,  brushDist.d_avg_4to8,  15, density, fork_4to8);
-  const cuts_8to12 = cutsFromMass(m_8to12, brushDist.d_avg_8to12, 15, density, fork_8to12);
-
-  const sec_brush_lt4   = cuts_lt4   * BRUSH_SEC_PER_CUT.lt4;
-  const sec_brush_4to8  = cuts_4to8  * BRUSH_SEC_PER_CUT['4to8'];
-  const sec_brush_8to12 = cuts_8to12 * BRUSH_SEC_PER_CUT['8to12'];
-
-  const brushCuts = cuts_lt4 + cuts_4to8 + cuts_8to12;
-  const brushSecTotal = sec_brush_lt4 + sec_brush_4to8 + sec_brush_8to12;
-
-  const split = splitLogMassByClass(dbh_in, logMass);
-  const cuts_log12_18  = logCuts(split.c12_18,  15, 8, density);
-  const cuts_log18_24  = logCuts(split.c18_24,  21, 8, density);
-  const cuts_log24plus = logCuts(split.c24plus, Math.max(28, dbh_in - 4), 8, density);
-  const sec_log12_18   = cuts_log12_18  * LOG_SEC_PER_CUT['12to18'];
-  const sec_log18_24   = cuts_log18_24  * LOG_SEC_PER_CUT['18to24'];
-  const sec_log24plus  = cuts_log24plus * LOG_SEC_PER_CUT['24plus'];
-
-  const logCutsTotal = cuts_log12_18 + cuts_log18_24 + cuts_log24plus;
-  const logSec = sec_log12_18 + sec_log18_24 + sec_log24plus;
-  const totalSec = brushSecTotal + logSec;
-
-  return {
-    totalGreen, brushMass, logMass,
-    handlingProfile: sp.brushHandling,
-    brushBreakdown: [
-      { label: 'Brush <4″',  diam: '<4″',  cutLen: 15, cuts: cuts_lt4,   sec: BRUSH_SEC_PER_CUT.lt4,    total: sec_brush_lt4   },
-      { label: 'Brush 4–8″', diam: '4–8″', cutLen: 15, cuts: cuts_4to8,  sec: BRUSH_SEC_PER_CUT['4to8'], total: sec_brush_4to8  },
-      { label: 'Brush 8–12″',diam: '8–12″',cutLen: 15, cuts: cuts_8to12, sec: BRUSH_SEC_PER_CUT['8to12'],total: sec_brush_8to12 }
-    ],
-    logBreakdown: [
-      { label: 'Log 12–18″', diam: '12–18″', cutLen: 8, cuts: cuts_log12_18,  sec: LOG_SEC_PER_CUT['12to18'], total: sec_log12_18  },
-      { label: 'Log 18–24″', diam: '18–24″', cutLen: 8, cuts: cuts_log18_24,  sec: LOG_SEC_PER_CUT['18to24'], total: sec_log18_24  },
-      { label: 'Log 24″+',   diam: '24″+',   cutLen: 8, cuts: cuts_log24plus, sec: LOG_SEC_PER_CUT['24plus'], total: sec_log24plus }
-    ],
-    brushCuts, logCutsTotal, totalCuts: brushCuts + logCutsTotal,
-    brushSecTotal, logSec, totalSec
-  };
-}
-
-/* =================== UI =================== */
+/* =================== UI ELEMENTS =================== */
 const speciesSel = document.getElementById('species');
-
-// Build grouped species dropdown
-function buildSpeciesDropdown() {
-  speciesSel.innerHTML = '';
-  const groups = {};
-  Object.entries(SPECIES).forEach(([key, sp]) => {
-    if (!groups[sp.group]) groups[sp.group] = [];
-    groups[sp.group].push({ key, name: sp.name });
-  });
-  // Group order: Cameron's residential-removal frequency. Alphabetical within.
-  const order = [
-    "Ashes",
-    "Maples",
-    "Conifers",
-    "Locusts",
-    "Elm",
-    "Sycamore",
-    "Tulip Tree",
-    "Beech",
-    "Other Hardwoods",
-    "Oaks",
-    "Pears & Apples",
-    "Walnuts & Hickories",
-    "Cherries & Plums",
-    "Birches"
-  ];
-  order.forEach(g => {
-    if (!groups[g]) return;
-    const og = document.createElement('optgroup');
-    og.label = g;
-    groups[g].slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s.key;
-      opt.textContent = s.name;
-      og.appendChild(opt);
-    });
-    speciesSel.appendChild(og);
-  });
-}
-buildSpeciesDropdown();
-speciesSel.value = 'silver_maple';
-
-const dbhSlider = document.getElementById('dbh');
-const dbhVal = document.getElementById('dbhVal');
+const dbhSlider  = document.getElementById('dbh');
+const dbhVal     = document.getElementById('dbhVal');
 const heightInput = document.getElementById('heightInput');
-const crownInput = document.getElementById('crownInput');
-const heightTag = document.getElementById('heightTag');
-const crownTag = document.getElementById('crownTag');
+const crownInput  = document.getElementById('crownInput');
+const heightTag   = document.getElementById('heightTag');
+const crownTag    = document.getElementById('crownTag');
 
 let heightOverride = null;
 let crownOverride = null;
 let trimPct = 5;
 
-function fmt(n, dec=0) {
+let lastAuto = { height: null, crown: null };  // populated from API
+let inflightAbort = null;                      // current in-flight estimate request
+
+function fmt(n, dec = 0) {
   if (!isFinite(n)) return '—';
   return n.toLocaleString('en-US', { maximumFractionDigits: dec, minimumFractionDigits: dec });
 }
@@ -2235,11 +1182,82 @@ function formatTime(sec) {
   return s === 0 ? `${m}m` : `${m}m ${s}s`;
 }
 
-function syncInputs() {
-  const sp = SPECIES[speciesSel.value];
+/* =================== INITIAL LOAD =================== */
+async function loadSpecies() {
+  const resp = await fetch(API_BASE + '/api/species');
+  if (!resp.ok) throw new Error('Failed to load species list');
+  const data = await resp.json();
+  SPECIES_LIST = data.species;
+  SPECIES_BY_KEY = {};
+  SPECIES_LIST.forEach(s => { SPECIES_BY_KEY[s.key] = { name: s.name, group: s.group }; });
+
+  // Populate the <select> with optgroups.
+  // Group order: Cameron's residential-removal frequency. Alphabetical within.
+  speciesSel.innerHTML = '';
+  const byGroup = {};
+  SPECIES_LIST.forEach(s => {
+    if (!byGroup[s.group]) byGroup[s.group] = [];
+    byGroup[s.group].push(s);
+  });
+  const order = [
+    "Ashes",
+    "Maples",
+    "Conifers",
+    "Locusts",
+    "Other Hardwoods",
+    "Oaks",
+    "Pears & Apples",
+    "Walnuts & Hickories",
+    "Cherries & Plums",
+    "Birches"
+  ];
+  order.forEach(g => {
+    if (!byGroup[g]) return;
+    const og = document.createElement('optgroup');
+    og.label = g;
+    byGroup[g].slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(spec => {
+      const opt = document.createElement('option');
+      opt.value = spec.key;
+      opt.textContent = spec.name;
+      og.appendChild(opt);
+    });
+    speciesSel.appendChild(og);
+  });
+  speciesSel.value = 'silver_maple';
+}
+
+/* =================== ESTIMATE FETCH =================== */
+async function fetchEstimate() {
+  // Cancel any in-flight request before issuing a new one
+  if (inflightAbort) inflightAbort.abort();
+  const ac = new AbortController();
+  inflightAbort = ac;
+
+  const speciesKey = speciesSel.value;
   const dbh = parseFloat(dbhSlider.value);
+  const url = `${API_BASE}/api/estimate?species=${encodeURIComponent(speciesKey)}&dbh=${dbh}&trim=${trimPct}`;
+
+  try {
+    const resp = await fetch(url, { signal: ac.signal });
+    if (!resp.ok) {
+      const errBody = await resp.json().catch(() => ({}));
+      throw new Error(errBody.error || `estimate failed: ${resp.status}`);
+    }
+    return await resp.json();
+  } catch (err) {
+    if (err.name === 'AbortError') return null;
+    console.error('Estimate error:', err);
+    return null;
+  } finally {
+    if (inflightAbort === ac) inflightAbort = null;
+  }
+}
+
+/* =================== RENDER =================== */
+function syncHeightCrownInputs() {
+  // Reflect override state in input values + tag
   if (heightOverride === null) {
-    heightInput.value = autoHeightFt(sp, dbh);
+    if (lastAuto.height !== null) heightInput.value = lastAuto.height;
     heightTag.textContent = 'Auto from species + DBH';
     heightTag.classList.remove('modified');
   } else {
@@ -2248,7 +1266,7 @@ function syncInputs() {
     heightTag.classList.add('modified');
   }
   if (crownOverride === null) {
-    crownInput.value = autoCrownRadiusFt(sp, dbh);
+    if (lastAuto.crown !== null) crownInput.value = lastAuto.crown;
     crownTag.textContent = 'Auto from species + DBH';
     crownTag.classList.remove('modified');
   } else {
@@ -2258,23 +1276,26 @@ function syncInputs() {
   }
 }
 
-function render() {
-  const speciesKey = speciesSel.value;
+async function render() {
   const dbh = parseFloat(dbhSlider.value);
   dbhVal.textContent = dbh;
 
-  syncInputs();
-  const heightUsed = parseInt(heightInput.value) || autoHeightFt(SPECIES[speciesKey], dbh);
-  const crownUsed = parseInt(crownInput.value) || autoCrownRadiusFt(SPECIES[speciesKey], dbh);
+  const r = await fetchEstimate();
+  if (!r) return;  // aborted or errored — leave previous render
 
-  const r = compute(speciesKey, dbh, trimPct);
+  // Track auto values from server so override toggling stays correct
+  lastAuto.height = r.autoHeight;
+  lastAuto.crown = r.autoCrown;
+  syncHeightCrownInputs();
 
-  // Hero — live title/subtitle
-  const heroTitle = document.getElementById('heroTitle');
-  const heroSub = document.getElementById('heroSub');
-  if (heroTitle) heroTitle.textContent = `${dbh}″ ${SPECIES[speciesKey].name}`;
-  if (heroSub) heroSub.textContent = `${SPECIES[speciesKey].group} · Open-field · 10/10 operator`;
+  const heightUsed = (heightOverride !== null) ? heightOverride : r.autoHeight;
+  const crownUsed  = (crownOverride !== null) ? crownOverride : r.autoCrown;
 
+  // Hero
+  document.getElementById('heroTitle').textContent = `${dbh}″ ${r.speciesName}`;
+  document.getElementById('heroSub').textContent = `${r.speciesGroup} · Open-field · 10/10 operator`;
+
+  // Tree profile
   document.getElementById('height').textContent = heightUsed;
   document.getElementById('crown').textContent = crownUsed;
   document.getElementById('crownDiam').textContent = crownUsed * 2;
@@ -2284,6 +1305,7 @@ function render() {
   document.getElementById('logMass').textContent = fmt(r.logMass, 0);
   document.getElementById('profile').textContent = r.handlingProfile.toUpperCase();
 
+  // Cut breakdown table
   const tbody = document.getElementById('cutTable');
   tbody.innerHTML = '';
   [...r.brushBreakdown, ...r.logBreakdown].forEach(row => {
@@ -2307,12 +1329,14 @@ function render() {
   `;
   tbody.appendChild(totalTr);
 
+  // Stat grid
   document.getElementById('brushCuts').textContent = r.brushCuts;
   document.getElementById('logCuts').textContent = r.logCutsTotal;
   document.getElementById('totalCuts').textContent = r.totalCuts;
   document.getElementById('totalTime').textContent = fmt(r.totalSec / 60, 1);
   document.getElementById('totalSec').textContent = `${fmt(r.totalSec, 0)} sec total`;
 
+  // Time composition bar
   const bar = document.getElementById('timeBar');
   bar.innerHTML = '';
   const segs = [
@@ -2332,6 +1356,7 @@ function render() {
   });
 }
 
+/* =================== EVENT WIRING =================== */
 speciesSel.addEventListener('change', () => {
   heightOverride = null;
   crownOverride = null;
@@ -2390,7 +1415,6 @@ document.getElementById('resetCrown').addEventListener('click', () => {
   render();
 });
 
-// Trim segmented control
 document.getElementById('trimSeg').addEventListener('click', (e) => {
   if (e.target.tagName !== 'BUTTON') return;
   document.querySelectorAll('#trimSeg button').forEach(b => b.classList.remove('active'));
@@ -2408,16 +1432,22 @@ document.getElementById('calcBtn').addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-/* =================== ID QUIZ =================== */
-const quizModal = document.getElementById('quizModal');
-const quizBody = document.getElementById('quizBody');
+/* =================== ID QUIZ v2 =================== */
+const quizModal        = document.getElementById('quizModal');
+const quizBody         = document.getElementById('quizBody');
+const quizSubtitle     = document.getElementById('quizSubtitle');
+const speciesIdHint    = document.getElementById('species-id-hint');
+const speciesPickerWrap = document.getElementById('species-picker-wrap');
 let quizPath = ['start'];
 
 function renderQuiz() {
   const nodeKey = quizPath[quizPath.length - 1];
   const node = QUIZ[nodeKey];
   if (!node) return;
-  let html = `<div class="quiz-step"><h3>${node.q}</h3><div class="quiz-options">`;
+  const hintHtml = node.hint
+    ? `<p class="quiz-hint">${node.hint}</p>`
+    : '';
+  let html = `<div class="quiz-step"><h3 class="quiz-q">${node.q}</h3>${hintHtml}<div class="quiz-options">`;
   node.options.forEach((opt, i) => {
     html += `<button data-i="${i}">${opt.label}</button>`;
   });
@@ -2447,22 +1477,28 @@ function renderQuiz() {
 }
 
 function showMatches(speciesKeys) {
-  let html = `<div class="quiz-result"><strong style="color:var(--forest);font-size:11px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;">Likely matches</strong>`;
-  html += `<p style="font-size:13px;margin-top:6px;color:var(--ink-3);">Tap one to use it:</p><div class="matches">`;
-  speciesKeys.forEach(k => {
-    if (SPECIES[k]) {
-      html += `<button class="match" data-k="${k}">${SPECIES[k].name}</button>`;
-    }
+  const validKeys = speciesKeys.filter(k => SPECIES_BY_KEY[k]);
+  let html = `<div class="quiz-result">
+    <strong style="color:var(--forest);font-size:11px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;">Likely matches</strong>
+    <p style="font-size:13px;margin-top:6px;color:var(--ink-3);">Tap one to use it — or go back to narrow further:</p>
+    <div class="matches">`;
+  validKeys.forEach(k => {
+    html += `<button class="match" data-k="${k}">${SPECIES_BY_KEY[k].name}</button>`;
   });
-  html += `</div><button class="quiz-back">← Start over</button></div>`;
+  if (!validKeys.length) {
+    html += `<p style="color:var(--ink-3);font-size:13px;">No exact match found. Try a different path or pick manually.</p>`;
+  }
+  html += `</div><button class="quiz-back" style="margin-top:12px;">← Start over</button></div>`;
   quizBody.innerHTML = html;
   quizBody.querySelectorAll('button.match').forEach(btn => {
     btn.addEventListener('click', () => {
       speciesSel.value = btn.dataset.k;
       heightOverride = null;
-      crownOverride = null;
+      crownOverride  = null;
       render();
       closeQuiz();
+      speciesPickerWrap.hidden = false;
+      speciesIdHint.hidden = true;
     });
   });
   quizBody.querySelector('.quiz-back').addEventListener('click', () => {
@@ -2472,6 +1508,15 @@ function showMatches(speciesKeys) {
 }
 
 function openQuiz() {
+  const dbh = parseFloat(dbhSlider.value) || 0;
+  // If DBH not entered yet, show hint in species card and scroll to it
+  if (dbh < 2) {
+    speciesPickerWrap.hidden = true;
+    speciesIdHint.hidden = false;
+    document.getElementById('species-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  quizSubtitle.textContent = 'Answer a few quick questions to narrow down the species.';
   quizPath = ['start'];
   renderQuiz();
   quizModal.classList.add('open');
@@ -2484,596 +1529,24 @@ document.getElementById('quizClose').addEventListener('click', closeQuiz);
 quizModal.addEventListener('click', (e) => {
   if (e.target === quizModal) closeQuiz();
 });
-
-render();
-
-
-/* ============================================================
-   Species picker — modular drop-in. Renders into #species-picker-modal.
-   Activates by tapping #species-picker-btn (a fake-select trigger).
-   Selection writes to the existing <select id="species"> and
-   dispatches a 'change' event so all existing listeners (compute,
-   etc.) keep working.
-   ============================================================ */
-(function() {
-  function initPicker() {
-
-/* ============================================================
-   Heart paths — sourced from /icons/heart-empty.svg and
-   /icons/heart-filled.svg (Cameron-supplied). Both inlined
-   here so the picker is fully self-contained.
-
-   heart-empty: 512x512 viewBox, compound path (outer heart +
-     inner cutout) — renders as an outlined hollow heart
-     under nonzero fill-rule.
-   heart-filled: 24x24 viewBox, single solid heart path.
-
-   Both use fill="currentColor" so the button's CSS color
-   drives appearance: ink-faint default, rose on hover/active.
-   ============================================================ */
-const HEART_EMPTY_PATH = 'M474.644,74.27C449.391,45.616,414.358,29.836,376,29.836c-53.948,0-88.103,32.22-107.255,59.25c-4.969,7.014-9.196,14.047-12.745,20.665c-3.549-6.618-7.775-13.651-12.745-20.665c-19.152-27.03-53.307-59.25-107.255-59.25c-38.358,0-73.391,15.781-98.645,44.435C13.267,101.605,0,138.213,0,177.351c0,42.603,16.633,82.228,52.345,124.7c31.917,37.96,77.834,77.088,131.005,122.397c19.813,16.884,40.302,34.344,62.115,53.429l0.655,0.574c2.828,2.476,6.354,3.713,9.88,3.713s7.052-1.238,9.88-3.713l0.655-0.574c21.813-19.085,42.302-36.544,62.118-53.431c53.168-45.306,99.085-84.434,131.002-122.395C495.367,259.578,512,219.954,512,177.351C512,138.213,498.733,101.605,474.644,74.27z M309.193,401.614c-17.08,14.554-34.658,29.533-53.193,45.646c-18.534-16.111-36.113-31.091-53.196-45.648C98.745,312.939,30,254.358,30,177.351c0-31.83,10.605-61.394,29.862-83.245C79.34,72.007,106.379,59.836,136,59.836c41.129,0,67.716,25.338,82.776,46.594c13.509,19.064,20.558,38.282,22.962,45.659c2.011,6.175,7.768,10.354,14.262,10.354c6.494,0,12.251-4.179,14.262-10.354c2.404-7.377,9.453-26.595,22.962-45.66c15.06-21.255,41.647-46.593,82.776-46.593c29.621,0,56.66,12.171,76.137,34.27C471.395,115.957,482,145.521,482,177.351C482,254.358,413.255,312.939,309.193,401.614z';
-const HEART_FILLED_PATH = 'm11.466 22.776c.141.144.333.224.534.224s.393-.08.534-.224l9.594-9.721c4.001-4.053 1.158-11.055-4.532-11.055-3.417 0-4.985 2.511-5.596 2.98-.614-.471-2.172-2.98-5.596-2.98-5.672 0-8.55 6.984-4.531 11.055z';
-
-const SPECIES_DATA = {
-  'Acer saccharinum': { flag: 'Yes', reason: 'Weak wood, storm-prone' },
-  'Acer rubrum': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Acer platanoides': { flag: 'Yes', reason: 'Invasive (NE/PNW); weak unions; storm-prone' },
-  'Acer saccharum': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Acer × freemanii': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Quercus rubra': { flag: 'Maybe', reason: 'Oak wilt risk in IL/IA/MI/MN/WI' },
-  'Quercus alba': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Quercus palustris': { flag: 'Maybe', reason: 'Mature removals' },
-  'Quercus bicolor': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Fraxinus pennsylvanica': { flag: 'Yes', reason: 'EAB - active mortality in 36 states' },
-  'Robinia pseudoacacia': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Gleditsia triacanthos': { flag: 'Maybe', reason: 'Canker, borers, large planting base' },
-  'Prunus serrulata \'Kwanzan\'': { flag: 'Maybe', reason: 'Shorter lifespan, ornamental decline' },
-  'Pyrus calleryana': { flag: 'Yes', reason: 'Banned OH/SC/PA/NJ; bounty programs' },
-  'Malus species': { flag: 'Maybe', reason: 'Shorter lifespan, scab/disease' },
-  'Crataegus species': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Ulmus americana': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Tilia americana': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Tilia cordata': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Platanus occidentalis': { flag: 'Maybe', reason: 'Anthracnose, large mature size' },
-  'Liriodendron tulipifera': { flag: 'Maybe', reason: 'Large mature size, storm/conflict' },
-  'Fagus grandifolia': { flag: 'Yes', reason: 'Beech leaf disease - 13 states + ON; 5yr sapling mortality' },
-  'Celtis occidentalis': { flag: 'Maybe', reason: 'Storm failure, large size' },
-  'Ginkgo biloba': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-  'Picea pungens': { flag: 'Yes', reason: 'Needle cast/decline' },
-  'Thuja occidentalis': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
-};
-
-/* ============================================================
-   deriveFlag — turn a free-text removal_reason into a short
-   token. Order matters: most specific patterns first.
-   ============================================================ */
-function deriveFlag(reason) {
-  if (!reason) return null;
-  const r = reason.toLowerCase();
-  /* Only species-specific, named conditions get tags. Generics
-     like 'size', 'storm-prone', 'borers', 'decline', 'shorter
-     lifespan' could describe almost any tree — they don't earn a
-     pill here. If the only reason is generic, return null and the
-     species shows no flag. */
-  if (/eab|emerald ash/.test(r)) return 'EAB';
-  if (/hemlock woolly|\bhwa\b/.test(r)) return 'HWA';
-  if (/oak wilt/.test(r)) return 'oak wilt';
-  if (/beech leaf/.test(r)) return 'BLD';
-  if (/bronze birch borer/.test(r)) return 'BBB';
-  if (/diplodia/.test(r)) return 'diplodia';
-  if (/anthracnose/.test(r)) return 'anthracnose';
-  if (/banned|bradford|callery/.test(r)) return 'banned';
-  if (/invasive/.test(r)) return 'invasive';
-  if (/needle cast/.test(r)) return 'needle cast';
-  if (/iron chlorosis|chlorosis/.test(r)) return 'chlorosis';
-  if (/gumball|fruit nuisance/.test(r)) return 'fruit drop';
-  if (/wildfire/.test(r)) return 'wildfire';
-  if (/scab/.test(r)) return 'scab';
-  return null;
-}
-
-/* ============================================================
-   computeFlag — what flag (if any) to display on a species row.
-   - CSV says Yes/Maybe → derive from reason, source = 'csv'
-   - CSV says No        → no flag (overrides any hand-coded one)
-   - Not in CSV         → fall back to hand-coded flag, source = 'authored'
-   - Not in CSV, no hand-coded → no flag
-   The tooltip shows the source so we can audit at a glance.
-   ============================================================ */
-function computeFlag(species) {
-  const csv = SPECIES_DATA[species.latin];
-  if (csv) {
-    if (csv.flag === 'Yes' || csv.flag === 'Maybe') {
-      const token = deriveFlag(csv.reason);
-      if (!token) return null;  // CSV says removable but for a generic reason — no tag
-      return { token: token, reason: csv.reason, source: 'CSV (city-inventory dataset)' };
-    }
-    return null;
+// Restore species picker when DBH is moved after hint was shown
+dbhSlider.addEventListener('input', () => {
+  if (parseFloat(dbhSlider.value) >= 2 && speciesPickerWrap.hidden) {
+    speciesPickerWrap.hidden = false;
+    speciesIdHint.hidden = true;
   }
-  if (species.flag) {
-    return { token: species.flag, reason: 'Authored from arboricultural knowledge — species not in city-inventory CSV', source: 'hand-coded' };
-  }
-  return null;
-}
-
-/* Tap-target descriptions — each token gets a one-paragraph
-   explanation users see when they tap a flag pill. */
-const FLAG_DESCRIPTIONS = {
-  'EAB': 'Emerald Ash Borer — invasive beetle (Agrilus planipennis) that has killed hundreds of millions of ash trees across North America. All Fraxinus species are vulnerable; Rochester is in active mortality territory.',
-  'HWA': 'Hemlock Woolly Adelgid — invasive sap-feeding insect (Adelges tsugae) causing widespread mortality of eastern hemlock. Look for white woolly masses at needle bases.',
-  'oak wilt': 'Oak wilt — fungal disease (Bretziella fagacearum) that kills oaks by blocking water transport. Red-oak group dies fast (weeks); white-oak group resists. Spread by sap beetles and root grafts.',
-  'BLD': 'Beech Leaf Disease — emerging nematode-borne disease causing rapid decline and mortality of American beech. Spread aggressively in the Northeast since 2012.',
-  'BBB': 'Bronze Birch Borer — wood-boring beetle (Agrilus anxius) that kills stressed birch trees. Paper and white birches especially vulnerable.',
-  'diplodia': 'Diplodia tip blight — fungal disease (Diplodia sapinea) causing needle browning and shoot dieback in pines, particularly Austrian and Scots pine.',
-  'anthracnose': 'Anthracnose — fungal leaf and twig disease. Sycamore anthracnose (Apiognomonia veneta) is particularly destructive on Platanus, causing repeated defoliation.',
-  'banned': 'Legally banned or under bounty programs in multiple states due to invasive impact. Examples: Callery pear bans in OH/SC/PA/NJ.',
-  'invasive': 'Listed as invasive in the Northeast or other regions. Outcompetes native vegetation; some states require removal.',
-  'needle cast': 'Needle cast — fungal diseases (Rhizosphaera, Stigmina) causing premature needle drop in spruces and other conifers.',
-  'chlorosis': 'Iron chlorosis — leaf yellowing from iron deficiency, common in alkaline soils. Pin oak (Quercus palustris) is especially susceptible and often fails on Rochester urban sites.',
-  'fruit drop': 'Heavy fruit, seed pod, or "gumball" drop creates significant cleanup load and slip hazards. Sweetgum and female ginkgo are common offenders.',
-  'wildfire': 'Elevated wildfire risk due to high oil content (eucalyptus) or brittle limbs that throw embers. Mostly a Western-US concern.',
-  'scab': 'Apple scab (Venturia inaequalis) — fungal disease causing leaf and fruit lesions, premature defoliation. Affects crabapples and apples.'
-};
-
-/* ============================================================
-   Genus icons — placeholder leaf shapes.
-   These are intentionally simple geometric hints; the real
-   botanically-accurate SVGs from the illustrator will swap in
-   here when delivered (same viewBox 0 0 64 64, currentColor,
-   single path or path-group, transparent background).
-   ============================================================ */
-const ICONS = {
-  maple: '<path d="M30 62 L30 50 L22 48 L8 42 L18 32 L14 18 L24 22 L32 6 L40 22 L50 18 L46 32 L56 42 L42 48 L34 50 L34 62 Z"></path>',
-  oak: '<path d="M30 62 L30 54 L28 53 L22 52 L8 44 L22 38 L4 26 L20 18 L12 8 L26 4 L32 2 L38 4 L52 8 L44 18 L60 26 L42 38 L56 44 L42 52 L36 53 L34 54 L34 62 Z"></path>',
-  ash: '<path d="M31 60 L31 12 L33 12 L33 60 Z M32 4 C26 4 22 8 22 14 C26 16 32 16 32 14 C32 16 38 16 42 14 C42 8 38 4 32 4 Z M30 18 C26 14 12 14 8 18 C12 22 26 22 30 18 Z M34 18 C38 14 52 14 56 18 C52 22 38 22 34 18 Z M30 32 C26 28 12 28 8 32 C12 36 26 36 30 32 Z M34 32 C38 28 52 28 56 32 C52 36 38 36 34 32 Z M30 46 C26 42 12 42 8 46 C12 50 26 50 30 46 Z M34 46 C38 42 52 42 56 46 C52 50 38 50 34 46 Z"></path>',
-  conifer: '<path d="M30 60 L8 8 L11 8 L34 60 Z M30 60 L20 4 L23 4 L34 60 Z M30 60 L31 2 L33 2 L34 60 Z M30 60 L41 4 L44 4 L34 60 Z M30 60 L53 8 L56 8 L34 60 Z M26 58 Q32 64 38 58 L38 54 L26 54 Z"></path>',
-  hickory: '<path d="M31 56 L31 24 L33 24 L33 56 Z M32 4 C24 4 18 10 18 22 C24 26 30 26 32 26 C34 26 40 26 46 22 C46 10 40 4 32 4 Z M30 32 C26 28 14 28 10 32 C14 36 26 36 30 32 Z M34 32 C38 28 50 28 54 32 C50 36 38 36 34 32 Z M30 44 C26 40 14 40 10 44 C14 48 26 48 30 44 Z M34 44 C38 40 50 40 54 44 C50 48 38 48 34 44 Z"></path>',
-  birch: '<path d="M30 62 L30 54 C20 54 12 50 10 42 C8 32 14 22 22 14 C26 10 30 6 32 4 C34 6 38 10 42 14 C50 22 56 32 54 42 C52 50 44 54 34 54 L34 62 Z"></path>',
-  elm: '<path d="M30 62 L30 54 L18 56 C6 50 6 28 14 16 C24 4 40 4 50 16 C58 30 58 48 44 48 L34 50 L34 62 Z"></path>',
-  cherry: '<path d="M30 62 L30 50 C24 50 22 44 22 34 C22 24 26 12 32 2 C38 12 42 24 42 34 C42 44 40 50 34 50 L34 62 Z"></path>',
-  locust: '<path d="M31 62 L31 8 L33 8 L33 62 Z M32 4 C29 4 27 6 28 9 C30 9 34 9 36 9 C37 6 35 4 32 4 Z M28 12 C22 10 14 10 12 14 C16 16 26 16 30 14 Z M36 12 C42 10 50 10 52 14 C48 16 38 16 34 14 Z M28 22 C22 20 14 20 12 24 C16 26 26 26 30 24 Z M36 22 C42 20 50 20 52 24 C48 26 38 26 34 24 Z M28 32 C22 30 14 30 12 34 C16 36 26 36 30 34 Z M36 32 C42 30 50 30 52 34 C48 36 38 36 34 34 Z M28 42 C22 40 14 40 12 44 C16 46 26 46 30 44 Z M36 42 C42 40 50 40 52 44 C48 46 38 46 34 44 Z M28 52 C22 50 14 50 12 54 C16 56 26 56 30 54 Z M36 52 C42 50 50 50 52 54 C48 56 38 56 34 54 Z"></path>',
-  beech: '<path fill-rule="evenodd" d="M30 62 L30 52 L26 52 C14 50 8 38 14 22 C20 8 32 4 32 4 C32 4 44 8 50 22 C56 38 50 50 38 52 L34 52 L34 62 Z M31 50 L31 10 L33 10 L33 50 Z M30 18 L20 14 L20 16 L30 20 Z M34 18 L44 14 L44 16 L34 20 Z M30 28 L18 26 L18 28 L30 30 Z M34 28 L46 26 L46 28 L34 30 Z M30 38 L20 38 L20 40 L30 40 Z M34 38 L44 38 L44 40 L34 40 Z"></path>',
-  tulip: '<path d="M30 62 L30 56 L20 52 L8 36 L16 24 L10 12 L24 14 L32 16 L40 14 L54 12 L48 24 L56 36 L44 52 L34 56 L34 62 Z"></path>',
-  sycamore: '<path d="M30 62 L30 52 L16 48 L6 36 L14 26 L16 12 L24 12 L32 6 L40 12 L48 12 L50 26 L58 36 L48 48 L34 52 L34 62 Z"></path>',
-  walnut: '<path d="M31 62 L31 4 L33 4 L33 62 Z M32 2 Q28 4 30 8 Q32 6 34 8 Q36 4 32 2 Z M30 12 Q14 6 8 14 Q20 16 30 14 Z M34 12 Q50 6 56 14 Q44 16 34 14 Z M30 22 Q14 16 8 24 Q20 26 30 24 Z M34 22 Q50 16 56 24 Q44 26 34 24 Z M30 32 Q14 26 8 34 Q20 36 30 34 Z M34 32 Q50 26 56 34 Q44 36 34 34 Z M30 42 Q14 36 8 44 Q20 46 30 44 Z M34 42 Q50 36 56 44 Q44 46 34 44 Z M30 52 Q14 46 8 54 Q20 56 30 54 Z M34 52 Q50 46 56 54 Q44 56 34 54 Z"></path>',
-  other: '<path d="M32 4 C42 4 50 10 50 18 C50 24 46 26 40 28 L36 30 L36 38 L28 38 L28 30 L32 28 C36 26 42 22 42 18 C42 12 38 10 32 10 C26 10 22 14 22 18 L14 18 C14 10 22 4 32 4 Z M28 44 L36 44 L36 52 L28 52 Z"></path>',
-};
-
-/* ============================================================
-   GENERA — derived at runtime from the production SPECIES
-   object in index.html. Each .group becomes a genus tile.
-   ============================================================ */
-const LATIN_MAP = {
-  'silver_maple': 'Acer saccharinum',
-  'red_maple': 'Acer rubrum',
-  'norway_maple': 'Acer platanoides',
-  'sugar_maple': 'Acer saccharum',
-  'black_maple': 'Acer nigrum',
-  'freeman_maple': 'Acer × freemanii',
-  'boxelder': 'Acer negundo',
-  'red_oak': 'Quercus rubra',
-  'white_oak': 'Quercus alba',
-  'pin_oak': 'Quercus palustris',
-  'bur_oak': 'Quercus macrocarpa',
-  'swamp_white_oak': 'Quercus bicolor',
-  'white_ash': 'Fraxinus americana',
-  'green_ash': 'Fraxinus pennsylvanica',
-  'black_ash': 'Fraxinus nigra',
-  'white_birch': 'Betula papyrifera',
-  'river_birch': 'Betula nigra',
-  'yellow_birch': 'Betula alleghaniensis',
-  'gray_birch': 'Betula populifolia',
-  'black_walnut': 'Juglans nigra',
-  'butternut': 'Juglans cinerea',
-  'shagbark_hickory': 'Carya ovata',
-  'black_locust': 'Robinia pseudoacacia',
-  'honey_locust': 'Gleditsia triacanthos',
-  'black_cherry': 'Prunus serotina',
-  'choke_cherry': 'Prunus virginiana',
-  'ornamental_cherry': 'Prunus serrulata \'Kwanzan\'',
-  'callery_pear': 'Pyrus calleryana',
-  'pear': 'Pyrus communis',
-  'apple': 'Malus domestica',
-  'crabapple': 'Malus species',
-  'hawthorn': 'Crataegus species',
-  'american_elm': 'Ulmus americana',
-  'basswood': 'Tilia americana',
-  'littleleaf_linden': 'Tilia cordata',
-  'sycamore': 'Platanus occidentalis',
-  'tulip_poplar': 'Liriodendron tulipifera',
-  'beech': 'Fagus grandifolia',
-  'cottonwood': 'Populus deltoides',
-  'poplar_aspen': 'Populus tremuloides',
-  'willow': 'Salix species',
-  'mulberry': 'Morus species',
-  'magnolia': 'Magnolia species',
-  'catalpa': 'Catalpa speciosa',
-  'hackberry': 'Celtis occidentalis',
-  'ginkgo': 'Ginkgo biloba',
-  'chinese_chestnut': 'Castanea mollissima',
-  'horse_chestnut': 'Aesculus hippocastanum',
-  'white_pine': 'Pinus strobus',
-  'red_pine': 'Pinus resinosa',
-  'scotch_pine': 'Pinus sylvestris',
-  'norway_spruce': 'Picea abies',
-  'white_spruce': 'Picea glauca',
-  'blue_spruce': 'Picea pungens',
-  'hemlock': 'Tsuga canadensis',
-  'arborvitae': 'Thuja occidentalis',
-};
-const TILE_META = {
-  'Maples':              { icon: 'maple',    latin: 'Acer' },
-  'Oaks':                { icon: 'oak',      latin: 'Quercus' },
-  'Ashes':               { icon: 'ash',      latin: 'Fraxinus' },
-  'Birches':             { icon: 'birch',    latin: 'Betula' },
-  'Walnuts & Hickories': { icon: 'walnut',   latin: 'Juglans / Carya' },
-  'Locusts':             { icon: 'locust',   latin: 'Robinia / Gleditsia' },
-  'Cherries & Plums':    { icon: 'cherry',   latin: 'Prunus' },
-  'Pears & Apples':      { icon: 'other',    latin: 'Pyrus / Malus' },
-  'Sycamore':            { icon: 'sycamore', latin: 'Platanus' },
-  'Beech':               { icon: 'beech',    latin: 'Fagus' },
-  'Tulip Tree':          { icon: 'tulip',    latin: 'Liriodendron' },
-  'Elm':                 { icon: 'elm',      latin: 'Ulmus' },
-  'Other Hardwoods':     { icon: 'other',    latin: '—' },
-  'Conifers':            { icon: 'conifer',  latin: 'Pinus / Picea / Tsuga / Thuja' }
-};
-const GENERA = (function() {
-  const groups = {};
-  const order = [];
-  Object.entries(SPECIES).forEach(function(entry) {
-    var key = entry[0], sp = entry[1];
-    if (!groups[sp.group]) { groups[sp.group] = []; order.push(sp.group); }
-    groups[sp.group].push({ id: key, common: sp.name, latin: LATIN_MAP[key] || '' });
-  });
-  return order.map(function(g) {
-    var meta = TILE_META[g] || { icon: 'other', latin: '' };
-    return {
-      id: g.toLowerCase().replace(/[^a-z]+/g, '-'),
-      name: g,
-      latin: meta.latin,
-      icon: meta.icon,
-      species: groups[g]
-    };
-  });
-})();
-
-/* ============================================================
-   State
-   ============================================================ */
-let currentFilter = 'all';
-let currentGenus = null;
-let searchTerm = '';
-
-/* ============================================================
-   Persistence — localStorage
-   Per memory: Recent / Frequent should derive from
-   customer-tree-entry timestamps in the production app.
-   In this mock, we simulate by tracking genus + species opens.
-   ============================================================ */
-const LS_FAV    = 'treeq.favorites';
-const LS_RECENT = 'treeq.recent';
-const LS_FREQ   = 'treeq.frequency';
-
-function getFavorites() { try { return JSON.parse(localStorage.getItem(LS_FAV)) || []; } catch (e) { return []; } }
-function setFavorites(arr) { localStorage.setItem(LS_FAV, JSON.stringify(arr)); updateFavCount(); }
-function toggleFavorite(id) {
-  const f = getFavorites();
-  const i = f.indexOf(id);
-  if (i === -1) f.push(id); else f.splice(i, 1);
-  setFavorites(f);
-  return f.includes(id);
-}
-function getRecent() { try { return JSON.parse(localStorage.getItem(LS_RECENT)) || []; } catch (e) { return []; } }
-function pushRecent(id) {
-  const r = getRecent().filter(x => x !== id);
-  r.unshift(id);
-  localStorage.setItem(LS_RECENT, JSON.stringify(r.slice(0, 10)));
-  const f = JSON.parse(localStorage.getItem(LS_FREQ) || '{}');
-  f[id] = (f[id] || 0) + 1;
-  localStorage.setItem(LS_FREQ, JSON.stringify(f));
-}
-function getFrequent() {
-  const f = JSON.parse(localStorage.getItem(LS_FREQ) || '{}');
-  return Object.entries(f).sort((a,b) => b[1]-a[1]).map(x => x[0]);
-}
-function updateFavCount() {
-  const c = getFavorites().length;
-  document.getElementById('fav-count').textContent = c ? '(' + c + ')' : '';
-}
-
-/* ============================================================
-   Render helpers
-   ============================================================ */
-function heartSVG() {
-  /* Two separate <svg> elements; CSS toggles which is visible
-     based on .heart-btn.active. Each preserves its own viewBox
-     so the source artwork renders at native proportions. */
-  return '<svg class="heart-empty" viewBox="0 0 512 512" aria-hidden="true">' +
-         '<path d="' + HEART_EMPTY_PATH + '" fill="currentColor"/>' +
-         '</svg>' +
-         '<svg class="heart-filled" viewBox="0 0 24 24" aria-hidden="true">' +
-         '<path d="' + HEART_FILLED_PATH + '" fill="currentColor"/>' +
-         '</svg>';
-}
-
-function leafSVG(iconKey, size) {
-  size = size || 56;
-  const inner = ICONS[iconKey] || ICONS.other;
-  return '<svg viewBox="0 0 64 64" width="' + size + '" height="' + size + '" fill="currentColor" aria-hidden="true">' + inner + '</svg>';
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => t.classList.remove('show'), 1800);
-}
-
-/* ============================================================
-   Genus grid render
-   ============================================================ */
-function renderGenusGrid() {
-  const grid = document.getElementById('grid');
-  const favorites = getFavorites();
-  const recent = getRecent();
-  const frequent = getFrequent();
-
-  let list = GENERA.slice();
-
-  if (currentFilter === 'favorites') {
-    list = list.filter(g => favorites.includes(g.id) || g.species.some(s => favorites.includes(s.id)));
-  } else if (currentFilter === 'recent') {
-    const recentSet = new Set(recent);
-    list = list
-      .filter(g => recentSet.has(g.id) || g.species.some(s => recentSet.has(s.id)))
-      .sort((a, b) => recent.indexOf(a.id) - recent.indexOf(b.id));
-  } else if (currentFilter === 'frequent') {
-    const freqIds = new Set(frequent.slice(0, 12));
-    list = list.filter(g => freqIds.has(g.id) || g.species.some(s => freqIds.has(s.id)));
-  }
-
-  if (searchTerm) {
-    const t = searchTerm.toLowerCase();
-    list = list.filter(g =>
-      g.name.toLowerCase().includes(t) ||
-      g.latin.toLowerCase().includes(t) ||
-      g.species.some(s => s.common.toLowerCase().includes(t) || s.latin.toLowerCase().includes(t))
-    );
-  }
-
-  if (list.length === 0) {
-    const msg = currentFilter === 'favorites'
-      ? 'Tap the heart on any genus or species to favorite it.'
-      : currentFilter === 'recent'
-      ? "You haven't selected any species yet."
-      : currentFilter === 'frequent'
-      ? "No frequency data yet — pick a few species to populate this."
-      : 'Try a different search term.';
-    grid.innerHTML =
-      '<div class="empty">' +
-      '<svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>' +
-      '</svg>' +
-      '<h3>No matches</h3>' +
-      '<p>' + msg + '</p>' +
-      '</div>';
-    return;
-  }
-
-  grid.innerHTML = list.map(g => {
-    const fav = favorites.includes(g.id);
-    return (
-      '<button class="tile" data-genus="' + g.id + '" type="button">' +
-      '<span class="heart-btn ' + (fav ? 'active' : '') + '" data-heart="' + g.id + '" role="button" aria-label="Favorite ' + g.name + '" tabindex="0">' + heartSVG() + '</span>' +
-      '<span class="tile-count" title="' + g.species.length + ' species in this genus">' + g.species.length + '</span>' +
-      '<span class="tile-leaf">' + leafSVG(g.icon) + '</span>' +
-      '<span class="tile-name">' + g.name + '</span>' +
-      '<span class="tile-latin">' + g.latin + '</span>' +
-      '</button>'
-    );
-  }).join('');
-
-  grid.querySelectorAll('.tile').forEach(tile => {
-    tile.addEventListener('click', e => {
-      if (e.target.closest('[data-heart]')) return;
-      openGenus(tile.dataset.genus);
-    });
-  });
-  grid.querySelectorAll('[data-heart]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const id = btn.dataset.heart;
-      const isFav = toggleFavorite(id);
-      btn.classList.toggle('active', isFav);
-    });
-  });
-}
-
-/* ============================================================
-   Species drill-down
-   ============================================================ */
-function openGenus(id) {
-  const g = GENERA.find(x => x.id === id);
-  if (!g) return;
-  currentGenus = g;
-  pushRecent(g.id);
-  document.getElementById('genus-view').classList.add('hidden');
-  document.getElementById('species-view').classList.remove('hidden');
-  document.getElementById('species-title').textContent = g.name;
-  document.getElementById('species-subtitle').innerHTML = '<em>' + g.latin + '</em> · ' + g.species.length + ' species';
-  window.scrollTo(0, 0);
-
-  const list = document.getElementById('species-list');
-  const favorites = getFavorites();
-  list.innerHTML = g.species.map(s => {
-    const fav = favorites.includes(s.id);
-    const flagInfo = computeFlag(s);
-    const flag = flagInfo
-      ? ' <button type="button" class="species-flag"' +
-        ' data-token="' + flagInfo.token + '"' +
-        ' data-reason="' + flagInfo.reason.replace(/"/g, '&quot;') + '"' +
-        ' data-source="' + flagInfo.source + '">' +
-        flagInfo.token + '</button>'
-      : '';
-    return (
-      '<div class="species-row" data-species="' + s.id + '" data-name="' + s.common + '">' +
-      '<span class="row-leaf">' + leafSVG(g.icon, 36) + '</span>' +
-      '<div class="info">' +
-      '<div class="name">' + s.common + flag + '</div>' +
-      '<div class="latin">' + s.latin + '</div>' +
-      '</div>' +
-      '<button class="photo-btn" type="button" title="Preview leaf, bark, structure" aria-label="Preview photos">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<rect x="3" y="5" width="18" height="14" rx="2"/>' +
-      '<circle cx="9" cy="11" r="2"/>' +
-      '<path d="M21 17l-5-5-9 9"/>' +
-      '</svg>' +
-      '</button>' +
-      '<button class="heart-btn inline ' + (fav ? 'active' : '') + '" data-heart-species="' + s.id + '" type="button" aria-label="Favorite ' + s.common + '">' + heartSVG() + '</button>' +
-      '</div>'
-    );
-  }).join('');
-
-  list.querySelectorAll('[data-heart-species]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const id = btn.dataset.heartSpecies;
-      const isFav = toggleFavorite(id);
-      btn.classList.toggle('active', isFav);
-    });
-  });
-  list.querySelectorAll('.photo-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      showToast('Photo preview (leaf · bark · structure) — placeholder');
-    });
-  });
-  list.querySelectorAll('.species-flag').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      showFlagModal(btn.dataset.token, btn.dataset.reason, btn.dataset.source);
-    });
-  });
-  list.querySelectorAll('.species-row').forEach(row => {
-    row.addEventListener('click', e => {
-      if (e.target.closest('button')) return;
-      pushRecent(row.dataset.species);
-      // Bridge to production: set native select + dispatch change
-      var sel = document.getElementById('species');
-      if (sel) {
-        sel.value = row.dataset.species;
-        sel.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      // Update picker trigger label
-      var lbl = document.getElementById('species-picker-label');
-      if (lbl) lbl.textContent = row.dataset.name;
-      // Close picker
-      var modal = document.getElementById('species-picker-modal');
-      if (modal) modal.classList.add('hidden');
-    });
-  });
-}
-
-function closeGenus() {
-  currentGenus = null;
-  document.getElementById('species-view').classList.add('hidden');
-  document.getElementById('genus-view').classList.remove('hidden');
-  renderGenusGrid();
-  window.scrollTo(0, 0);
-}
-
-/* ============================================================
-   Wire up
-   ============================================================ */
-document.getElementById('back').addEventListener('click', closeGenus);
-document.getElementById('search').addEventListener('input', e => {
-  searchTerm = e.target.value.trim();
-  renderGenusGrid();
-});
-document.querySelectorAll('.pill').forEach(p => {
-  p.addEventListener('click', () => {
-    document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
-    p.classList.add('active');
-    currentFilter = p.dataset.filter;
-    /* If we're inside a genus drill-down, pop back to the genus grid
-       with the new filter applied. */
-    if (currentGenus) {
-      closeGenus();
-    } else {
-      renderGenusGrid();
-    }
-  });
 });
 
-/* Initial render */
-updateFavCount();
-renderGenusGrid();
-
-console.log('%cTreeQ picker mock loaded', 'color:#2d5a3d;font-weight:bold;');
-/* ============================================================
-   Flag explanation modal — tap any flag pill to open
-   ============================================================ */
-function showFlagModal(token, reason, source) {
-  document.getElementById('modal-token').textContent = token;
-  document.getElementById('modal-description').textContent =
-    FLAG_DESCRIPTIONS[token] || 'No detailed explanation available for this flag.';
-  document.getElementById('modal-source').textContent =
-    '"' + reason + '"  ·  source: ' + source;
-  document.getElementById('flag-modal').classList.remove('hidden');
-}
-function hideFlagModal() {
-  document.getElementById('flag-modal').classList.add('hidden');
-}
-document.getElementById('modal-close').addEventListener('click', hideFlagModal);
-document.getElementById('flag-modal').addEventListener('click', e => {
-  if (e.target.id === 'flag-modal') hideFlagModal();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') hideFlagModal();
-});
-
-console.log('Genera:', GENERA.length, '· Total species:', GENERA.reduce((n,g) => n + g.species.length, 0));
-
-    // Trigger button → open modal
-    var trigger = document.getElementById('species-picker-btn');
-    var modal   = document.getElementById('species-picker-modal');
-    if (trigger && modal) {
-      trigger.addEventListener('click', function() {
-        modal.classList.remove('hidden');
-        renderGenusGrid();  // refresh in case favorites/recent changed
-      });
-    }
-
-    // Header close button
-    var pickerClose = document.getElementById('picker-close');
-    if (pickerClose) {
-      pickerClose.addEventListener('click', function() { modal.classList.add('hidden'); });
-    }
-
-    // Sync trigger label on initial load and on any external select change
-    var sel = document.getElementById('species');
-    var lbl = document.getElementById('species-picker-label');
-    function syncLabel() {
-      if (!sel || !lbl) return;
-      var sp = SPECIES && SPECIES[sel.value];
-      lbl.textContent = sp ? sp.name : (sel.value || 'Select species…');
-    }
-    if (sel) sel.addEventListener('change', syncLabel);
-    syncLabel();
+/* =================== BOOT =================== */
+(async () => {
+  try {
+    await loadSpecies();
+    await render();
+  } catch (err) {
+    console.error('Boot failed:', err);
+    document.getElementById('heroTitle').textContent = 'Cannot reach API';
+    document.getElementById('heroSub').textContent = err.message || 'Check console';
   }
-
-  // Defer until DOM is ready AND the SPECIES object exists
-  function ready() {
-    /* SPECIES is in lexical scope (same <script> block).
-       No need to wait — just defer init until DOM is ready. */
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initPicker);
-    } else {
-      initPicker();
-    }
-  }
-  ready();
 })();
 
 /* ========== Supabase Auth (Google) — calculator remains public ========== */
@@ -3121,60 +1594,6 @@ console.log('Genera:', GENERA.length, '· Total species:', GENERA.reduce((n,g) =
     });
   }
 })();
-
-
 </script>
-
-
-<!-- ===== Species Picker (P1) ===== -->
-<div id="species-picker-modal" class="species-picker-modal hidden" role="dialog" aria-modal="true" aria-label="Select species">
-  <div class="species-picker-content">
-    <button id="picker-close" class="species-picker-close" type="button" aria-label="Close picker">&times;</button>
-<div class="picker-app" id="picker-app">
-  <header class="topbar">
-    <h1>Tree<span>Q</span> · Select Species</h1>
-    <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="7"/>
-        <path d="M21 21l-4.3-4.3"/>
-      </svg>
-      <input type="text" class="search-input" id="search" placeholder="Search species or genus..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-    </div>
-  </header>
-
-  <div class="pills" id="pills">
-    <button class="pill active" data-filter="all" type="button">All</button>
-    <button class="pill" data-filter="recent" type="button">Recent</button>
-    <button class="pill" data-filter="frequent" type="button">Frequent</button>
-    <button class="pill" data-filter="favorites" type="button">Favorites <span class="count" id="fav-count"></span></button>
-  </div>
-
-  <div id="genus-view">
-    <div class="grid" id="grid"></div>
-  </div>
-
-  <div id="species-view" class="species-view hidden">
-    <button class="back-btn" id="back" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
-      </svg>
-      Back
-    </button>
-    <h2 class="species-title" id="species-title"></h2>
-    <p class="species-subtitle" id="species-subtitle"></p>
-    <div class="species-list" id="species-list"></div>
-  </div>
-</div>
-  </div>
-</div>
-<div class="modal-backdrop hidden" id="flag-modal" role="dialog" aria-modal="true" aria-labelledby="modal-token">
-  <div class="modal-content">
-    <button class="modal-close" id="modal-close" aria-label="Close" type="button">&times;</button>
-    <span id="modal-token"></span>
-    <div id="modal-description"></div>
-    <div class="modal-source" id="modal-source"></div>
-  </div>
-<div class="toast" id="toast"></div>
-
 </body>
 </html>
