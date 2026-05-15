@@ -7,6 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
 <style>
   /* =========================================================
      SPARTAN / NEXT MILLION — Mobile Cut Estimator v2.3
@@ -114,6 +119,43 @@
     padding: 6px 10px;
     border: 1px solid var(--line);
     border-radius: var(--r-pill);
+    flex-shrink: 0;
+  }
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 1;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+  .auth-hidden { display: none !important; }
+  .auth-email-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .auth-email {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-3);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #btn-google-sign-in {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+  #btn-sign-out {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
   }
 
   /* ---------- Hero ---------- */
@@ -497,33 +539,26 @@
   /* ---------- Modal (ID Quiz) ---------- */
   .modal-bg {
     position: fixed; inset: 0;
-    background: rgba(20, 36, 27, 0.55);
+    background: rgba(20, 36, 27, 0.60);
     display: none;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     z-index: 100;
-    padding: 0;
+    padding: 16px;
   }
   .modal-bg.open { display: flex; }
   .modal {
     background: var(--surface);
     width: 100%;
-    max-width: 480px;
-    max-height: 90vh;
+    max-width: 448px;
+    max-height: 88vh;
     overflow-y: auto;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    padding: 16px var(--pad) 24px;
+    border-radius: var(--r-lg);
+    padding: 20px var(--pad) 28px;
     position: relative;
+    box-shadow: 0 8px 40px rgba(20,36,27,0.28);
   }
-  .modal::before {
-    content: '';
-    display: block;
-    width: 36px; height: 4px;
-    background: var(--line);
-    border-radius: 999px;
-    margin: 0 auto 14px;
-  }
+  .modal::before { display: none; }
   .modal-close {
     position: absolute; top: 12px; right: 12px;
     width: 36px; height: 36px;
@@ -535,10 +570,46 @@
     font-family: inherit;
   }
   .modal-close:active { background: var(--line); }
+
+  /* ---------- Help me ID — inline button between crown & trim ---------- */
+  .help-id-wrap {
+    padding: 4px var(--pad) 4px;
+    display: flex;
+    justify-content: center;
+  }
+  .help-id-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px;
+    background: var(--forest);
+    color: #fff;
+    border: 0;
+    border-radius: var(--r-pill);
+    font-size: 15px; font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(45,90,61,0.28);
+    transition: background 0.14s, transform 0.1s;
+  }
+  .help-id-btn:hover  { background: var(--forest-tint); }
+  .help-id-btn:active { background: var(--forest-deep); transform: scale(0.97); }
+  .help-id-btn svg    { flex-shrink: 0; }
+
   .modal h2 {
     font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
     color: var(--ink); margin-bottom: 6px;
     padding-right: 40px;
+  }
+  .quiz-q {
+    font-size: 16px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px; line-height: 1.35;
+  }
+  .quiz-hint {
+    font-size: 12px; color: var(--ink-3); line-height: 1.45;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: var(--surface-2);
+    border-radius: var(--r-sm);
+    border-left: 3px solid var(--forest-tint);
   }
   .modal p {
     font-size: var(--t-meta); color: var(--ink-3);
@@ -627,7 +698,18 @@
         <div class="brand-sub">Next Million</div>
       </div>
     </div>
-    <div class="topbar-version">v2.3</div>
+    <div class="topbar-actions">
+      <div id="auth-signed-out">
+        <button type="button" class="text-btn" id="btn-google-sign-in">Sign in with Google</button>
+      </div>
+      <div id="auth-signed-in" class="auth-hidden">
+        <div class="auth-email-row">
+          <span class="auth-email" id="auth-user-email"></span>
+          <button type="button" class="text-btn" id="btn-sign-out">Sign out</button>
+        </div>
+      </div>
+      <div class="topbar-version">v2.3</div>
+    </div>
   </header>
 
   <div class="scroll-zone">
@@ -688,13 +770,21 @@
   </div>
 
   <!-- Species -->
-  <div class="card">
+  <div class="card" id="species-card">
     <div class="card-row">
       <span class="row-label">Species</span>
-      <button class="text-btn" id="openQuiz">Help me ID</button>
     </div>
-    <div class="card-content select-wrap">
+    <div class="card-content select-wrap" id="species-picker-wrap">
       <select id="species"></select>
+    </div>
+    <div class="card-content" id="species-id-hint" hidden>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--surface-2);border-radius:var(--r-md);border:1px solid var(--line);margin-top:4px;">
+        <span style="font-size:20px;line-height:1.2;">🌳</span>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;">Fill in the measurements below</div>
+          <div style="font-size:13px;color:var(--ink-3);line-height:1.45;">Enter DBH, height, and crown radius — then tap <strong>Help me ID</strong> to narrow the species list.</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -747,6 +837,14 @@
       </div>
       <div class="auto-tag" id="crownTag">Auto from species + DBH</div>
     </div>
+  </div>
+
+  <!-- Help me ID — between crown radius and pre-existing trim -->
+  <div class="help-id-wrap">
+    <button type="button" class="help-id-btn" id="openQuiz">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Help me ID
+    </button>
   </div>
 
   <!-- Pre-existing trim -->
@@ -821,12 +919,24 @@
   <div class="modal">
     <button class="modal-close" id="quizClose" aria-label="Close">×</button>
     <h2>Help Me Identify</h2>
-    <p>Answer a few quick questions to narrow down the species.</p>
+    <p id="quizSubtitle">Answer a few quick questions to narrow down the species.</p>
     <div id="quizBody"></div>
   </div>
 </div>
 
 <script>
+const sbClient = (function () {
+  try {
+    if (!window.supabase || !window.supabase.createClient) return null;
+    return window.supabase.createClient(
+      window.__SUPABASE_URL__ ?? '',
+      window.__SUPABASE_ANON_KEY__ ?? ''
+    );
+  } catch (e) {
+    return null;
+  }
+})();
+
 /* ============================================================
    SPARTAN CUT ESTIMATOR — Frontend v2.0 (thin client)
 
@@ -844,174 +954,204 @@ const API_BASE = (window.__TREEQ_API_BASE__ ?? '').replace(/\/$/, '');
 /* =================== ID QUIZ DATA ===================
    References species KEYS only — no calibration values.
    Safe to keep client-side. */
+/* ============================================================
+   QUIZ v2 — bark / structure-first IVR routing
+   Works on dead & leafless trees. Leaf questions are
+   a late-stage optional refinement, not the primary axis.
+
+   Decision order:
+     1. Conifer vs deciduous  (structural, permanent)
+     2. Dead giveaways        (persistent features → instant ID)
+     3. Branching pattern     (opposite vs alternate, works bare)
+     4. Crown / growth form   (silhouette visible at 50 ft)
+     5. Bark texture          (most reliable year-round trait)
+     6. Twig / bud            (close-up disambiguation)
+   ============================================================ */
 const QUIZ = {
   start: {
-    q: "Leaves or needles?",
+    q: "Needles / scales, or bare / broadleaf?",
+    hint: "This works on dead trees — look at the branch structure, not the leaves.",
     options: [
-      { label: "Needles or scale-like (evergreen)", next: 'conifer' },
-      { label: "Broad leaves (deciduous)", next: 'deciduous' }
+      { label: "Needles or scale-like leaves (conifer/evergreen)", next: 'conifer' },
+      { label: "Bare twigs or broad leaves (deciduous)", next: 'giveaway' }
     ]
   },
+
+  /* ── CONIFERS ── */
   conifer: {
-    q: "What kind of needles?",
+    q: "Needle or scale type?",
     options: [
-      { label: "Long needles in clusters of 2–5 (pine)", next: 'pine' },
-      { label: "Short single needles, square cross-section (spruce)", next: 'spruce' },
-      { label: "Short flat needles, soft (hemlock/fir)", matches: ['hemlock'] },
-      { label: "Tiny scale-like leaves (cedar/arborvitae)", matches: ['arborvitae'] }
+      { label: "Long needles in bundles of 2–5 (pine)", next: 'pine' },
+      { label: "Short, single needles — square, sharp, roll between fingers (spruce)", next: 'spruce' },
+      { label: "Short flat needles, soft — two white stripes underneath (hemlock/fir)", matches: ['hemlock'] },
+      { label: "Tiny overlapping scales, flat fan-like sprays (arborvitae/cedar)", matches: ['arborvitae'] }
     ]
   },
   pine: {
-    q: "Pine needle count per bundle?",
+    q: "How many needles per bundle?",
     options: [
-      { label: "5 needles (soft, blue-green)", matches: ['white_pine'] },
-      { label: "2 needles (long, reddish bark)", matches: ['red_pine'] },
-      { label: "2 needles (short, twisted, orange bark)", matches: ['scotch_pine'] }
+      { label: "5 needles — soft, blue-green (white pine)", matches: ['white_pine'] },
+      { label: "2 needles — long 4–6\", reddish bark (red pine)", matches: ['red_pine'] },
+      { label: "2 needles — short 1.5–3\", twisted, orangish bark (Scotch pine)", matches: ['scotch_pine'] }
     ]
   },
   spruce: {
-    q: "Spruce color/feel?",
+    q: "Spruce appearance?",
     options: [
-      { label: "Dark green, drooping branches", matches: ['norway_spruce'] },
-      { label: "Light blue-green, sharp needles", matches: ['blue_spruce'] },
-      { label: "Pale green/grayish", matches: ['white_spruce'] }
+      { label: "Dark green, gracefully drooping branches (Norway spruce)", matches: ['norway_spruce'] },
+      { label: "Blue-silver needles, stiff and sharp (blue spruce)", matches: ['blue_spruce'] },
+      { label: "Pale green, smaller cones (white spruce)", matches: ['white_spruce'] }
     ]
   },
-  deciduous: {
-    q: "Leaf arrangement on twig?",
+
+  /* ── STEP 2: DEAD GIVEAWAYS ── */
+  giveaway: {
+    q: "Any of these visible right now?",
+    hint: "Check the trunk, branches, and ground underneath. These are instant IDs.",
     options: [
-      { label: "Opposite (leaves directly across from each other)", next: 'opposite' },
-      { label: "Alternate (leaves staggered)", next: 'alternate' }
+      { label: "Large branched thorns growing from trunk or main limbs", matches: ['honey_locust'] },
+      { label: "Small paired spines at each bud, white flower smell in memory", matches: ['black_locust'] },
+      { label: "Bright white or chalky-white peeling bark", matches: ['white_birch'] },
+      { label: "Mottled green-cream-tan peeling bark (camouflage pattern)", matches: ['sycamore'] },
+      { label: "Shaggy bark in long vertical curling strips", matches: ['shagbark_hickory'] },
+      { label: "Spiky round gumball fruits on ground or hanging", matches: ['sweetgum'] },
+      { label: "Single-wing samaras in bunches still hanging (ash)", next: 'ash_bark' },
+      { label: "Paired winged seeds (helicopters) still on tree", next: 'maple_bark' },
+      { label: "None of the above — continue", next: 'branching' }
     ]
   },
-  opposite: {
-    q: "Leaf shape?",
+
+  /* ── STEP 3: BRANCHING PATTERN (works on bare / dead trees) ── */
+  branching: {
+    q: "Are the buds / branch stubs OPPOSITE each other or STAGGERED?",
+    hint: "Look where small twigs meet a branch. Opposite = directly across. Alternate = staggered up the branch. One question eliminates ~80% of species.",
     options: [
-      { label: "Lobed (like a maple)", next: 'maple' },
-      { label: "Compound, pinnate (multiple leaflets in a row — ash)", next: 'ash' },
-      { label: "Compound, palmate (5–7 leaflets in a hand shape — horse chestnut)", matches: ['horse_chestnut'] },
-      { label: "Heart-shaped, large", matches: ['catalpa'] }
+      { label: "Opposite — buds directly across from each other", next: 'opposite_crown' },
+      { label: "Alternate — buds stagger up the twig", next: 'alternate_crown' }
     ]
   },
-  maple: {
-    q: "Maple specifics?",
+
+  /* ── STEP 4a: CROWN FORM — opposite branching ── */
+  opposite_crown: {
+    q: "Crown shape? (opposite trees: maple, ash, dogwood, horse chestnut)",
     options: [
-      { label: "Deeply cut leaves, silvery underside", matches: ['silver_maple'] },
-      { label: "Compound leaves, irregular form, leans", matches: ['boxelder'] },
-      { label: "Leaves wider than long, dark, sap is milky", matches: ['norway_maple'] },
-      { label: "Classic 5-lobe, U-shaped notches, red fall", matches: ['sugar_maple', 'black_maple'] },
-      { label: "Smaller leaves, red flowers in spring, red fall", matches: ['red_maple', 'freeman_maple'] }
+      { label: "Round and spreading, dense — typical street tree shape", next: 'maple_bark' },
+      { label: "Oval to vase-shaped, compound leaves, diamond-pattern bark", next: 'ash_bark' },
+      { label: "Small tree, horizontal layered branches, understory", matches: ['dogwood'] },
+      { label: "Stout limbs, large compound leaves, sticky buds", matches: ['horse_chestnut'] }
     ]
   },
-  ash: {
-    q: "Ash specifics?",
+
+  /* ── STEP 4b: CROWN FORM — alternate branching ── */
+  alternate_crown: {
+    q: "Crown / growth form?",
+    hint: "Stand back 30–50 ft and look at the overall silhouette.",
     options: [
-      { label: "Diamond-pattern bark, larger size", matches: ['white_ash'] },
-      { label: "Wet sites, thinner bark", matches: ['black_ash', 'green_ash'] }
+      { label: "Classic vase — branches sweep up and outward", matches: ['american_elm'] },
+      { label: "Round, spreading, heavy limbs — large shade tree", next: 'alternate_bark' },
+      { label: "Pyramidal / conical — strong central leader", next: 'oak_bark' },
+      { label: "Irregular, gnarled, twisting limbs", next: 'irregular_alt' },
+      { label: "Small / understory tree (under ~30 ft)", next: 'small_alt' }
     ]
   },
-  alternate: {
-    q: "Leaf shape?",
+
+  /* ── STEP 5: BARK — maples ── */
+  maple_bark: {
+    q: "Bark texture — look at chest height on the trunk:",
     options: [
-      { label: "Lobed (like an oak)", next: 'oak' },
-      { label: "Compound (walnut, locust, hickory)", next: 'compound' },
-      { label: "Simple, toothed (cherry, birch, etc.)", next: 'simple_alt' },
-      { label: "Simple, smooth-edged", next: 'smooth_alt' },
-      { label: "Star/tulip shaped", matches: ['tulip_poplar'] },
-      { label: "Fan-shaped (no other tree like it)", matches: ['ginkgo'] },
-      { label: "Long toothed leaf, spiny burr fruit (chestnut)", matches: ['chinese_chestnut'] }
+      { label: "Flaky / scaly patches, lighter gray (silver maple)", matches: ['silver_maple'] },
+      { label: "Gray, furrowed long interlacing ridges (sugar/Norway maple)", next: 'maple_detail' },
+      { label: "Deeply furrowed, dark, rope-twist ridges", matches: ['black_maple'] },
+      { label: "Smooth gray-brown, shallow furrows", next: 'maple_detail' }
     ]
   },
-  oak: {
-    q: "Oak leaf type?",
+  maple_detail: {
+    q: "Any visible maple clue?",
     options: [
-      { label: "Pointed lobes with bristles (red oak group)", next: 'red_oak_group' },
-      { label: "Rounded lobes, no bristles (white oak group)", next: 'white_oak_group' }
+      { label: "Wide-spreading limbs, V-crotches, silver leaf underside", matches: ['silver_maple'] },
+      { label: "Leaves (if present) wider than long — milky sap", matches: ['norway_maple'] },
+      { label: "Classic round crown, 5-lobe leaves, U-shaped notches", matches: ['sugar_maple', 'black_maple'] },
+      { label: "Smaller leaves, red-tinged twigs, red spring flowers", matches: ['red_maple', 'freeman_maple'] }
     ]
   },
-  red_oak_group: {
-    q: "Red oak details?",
+
+  /* ── STEP 5: BARK — ash ── */
+  ash_bark: {
+    q: "Ash bark pattern:",
+    hint: "Most ash in Rochester are dead or dying from EAB. Look for woodpecker holes and S-shaped galleries under loose bark.",
     options: [
-      { label: "Tall, smooth gray bark with stripes, large leaves", matches: ['red_oak'] },
-      { label: "Strongly pyramidal shape, drooping lower branches", matches: ['pin_oak'] }
+      { label: "Diamond / interlocking ridge pattern, larger tree", matches: ['white_ash'] },
+      { label: "Shallower furrows, often near wet / low areas", matches: ['black_ash', 'green_ash'] },
+      { label: "Bark being stripped by woodpeckers, S-galleries visible (EAB)", matches: ['white_ash', 'green_ash', 'black_ash'] }
     ]
   },
-  white_oak_group: {
-    q: "White oak details?",
+
+  /* ── STEP 5: BARK — alternate round/spreading ── */
+  alternate_bark: {
+    q: "Bark texture — large round-spreading alternate tree:",
     options: [
-      { label: "Pale gray flaky bark, deeply lobed leaves", matches: ['white_oak'] },
-      { label: "Massive limbs, corky bark, large acorns with fringed cap", matches: ['bur_oak'] },
-      { label: "Wet sites, peeling bark", matches: ['swamp_white_oak'] }
+      { label: "Dark, blocky, nearly black — like burnt cornflakes (black cherry)", matches: ['black_cherry'] },
+      { label: "Light gray, scaly or blocky flat-topped ridges (oak)", next: 'oak_bark' },
+      { label: "Rough corky ridges or warts on branches (hackberry)", matches: ['hackberry'] },
+      { label: "Smooth gray, muscle-like ripples / sinews", matches: ['hornbeam', 'musclewood'] },
+      { label: "Smooth elephant-gray, never furrowed even when large (beech)", matches: ['beech'] }
     ]
   },
-  compound: {
-    q: "Compound leaf details?",
+
+  /* ── STEP 5: BARK — oak ── */
+  oak_bark: {
+    q: "Oak bark and silhouette:",
     options: [
-      { label: "Long compound, walnut smell, dark furrowed bark", matches: ['black_walnut'] },
-      { label: "Like walnut but lighter, husk is sticky", matches: ['butternut'] },
-      { label: "Large leaflets, shaggy peeling bark (hickory)", matches: ['shagbark_hickory'] },
-      { label: "Thorny trunk, big seed pods (locust)", next: 'locust' }
+      { label: "Light gray, blocky flat-topped ridges — often pyramidal when young (white oak)", matches: ['white_oak'] },
+      { label: "Dark gray-brown, vertical furrows — large round spreading crown (red oak)", matches: ['red_oak'] },
+      { label: "Strongly pyramidal, lower branches droop (pin oak)", matches: ['pin_oak'] },
+      { label: "Shaggy corky bark, large acorns with fringed cap (bur oak)", matches: ['bur_oak'] },
+      { label: "Flaky grayish-brown bark, often near water (swamp white oak)", matches: ['swamp_white_oak'] }
     ]
   },
-  locust: {
-    q: "Locust thorns?",
+
+  /* ── Irregular / gnarled ── */
+  irregular_alt: {
+    q: "Irregular-form tree — any of these?",
     options: [
-      { label: "Big branched thorns, dark bark", matches: ['honey_locust'] },
-      { label: "Small paired thorns, fragrant white flowers", matches: ['black_locust'] }
+      { label: "Dark rope-twist furrows, long compound leaves, walnut smell", matches: ['black_walnut'] },
+      { label: "Shaggy peeling bark, compound leaves, no thorns (shagbark hickory)", matches: ['shagbark_hickory'] },
+      { label: "Warty corky bark on branches, asymmetric leaves (hackberry)", matches: ['hackberry'] },
+      { label: "Lighter fissured bark, compound leaves like walnut (butternut)", matches: ['butternut'] }
     ]
   },
-  simple_alt: {
-    q: "Bark or other clues?",
+
+  /* ── Small / understory ── */
+  small_alt: {
+    q: "Small / understory tree:",
     options: [
-      { label: "White peeling bark", matches: ['white_birch'] },
-      { label: "Reddish papery peeling bark, wet sites", matches: ['river_birch'] },
-      { label: "Yellow/bronze peeling bark", matches: ['yellow_birch'] },
-      { label: "Smooth gray-white bark, smaller tree", matches: ['gray_birch'] },
-      { label: "Reddish-brown horizontal bark stripes (cherry-like)", next: 'cherry' },
-      { label: "Glossy leaves, white flowers in spring (pear/apple)", next: 'pear_apple' },
-      { label: "Mottled green/cream peeling bark, big leaves", matches: ['sycamore'] },
-      { label: "Smooth gray bark, beech-like", matches: ['beech'] },
-      { label: "Heart-shaped leaves, sweet flowers (linden)", next: 'linden' },
-      { label: "Triangular leaves, fluffy seeds, wet sites", matches: ['cottonwood', 'poplar_aspen'] },
-      { label: "Long narrow leaves, droopy, by water", matches: ['willow'] },
-      { label: "Heart-shaped leaves, edible berries (mulberry)", matches: ['mulberry'] },
-      { label: "Rough corky/warty bark, asymmetric leaf base", matches: ['hackberry'] }
+      { label: "White to gray peeling bark", matches: ['white_birch', 'gray_birch'] },
+      { label: "Reddish-tan papery peeling layers (river birch)", matches: ['river_birch'] },
+      { label: "Horizontal reddish-brown lenticel stripes", next: 'cherry_small' },
+      { label: "Ornamental flowers / glossy leaves (crabapple, pear)", next: 'pear_apple' },
+      { label: "Thorny, small red fruits in clusters (hawthorn)", matches: ['hawthorn'] },
+      { label: "Long narrow drooping leaves near water (willow)", matches: ['willow'] }
     ]
   },
-  cherry: {
-    q: "Cherry size?",
+  cherry_small: {
+    q: "Cherry-family size?",
     options: [
-      { label: "Large mature tree, dark scaly bark", matches: ['black_cherry'] },
-      { label: "Small shrubby tree", matches: ['choke_cherry'] },
-      { label: "Showy pink/white flowers in spring", matches: ['ornamental_cherry'] }
+      { label: "Mature tree, dark scaly platy bark (black cherry)", matches: ['black_cherry'] },
+      { label: "Small multi-stem shrubby form", matches: ['choke_cherry'] },
+      { label: "Ornamental — showy pink/white flowers in spring", matches: ['ornamental_cherry'] }
     ]
   },
   pear_apple: {
-    q: "Tree form?",
+    q: "Ornamental tree type?",
     options: [
-      { label: "Tight teardrop shape, white flowers, smelly", matches: ['callery_pear'] },
-      { label: "Older fruit tree, irregular shape", matches: ['pear', 'apple'] },
-      { label: "Small ornamental, pink flowers", matches: ['crabapple'] },
-      { label: "Thorny, small red fruits", matches: ['hawthorn'] }
-    ]
-  },
-  linden: {
-    q: "Linden size?",
-    options: [
-      { label: "Large native, big leaves", matches: ['basswood'] },
-      { label: "Smaller leaves, tighter form, often street tree", matches: ['littleleaf_linden'] }
-    ]
-  },
-  smooth_alt: {
-    q: "Other features?",
-    options: [
-      { label: "Smooth gray bark, beech nuts", matches: ['beech'] },
-      { label: "Vase shape, classic American street tree", matches: ['american_elm'] },
-      { label: "Big saucer flowers, large glossy leaves", matches: ['magnolia'] },
-      { label: "Tall, fan-shaped leaves", matches: ['ginkgo'] }
+      { label: "Tight teardrop silhouette, white flowers, smells bad (Callery/Bradford pear)", matches: ['callery_pear'] },
+      { label: "Spreading older fruit tree, irregular shape", matches: ['pear', 'apple'] },
+      { label: "Small, pink or white flowers, round fruits (crabapple)", matches: ['crabapple'] },
+      { label: "Thorny branches, small red berry-like fruits (hawthorn)", matches: ['hawthorn'] }
     ]
   }
 };
+
 
 /* =================== UI ELEMENTS =================== */
 const speciesSel = document.getElementById('species');
@@ -1290,16 +1430,22 @@ document.getElementById('calcBtn').addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-/* =================== ID QUIZ =================== */
-const quizModal = document.getElementById('quizModal');
-const quizBody = document.getElementById('quizBody');
+/* =================== ID QUIZ v2 =================== */
+const quizModal        = document.getElementById('quizModal');
+const quizBody         = document.getElementById('quizBody');
+const quizSubtitle     = document.getElementById('quizSubtitle');
+const speciesIdHint    = document.getElementById('species-id-hint');
+const speciesPickerWrap = document.getElementById('species-picker-wrap');
 let quizPath = ['start'];
 
 function renderQuiz() {
   const nodeKey = quizPath[quizPath.length - 1];
   const node = QUIZ[nodeKey];
   if (!node) return;
-  let html = `<div class="quiz-step"><h3>${node.q}</h3><div class="quiz-options">`;
+  const hintHtml = node.hint
+    ? `<p class="quiz-hint">${node.hint}</p>`
+    : '';
+  let html = `<div class="quiz-step"><h3 class="quiz-q">${node.q}</h3>${hintHtml}<div class="quiz-options">`;
   node.options.forEach((opt, i) => {
     html += `<button data-i="${i}">${opt.label}</button>`;
   });
@@ -1329,22 +1475,28 @@ function renderQuiz() {
 }
 
 function showMatches(speciesKeys) {
-  let html = `<div class="quiz-result"><strong style="color:var(--forest);font-size:11px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;">Likely matches</strong>`;
-  html += `<p style="font-size:13px;margin-top:6px;color:var(--ink-3);">Tap one to use it:</p><div class="matches">`;
-  speciesKeys.forEach(k => {
-    if (SPECIES_BY_KEY[k]) {
-      html += `<button class="match" data-k="${k}">${SPECIES_BY_KEY[k].name}</button>`;
-    }
+  const validKeys = speciesKeys.filter(k => SPECIES_BY_KEY[k]);
+  let html = `<div class="quiz-result">
+    <strong style="color:var(--forest);font-size:11px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;">Likely matches</strong>
+    <p style="font-size:13px;margin-top:6px;color:var(--ink-3);">Tap one to use it — or go back to narrow further:</p>
+    <div class="matches">`;
+  validKeys.forEach(k => {
+    html += `<button class="match" data-k="${k}">${SPECIES_BY_KEY[k].name}</button>`;
   });
-  html += `</div><button class="quiz-back">← Start over</button></div>`;
+  if (!validKeys.length) {
+    html += `<p style="color:var(--ink-3);font-size:13px;">No exact match found. Try a different path or pick manually.</p>`;
+  }
+  html += `</div><button class="quiz-back" style="margin-top:12px;">← Start over</button></div>`;
   quizBody.innerHTML = html;
   quizBody.querySelectorAll('button.match').forEach(btn => {
     btn.addEventListener('click', () => {
       speciesSel.value = btn.dataset.k;
       heightOverride = null;
-      crownOverride = null;
+      crownOverride  = null;
       render();
       closeQuiz();
+      speciesPickerWrap.hidden = false;
+      speciesIdHint.hidden = true;
     });
   });
   quizBody.querySelector('.quiz-back').addEventListener('click', () => {
@@ -1354,6 +1506,15 @@ function showMatches(speciesKeys) {
 }
 
 function openQuiz() {
+  const dbh = parseFloat(dbhSlider.value) || 0;
+  // If DBH not entered yet, show hint in species card and scroll to it
+  if (dbh < 2) {
+    speciesPickerWrap.hidden = true;
+    speciesIdHint.hidden = false;
+    document.getElementById('species-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  quizSubtitle.textContent = 'Answer a few quick questions to narrow down the species.';
   quizPath = ['start'];
   renderQuiz();
   quizModal.classList.add('open');
@@ -1366,6 +1527,13 @@ document.getElementById('quizClose').addEventListener('click', closeQuiz);
 quizModal.addEventListener('click', (e) => {
   if (e.target === quizModal) closeQuiz();
 });
+// Restore species picker when DBH is moved after hint was shown
+dbhSlider.addEventListener('input', () => {
+  if (parseFloat(dbhSlider.value) >= 2 && speciesPickerWrap.hidden) {
+    speciesPickerWrap.hidden = false;
+    speciesIdHint.hidden = true;
+  }
+});
 
 /* =================== BOOT =================== */
 (async () => {
@@ -1376,6 +1544,52 @@ quizModal.addEventListener('click', (e) => {
     console.error('Boot failed:', err);
     document.getElementById('heroTitle').textContent = 'Cannot reach API';
     document.getElementById('heroSub').textContent = err.message || 'Check console';
+  }
+})();
+
+/* ========== Supabase Auth (Google) — calculator remains public ========== */
+(function initTreeqAuth() {
+  if (!sbClient || !sbClient.auth) return;
+  var elOut = document.getElementById('auth-signed-out');
+  var elIn = document.getElementById('auth-signed-in');
+  var elEmail = document.getElementById('auth-user-email');
+  var btnIn = document.getElementById('btn-google-sign-in');
+  var btnOut = document.getElementById('btn-sign-out');
+
+  function refreshAuthUI(session) {
+    if (!elOut || !elIn || !elEmail) return;
+    if (session && session.user) {
+      elOut.classList.add('auth-hidden');
+      elIn.classList.remove('auth-hidden');
+      elEmail.textContent = session.user.email || '';
+    } else {
+      elIn.classList.add('auth-hidden');
+      elOut.classList.remove('auth-hidden');
+    }
+  }
+
+  sbClient.auth.onAuthStateChange(function (_event, session) {
+    refreshAuthUI(session);
+  });
+
+  sbClient.auth.getSession().then(function (res) {
+    refreshAuthUI(res.data && res.data.session);
+  });
+
+  if (btnIn) {
+    btnIn.addEventListener('click', function () {
+      sbClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + window.location.pathname.split('?')[0]
+        }
+      });
+    });
+  }
+  if (btnOut) {
+    btnOut.addEventListener('click', function () {
+      sbClient.auth.signOut();
+    });
   }
 })();
 </script>

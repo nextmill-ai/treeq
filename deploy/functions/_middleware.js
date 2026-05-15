@@ -18,16 +18,16 @@ function isPublicApiPath(pathname) {
   );
 }
 
-export async function onRequest(context, next) {
+export async function onRequest(context) {
   const url = new URL(context.request.url);
   const { pathname } = url;
 
   if (!pathname.startsWith('/api/')) {
-    return next();
+    return context.next();
   }
 
   if (isPublicApiPath(pathname)) {
-    return next();
+    return context.next();
   }
 
   const token = parseBearer(context.request);
@@ -41,5 +41,5 @@ export async function onRequest(context, next) {
     return unauthorized();
   }
 
-  return next();
+  return context.next();
 }
