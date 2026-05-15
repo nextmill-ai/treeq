@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spartan Aerial Cut Estimator — v1.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --panel: #131313;
+    --panel-2: #1a1a1a;
+    --line: #2a2a2a;
+    --gold: #c9a64e;
+    --gold-bright: #e9c466;
+    --text: #e8e6e0;
+    --text-dim: #8a8a85;
+    --text-faint: #555550;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at top left, rgba(201,166,78,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(201,166,78,0.03) 0%, transparent 50%),
+      var(--bg);
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .brand .sub {
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    margin-left: 12px;
+  }
+  .version {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 20px;
+  }
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.12em;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .label-row label { margin-bottom: 0; }
+  .reset-btn, .help-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-faint);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .reset-btn:hover, .help-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .field select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 10px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+  }
+  .field select:focus { outline: none; border-color: var(--gold); }
+  .location-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .location-row select { padding: 8px 10px; font-size: 12px; }
+  .dbh-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: end;
+  }
+  .dbh-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--gold);
+    line-height: 1;
+    padding-bottom: 4px;
+  }
+  .slider-wrap input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--line);
+    outline: none;
+    margin: 12px 0 4px;
+  }
+  .slider-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--gold);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .slider-wrap input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--gold);
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+  }
+  .slider-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+  .stepper {
+    display: grid;
+    grid-template-columns: 36px 1fr 36px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .stepper button {
+    background: var(--panel-2);
+    border: none;
+    color: var(--gold);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    user-select: none;
+  }
+  .stepper button:hover { background: var(--line); }
+  .stepper button:active { background: var(--gold); color: var(--bg); }
+  .stepper input {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+  }
+  .stepper input:focus { outline: none; }
+  .auto-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    margin-top: 4px;
+  }
+  .auto-tag.modified { color: var(--gold); }
+
+  /* Trim segmented control */
+  .seg-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .seg-row button {
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .seg-row button:last-child { border-right: none; }
+  .seg-row button:hover { color: var(--text); background: var(--panel-2); }
+  .seg-row button.active {
+    background: var(--gold);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .results-grid { display: grid; gap: 14px; }
+  .topline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 700px) { .topline { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    padding: 14px;
+  }
+  .stat .lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .stat .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat .unit {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+  .stat .note {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  th {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  td.num { text-align: right; color: var(--gold); }
+  td.dim { color: var(--text-dim); }
+  tr.total { background: rgba(201,166,78,0.06); }
+  tr.total td {
+    border-bottom: none;
+    font-weight: 700;
+    color: var(--gold-bright);
+  }
+  .time-bar {
+    display: flex;
+    height: 32px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .time-bar > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    font-weight: 700;
+    transition: width 0.3s;
+  }
+  .time-bar .seg-brush { background: var(--gold); }
+  .time-bar .seg-log12 { background: var(--gold-bright); opacity: 0.85; }
+  .time-bar .seg-log18 { background: #b08838; }
+  .time-bar .seg-log24 { background: #8a6a2a; }
+  .tree-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .tree-meta .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--line);
+    padding: 6px 0;
+  }
+  .tree-meta .row .k { color: var(--text-dim); }
+  .tree-meta .row .v { color: var(--text); font-weight: 500; }
+  .rules {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    padding: 14px;
+    margin-top: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .rules .ruleline { display: flex; justify-content: space-between; }
+  .rules .ruleline .k { color: var(--text-dim); }
+  .rules .ruleline .v { color: var(--gold); }
+  .rules .header { color: var(--gold); letter-spacing: 0.15em; margin-bottom: 8px; }
+  footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+  .formula-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  optgroup {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 700;
+    background: var(--bg);
+  }
+  optgroup option { color: var(--text); font-weight: 400; }
+
+  /* Modal */
+  .modal-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--panel);
+    border: 1px solid var(--gold);
+    max-width: 520px;
+    width: 100%;
+    padding: 24px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .modal p {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .modal .quiz-step {
+    margin-bottom: 18px;
+  }
+  .modal .quiz-step h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .quiz-options { display: grid; gap: 6px; }
+  .quiz-options button {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 10px 14px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .quiz-options button:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .quiz-result {
+    background: var(--panel-2);
+    border: 1px solid var(--gold);
+    padding: 14px;
+    margin-top: 12px;
+  }
+  .quiz-result .matches {
+    display: grid;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .quiz-result button.match {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 8px 12px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .quiz-result button.match:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .modal-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+  }
+  .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+  .quiz-back {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-top: 12px;
+    text-transform: uppercase;
+  }
+  .quiz-back:hover { border-color: var(--gold); color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">SPARTAN AERIAL CUT ESTIMATOR<span class="sub">/ NEXT MILLION</span></div>
+    <div class="version">v1.3 · OPEN-FIELD · 10/10 OPERATOR</div>
+  </header>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="panel-title">INPUTS</div>
+
+      <div class="field">
+        <label>Location</label>
+        <div class="location-row">
+          <select id="state">
+            <option value="NY">New York</option>
+            <option value="" disabled>(more coming)</option>
+          </select>
+          <select id="city">
+            <option value="rochester">Rochester</option>
+            <option value="" disabled>(more coming)</option>
+          </select>
+        </div>
+        <div class="auto-tag">DRIVES SPECIES LIST + ZONE DEFAULTS</div>
+      </div>
+
+      <div class="field">
+        <div class="label-row">
+          <label>Species</label>
+          <button class="help-btn" id="openQuiz">HELP ME ID</button>
+        </div>
+        <select id="species"></select>
+      </div>
+
+      <div class="field slider-wrap">
+        <label>DBH (Diameter at Breast Height)</label>
+        <div class="dbh-row">
+          <input type="range" id="dbh" min="6" max="48" step="0.5" value="24" />
+          <div class="dbh-display"><span id="dbhVal">24</span><span style="font-size:18px;color:var(--text-dim);">″</span></div>
+        </div>
+        <div class="slider-meta"><span>6″</span><span>48″</span></div>
+      </div>
+
+      <div class="field">
+        <div class="label-row">
+          <label>Height (ft)</label>
+          <button class="reset-btn" id="resetHeight">AUTO</button>
+        </div>
+        <div class="stepper">
+          <button id="heightDown">−</button>
+          <input type="number" id="heightInput" step="1" />
+          <button id="heightUp">+</button>
+        </div>
+        <div class="auto-tag" id="heightTag">AUTO FROM SPECIES + DBH</div>
+      </div>
+
+      <div class="field">
+        <div class="label-row">
+          <label>Crown Radius (ft)</label>
+          <button class="reset-btn" id="resetCrown">AUTO</button>
+        </div>
+        <div class="stepper">
+          <button id="crownDown">−</button>
+          <input type="number" id="crownInput" step="1" />
+          <button id="crownUp">+</button>
+        </div>
+        <div class="auto-tag" id="crownTag">AUTO FROM SPECIES + DBH</div>
+      </div>
+
+      <div class="field">
+        <label>Pre-existing Trim (% of tree already removed)</label>
+        <div class="seg-row" id="trimSeg">
+          <button data-v="5" class="active">0–10%</button>
+          <button data-v="15">10–20%</button>
+          <button data-v="25">20–30%</button>
+          <button data-v="35">30–40%</button>
+          <button data-v="45">40–50%</button>
+        </div>
+        <div class="auto-tag">REDUCES BOTH BRUSH AND LOG MASS PROPORTIONALLY</div>
+      </div>
+
+      <div class="rules">
+        <div class="header">CUT RULES</div>
+        <div class="ruleline"><span class="k">Brush ≤12″ (15 ft sections)</span><span class="v" id="brushTimeRule">— sec/cut</span></div>
+        <div class="ruleline"><span class="k">Log 12–18″</span><span class="v">8 ft @ 30 sec</span></div>
+        <div class="ruleline"><span class="k">Log 18–24″</span><span class="v">8 ft @ 60 sec</span></div>
+        <div class="ruleline"><span class="k">Log 24″+</span><span class="v">8 ft @ 90 sec</span></div>
+      </div>
+
+      <div class="formula-note">
+        Biomass: Chojnacky 2014 (USDA-FS), 18 hardwood + 13 conifer equations.<br/>
+        Heights/crown: open-grown urban defaults, calibrated for Rochester NY.<br/>
+        Brush sec/cut by handling profile: conifer 4s · spreading 15s · wide 12s · upright 10s.
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <div class="panel">
+        <div class="panel-title">TREE PROFILE</div>
+        <div class="tree-meta">
+          <div class="row"><span class="k">Height (used)</span><span class="v"><span id="height">—</span> ft</span></div>
+          <div class="row"><span class="k">Crown radius (used)</span><span class="v"><span id="crown">—</span> ft</span></div>
+          <div class="row"><span class="k">Crown diameter</span><span class="v"><span id="crownDiam">—</span> ft</span></div>
+          <div class="row"><span class="k">Green weight (full tree)</span><span class="v"><span id="weightTotal">—</span> lbs</span></div>
+          <div class="row"><span class="k">Green weight (tons)</span><span class="v"><span id="weightTons">—</span> T</span></div>
+          <div class="row"><span class="k">Brush mass (effective)</span><span class="v"><span id="brushMass">—</span> lbs</span></div>
+          <div class="row"><span class="k">Log mass (>12″)</span><span class="v"><span id="logMass">—</span> lbs</span></div>
+          <div class="row"><span class="k">Handling profile</span><span class="v"><span id="profile">—</span></span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">CUT BREAKDOWN</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Class</th><th>Diameter</th><th>Cut length</th>
+              <th>Cuts</th><th>Sec/cut</th><th class="num">Total time</th>
+            </tr>
+          </thead>
+          <tbody id="cutTable"></tbody>
+        </table>
+
+        <div class="topline" style="margin-top:18px;">
+          <div class="stat"><div class="lbl">Brush cuts</div><div class="val"><span id="brushCuts">—</span></div></div>
+          <div class="stat"><div class="lbl">Log cuts</div><div class="val"><span id="logCuts">—</span></div></div>
+          <div class="stat"><div class="lbl">Total cuts</div><div class="val"><span id="totalCuts">—</span></div></div>
+          <div class="stat">
+            <div class="lbl">Aerial time</div>
+            <div class="val"><span id="totalTime">—</span><span class="unit">min</span></div>
+            <div class="note" id="totalSec">— sec</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--text-dim);margin-bottom:4px;">TIME COMPOSITION</div>
+          <div class="time-bar" id="timeBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    SPARTAN TREE & LANDSCAPE · NEXT MILLION · v1.3 · OBSTACLES / LEAD STRUCTURE → v2
+  </footer>
+</div>
+
+<!-- ID QUIZ MODAL -->
+<div class="modal-bg" id="quizModal">
+  <div class="modal">
+    <button class="modal-close" id="quizClose">×</button>
+    <h2>Help Me Identify</h2>
+    <p>Answer a few quick questions to narrow down the species.</p>
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SPECIES DATABASE — v1.3 (Rochester NY)
+   biomass: Chojnacky 2014 [ln(kg) = b0 + b1*ln(DBH_cm)]
+   ============================================================ */
+const BRUSH_SEC_PER_CUT = {
+  conifer: 4,
+  spreading: 15,
+  wide: 12,
+  upright: 10
+};
+
+const SPECIES = {
+  // ===== MAPLES =====
+  silver_maple: {
+    name: "Silver Maple", group: "Maples",
+    b0: -2.0470, b1: 2.3852, sg: 0.44,
+    moisture: 1.85, brushFrac: 0.45, foliageFrac: 0.15,
+    heightA: 100, heightB: 0.040,
+    crownIntercept: 8, crownSlope: 2.20,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+  red_maple: {
+    name: "Red Maple", group: "Maples",
+    b0: -2.0470, b1: 2.3852, sg: 0.49,
+    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 90, heightB: 0.040,
+    crownIntercept: 6, crownSlope: 1.70,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  norway_maple: {
+    name: "Norway Maple", group: "Maples",
+    b0: -1.8011, b1: 2.3852, sg: 0.55,
+    moisture: 1.65, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 80, heightB: 0.045,
+    crownIntercept: 6, crownSlope: 1.60,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  sugar_maple: {
+    name: "Sugar Maple", group: "Maples",
+    b0: -1.8011, b1: 2.3852, sg: 0.56,
+    moisture: 1.65, brushFrac: 0.38, foliageFrac: 0.12,
+    heightA: 100, heightB: 0.035,
+    crownIntercept: 6, crownSlope: 1.70,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  black_maple: {
+    name: "Black Maple", group: "Maples",
+    b0: -1.8011, b1: 2.3852, sg: 0.55,
+    moisture: 1.65, brushFrac: 0.38, foliageFrac: 0.12,
+    heightA: 95, heightB: 0.035,
+    crownIntercept: 6, crownSlope: 1.65,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  freeman_maple: {
+    name: "Freeman/Autumn Blaze Maple", group: "Maples",
+    b0: -2.0470, b1: 2.3852, sg: 0.48,
+    moisture: 1.75, brushFrac: 0.42, foliageFrac: 0.14,
+    heightA: 90, heightB: 0.040,
+    crownIntercept: 6, crownSlope: 1.80,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  boxelder: {
+    name: "Boxelder", group: "Maples",
+    b0: -2.0470, b1: 2.3852, sg: 0.42,
+    moisture: 1.80, brushFrac: 0.50, foliageFrac: 0.14,
+    heightA: 70, heightB: 0.045,
+    crownIntercept: 5, crownSlope: 1.60,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+
+  // ===== OAKS =====
+  red_oak: {
+    name: "Red Oak", group: "Oaks",
+    b0: -2.0705, b1: 2.4410, sg: 0.56,
+    moisture: 1.80, brushFrac: 0.30, foliageFrac: 0.12,
+    heightA: 120, heightB: 0.035,
+    crownIntercept: 8, crownSlope: 2.00,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+  white_oak: {
+    name: "White Oak", group: "Oaks",
+    b0: -2.0705, b1: 2.4410, sg: 0.60,
+    moisture: 1.78, brushFrac: 0.28, foliageFrac: 0.11,
+    heightA: 110, heightB: 0.034,
+    crownIntercept: 8, crownSlope: 2.10,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+  pin_oak: {
+    name: "Pin Oak", group: "Oaks",
+    b0: -2.0705, b1: 2.4410, sg: 0.58,
+    moisture: 1.78, brushFrac: 0.32, foliageFrac: 0.12,
+    heightA: 105, heightB: 0.038,
+    crownIntercept: 7, crownSlope: 1.85,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+  bur_oak: {
+    name: "Bur Oak", group: "Oaks",
+    b0: -2.0705, b1: 2.4410, sg: 0.58,
+    moisture: 1.78, brushFrac: 0.28, foliageFrac: 0.11,
+    heightA: 110, heightB: 0.034,
+    crownIntercept: 8, crownSlope: 2.20,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+  swamp_white_oak: {
+    name: "Swamp White Oak", group: "Oaks",
+    b0: -2.0705, b1: 2.4410, sg: 0.56,
+    moisture: 1.80, brushFrac: 0.30, foliageFrac: 0.12,
+    heightA: 110, heightB: 0.035,
+    crownIntercept: 8, crownSlope: 2.00,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+
+  // ===== ASHES =====
+  white_ash: {
+    name: "White Ash", group: "Ashes",
+    b0: -1.8384, b1: 2.3524, sg: 0.55,
+    moisture: 1.65, brushFrac: 0.38, foliageFrac: 0.12,
+    heightA: 105, heightB: 0.035,
+    crownIntercept: 6, crownSlope: 1.60,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  green_ash: {
+    name: "Green Ash", group: "Ashes",
+    b0: -2.0314, b1: 2.3524, sg: 0.53,
+    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 90, heightB: 0.040,
+    crownIntercept: 5, crownSlope: 1.50,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  black_ash: {
+    name: "Black Ash", group: "Ashes",
+    b0: -2.0314, b1: 2.3524, sg: 0.45,
+    moisture: 1.85, brushFrac: 0.42, foliageFrac: 0.13,
+    heightA: 90, heightB: 0.040,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+
+  // ===== BIRCHES =====
+  white_birch: {
+    name: "White Birch (Paper)", group: "Birches",
+    b0: -2.5932, b1: 2.5349, sg: 0.48,
+    moisture: 1.75, brushFrac: 0.45, foliageFrac: 0.13,
+    heightA: 70, heightB: 0.040,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  river_birch: {
+    name: "River Birch", group: "Birches",
+    b0: -2.5932, b1: 2.5349, sg: 0.48,
+    moisture: 1.80, brushFrac: 0.45, foliageFrac: 0.13,
+    heightA: 80, heightB: 0.040,
+    crownIntercept: 5, crownSlope: 1.50,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  yellow_birch: {
+    name: "Yellow Birch", group: "Birches",
+    b0: -2.5932, b1: 2.5349, sg: 0.55,
+    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.12,
+    heightA: 85, heightB: 0.038,
+    crownIntercept: 5, crownSlope: 1.50,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  gray_birch: {
+    name: "Gray Birch", group: "Birches",
+    b0: -2.5932, b1: 2.5349, sg: 0.45,
+    moisture: 1.75, brushFrac: 0.45, foliageFrac: 0.13,
+    heightA: 50, heightB: 0.045,
+    crownIntercept: 3, crownSlope: 1.10,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+
+  // ===== WALNUTS / NUTS =====
+  black_walnut: {
+    name: "Black Walnut", group: "Walnuts & Hickories",
+    b0: -2.5095, b1: 2.5437, sg: 0.51,
+    moisture: 1.65, brushFrac: 0.32, foliageFrac: 0.12,
+    heightA: 100, heightB: 0.038,
+    crownIntercept: 6, crownSlope: 1.80,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+  butternut: {
+    name: "Butternut (White Walnut)", group: "Walnuts & Hickories",
+    b0: -2.5095, b1: 2.5437, sg: 0.36,
+    moisture: 1.85, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 75, heightB: 0.040,
+    crownIntercept: 6, crownSlope: 1.70,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  shagbark_hickory: {
+    name: "Shagbark Hickory", group: "Walnuts & Hickories",
+    b0: -2.5095, b1: 2.5437, sg: 0.64,
+    moisture: 1.60, brushFrac: 0.30, foliageFrac: 0.11,
+    heightA: 95, heightB: 0.035,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'upright', diamGroup: 'hardwood_heavy'
+  },
+
+  // ===== LOCUSTS =====
+  black_locust: {
+    name: "Black Locust", group: "Locusts",
+    b0: -2.5095, b1: 2.5437, sg: 0.66,
+    moisture: 1.55, brushFrac: 0.30, foliageFrac: 0.10,
+    heightA: 90, heightB: 0.040,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'upright', diamGroup: 'hardwood_heavy'
+  },
+  honey_locust: {
+    name: "Honey Locust", group: "Locusts",
+    b0: -2.5095, b1: 2.5437, sg: 0.60,
+    moisture: 1.55, brushFrac: 0.35, foliageFrac: 0.10,
+    heightA: 95, heightB: 0.038,
+    crownIntercept: 6, crownSlope: 1.65,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+
+  // ===== CHERRIES =====
+  black_cherry: {
+    name: "Black Cherry", group: "Cherries & Plums",
+    b0: -2.2118, b1: 2.4133, sg: 0.50,
+    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 90, heightB: 0.038,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  choke_cherry: {
+    name: "Choke Cherry", group: "Cherries & Plums",
+    b0: -2.2118, b1: 2.4133, sg: 0.50,
+    moisture: 1.75, brushFrac: 0.50, foliageFrac: 0.14,
+    heightA: 35, heightB: 0.050,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  ornamental_cherry: {
+    name: "Ornamental Cherry (Kwanzan/Yoshino)", group: "Cherries & Plums",
+    b0: -2.2118, b1: 2.4133, sg: 0.45,
+    moisture: 1.75, brushFrac: 0.50, foliageFrac: 0.14,
+    heightA: 30, heightB: 0.060,
+    crownIntercept: 4, crownSlope: 1.30,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+
+  // ===== PEARS / APPLES / ROSACEAE =====
+  callery_pear: {
+    name: "Bradford / Callery Pear", group: "Pears & Apples",
+    b0: -2.2118, b1: 2.4133, sg: 0.50,
+    moisture: 1.70, brushFrac: 0.45, foliageFrac: 0.14,
+    heightA: 45, heightB: 0.055,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  pear: {
+    name: "Pear (fruit)", group: "Pears & Apples",
+    b0: -2.2118, b1: 2.4133, sg: 0.55,
+    moisture: 1.65, brushFrac: 0.50, foliageFrac: 0.14,
+    heightA: 35, heightB: 0.055,
+    crownIntercept: 4, crownSlope: 1.10,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  apple: {
+    name: "Apple", group: "Pears & Apples",
+    b0: -2.2118, b1: 2.4133, sg: 0.55,
+    moisture: 1.65, brushFrac: 0.55, foliageFrac: 0.15,
+    heightA: 30, heightB: 0.060,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+  crabapple: {
+    name: "Crabapple", group: "Pears & Apples",
+    b0: -2.2118, b1: 2.4133, sg: 0.50,
+    moisture: 1.65, brushFrac: 0.55, foliageFrac: 0.15,
+    heightA: 22, heightB: 0.060,
+    crownIntercept: 4, crownSlope: 1.10,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+  hawthorn: {
+    name: "Hawthorn", group: "Pears & Apples",
+    b0: -2.2118, b1: 2.4133, sg: 0.55,
+    moisture: 1.65, brushFrac: 0.55, foliageFrac: 0.14,
+    heightA: 25, heightB: 0.060,
+    crownIntercept: 3, crownSlope: 1.00,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+
+  // ===== OTHER HARDWOODS =====
+  american_elm: {
+    name: "American Elm", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.50,
+    moisture: 1.75, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 110, heightB: 0.034,
+    crownIntercept: 7, crownSlope: 1.90,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  basswood: {
+    name: "Basswood / American Linden", group: "Other Hardwoods",
+    b0: -2.4108, b1: 2.4177, sg: 0.37,
+    moisture: 1.85, brushFrac: 0.42, foliageFrac: 0.14,
+    heightA: 100, heightB: 0.035,
+    crownIntercept: 6, crownSlope: 1.60,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  littleleaf_linden: {
+    name: "Littleleaf Linden", group: "Other Hardwoods",
+    b0: -2.4108, b1: 2.4177, sg: 0.40,
+    moisture: 1.80, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 75, heightB: 0.038,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  sycamore: {
+    name: "Sycamore", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.46,
+    moisture: 1.80, brushFrac: 0.35, foliageFrac: 0.12,
+    heightA: 120, heightB: 0.034,
+    crownIntercept: 8, crownSlope: 2.10,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  tulip_poplar: {
+    name: "Tulip Poplar / Yellow Poplar", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.40,
+    moisture: 1.85, brushFrac: 0.32, foliageFrac: 0.11,
+    heightA: 130, heightB: 0.030,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  beech: {
+    name: "American Beech", group: "Other Hardwoods",
+    b0: -2.0705, b1: 2.4410, sg: 0.64,
+    moisture: 1.65, brushFrac: 0.32, foliageFrac: 0.12,
+    heightA: 100, heightB: 0.034,
+    crownIntercept: 6, crownSlope: 1.80,
+    brushHandling: 'wide', diamGroup: 'hardwood_heavy'
+  },
+  cottonwood: {
+    name: "Cottonwood", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.37,
+    moisture: 1.95, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 120, heightB: 0.034,
+    crownIntercept: 7, crownSlope: 1.90,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  poplar_aspen: {
+    name: "Poplar / Aspen", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.38,
+    moisture: 1.90, brushFrac: 0.42, foliageFrac: 0.13,
+    heightA: 80, heightB: 0.040,
+    crownIntercept: 4, crownSlope: 1.30,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  willow: {
+    name: "Willow", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.36,
+    moisture: 2.00, brushFrac: 0.55, foliageFrac: 0.15,
+    heightA: 70, heightB: 0.045,
+    crownIntercept: 6, crownSlope: 1.80,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+  mulberry: {
+    name: "Mulberry", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.59,
+    moisture: 1.65, brushFrac: 0.50, foliageFrac: 0.14,
+    heightA: 50, heightB: 0.050,
+    crownIntercept: 5, crownSlope: 1.50,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+  magnolia: {
+    name: "Magnolia", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.46,
+    moisture: 1.75, brushFrac: 0.50, foliageFrac: 0.15,
+    heightA: 40, heightB: 0.050,
+    crownIntercept: 4, crownSlope: 1.40,
+    brushHandling: 'spreading', diamGroup: 'hardwood_normal'
+  },
+  catalpa: {
+    name: "Catalpa", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.41,
+    moisture: 1.75, brushFrac: 0.40, foliageFrac: 0.14,
+    heightA: 60, heightB: 0.045,
+    crownIntercept: 5, crownSlope: 1.50,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  hackberry: {
+    name: "Hackberry", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.49,
+    moisture: 1.75, brushFrac: 0.42, foliageFrac: 0.13,
+    heightA: 80, heightB: 0.038,
+    crownIntercept: 6, crownSlope: 1.60,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  ginkgo: {
+    name: "Ginkgo", group: "Other Hardwoods",
+    b0: -2.2118, b1: 2.4133, sg: 0.45,
+    moisture: 1.70, brushFrac: 0.35, foliageFrac: 0.13,
+    heightA: 80, heightB: 0.034,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'upright', diamGroup: 'hardwood_normal'
+  },
+  chinese_chestnut: {
+    name: "Chinese Chestnut", group: "Other Hardwoods",
+    b0: -2.0705, b1: 2.4410, sg: 0.48,
+    moisture: 1.70, brushFrac: 0.40, foliageFrac: 0.13,
+    heightA: 60, heightB: 0.040,
+    crownIntercept: 6, crownSlope: 1.70,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+  horse_chestnut: {
+    name: "Horse Chestnut / Buckeye", group: "Other Hardwoods",
+    b0: -2.4108, b1: 2.4177, sg: 0.38,
+    moisture: 1.80, brushFrac: 0.45, foliageFrac: 0.16,
+    heightA: 80, heightB: 0.038,
+    crownIntercept: 6, crownSlope: 1.70,
+    brushHandling: 'wide', diamGroup: 'hardwood_normal'
+  },
+
+  // ===== CONIFERS =====
+  white_pine: {
+    name: "Eastern White Pine", group: "Conifers",
+    b0: -2.6177, b1: 2.4638, sg: 0.34,
+    moisture: 2.00, brushFrac: 0.60, foliageFrac: 0.25,
+    heightA: 130, heightB: 0.030,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  red_pine: {
+    name: "Red Pine", group: "Conifers",
+    b0: -3.0506, b1: 2.6465, sg: 0.41,
+    moisture: 1.85, brushFrac: 0.50, foliageFrac: 0.20,
+    heightA: 90, heightB: 0.035,
+    crownIntercept: 4, crownSlope: 1.10,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  scotch_pine: {
+    name: "Scotch Pine", group: "Conifers",
+    b0: -3.0506, b1: 2.6465, sg: 0.42,
+    moisture: 1.85, brushFrac: 0.55, foliageFrac: 0.22,
+    heightA: 75, heightB: 0.040,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  norway_spruce: {
+    name: "Norway Spruce", group: "Conifers",
+    b0: -2.1364, b1: 2.3233, sg: 0.37,
+    moisture: 1.95, brushFrac: 0.62, foliageFrac: 0.30,
+    heightA: 110, heightB: 0.035,
+    crownIntercept: 4, crownSlope: 1.20,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  white_spruce: {
+    name: "White Spruce", group: "Conifers",
+    b0: -2.1364, b1: 2.3233, sg: 0.36,
+    moisture: 1.95, brushFrac: 0.62, foliageFrac: 0.30,
+    heightA: 90, heightB: 0.035,
+    crownIntercept: 3, crownSlope: 1.00,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  blue_spruce: {
+    name: "Colorado Blue Spruce", group: "Conifers",
+    b0: -2.1364, b1: 2.3233, sg: 0.38,
+    moisture: 1.90, brushFrac: 0.60, foliageFrac: 0.28,
+    heightA: 70, heightB: 0.040,
+    crownIntercept: 4, crownSlope: 1.10,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  hemlock: {
+    name: "Eastern Hemlock", group: "Conifers",
+    b0: -2.3480, b1: 2.3876, sg: 0.40,
+    moisture: 1.95, brushFrac: 0.55, foliageFrac: 0.28,
+    heightA: 100, heightB: 0.032,
+    crownIntercept: 5, crownSlope: 1.40,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  },
+  arborvitae: {
+    name: "Arborvitae / White Cedar", group: "Conifers",
+    b0: -2.7765, b1: 2.4195, sg: 0.31,
+    moisture: 2.00, brushFrac: 0.65, foliageFrac: 0.35,
+    heightA: 50, heightB: 0.045,
+    crownIntercept: 2, crownSlope: 0.70,
+    brushHandling: 'conifer', diamGroup: 'conifer'
+  }
+};
+
+const BRUSH_DIAM_DIST = {
+  hardwood_heavy: { d_avg_lt4: 2.0, d_avg_4to8: 5.5, d_avg_8to12: 9.5,
+                    frac_lt4: 0.35, frac_4to8: 0.30, frac_8to12: 0.35 },
+  hardwood_normal: { d_avg_lt4: 2.0, d_avg_4to8: 5.5, d_avg_8to12: 9.5,
+                     frac_lt4: 0.45, frac_4to8: 0.30, frac_8to12: 0.25 },
+  conifer:        { d_avg_lt4: 1.5, d_avg_4to8: 5.0, d_avg_8to12: 9.0,
+                    frac_lt4: 0.65, frac_4to8: 0.25, frac_8to12: 0.10 }
+};
+
+/* =================== ID QUIZ DATA =================== */
+/* Builds a small decision tree to narrow species. Each node has either
+   options (forking questions) or matches (terminal species suggestions). */
+const QUIZ = {
+  start: {
+    q: "Leaves or needles?",
+    options: [
+      { label: "Needles or scale-like (evergreen)", next: 'conifer' },
+      { label: "Broad leaves (deciduous)", next: 'deciduous' }
+    ]
+  },
+  conifer: {
+    q: "What kind of needles?",
+    options: [
+      { label: "Long needles in clusters of 2–5 (pine)", next: 'pine' },
+      { label: "Short single needles, square cross-section (spruce)", next: 'spruce' },
+      { label: "Short flat needles, soft (hemlock/fir)", matches: ['hemlock'] },
+      { label: "Tiny scale-like leaves (cedar/arborvitae)", matches: ['arborvitae'] }
+    ]
+  },
+  pine: {
+    q: "Pine needle count per bundle?",
+    options: [
+      { label: "5 needles (soft, blue-green)", matches: ['white_pine'] },
+      { label: "2 needles (long, reddish bark)", matches: ['red_pine'] },
+      { label: "2 needles (short, twisted, orange bark)", matches: ['scotch_pine'] }
+    ]
+  },
+  spruce: {
+    q: "Spruce color/feel?",
+    options: [
+      { label: "Dark green, drooping branches", matches: ['norway_spruce'] },
+      { label: "Light blue-green, sharp needles", matches: ['blue_spruce'] },
+      { label: "Pale green/grayish", matches: ['white_spruce'] }
+    ]
+  },
+  deciduous: {
+    q: "Leaf arrangement on twig?",
+    options: [
+      { label: "Opposite (leaves directly across from each other)", next: 'opposite' },
+      { label: "Alternate (leaves staggered)", next: 'alternate' }
+    ]
+  },
+  opposite: {
+    q: "Leaf shape?",
+    options: [
+      { label: "Lobed (like a maple)", next: 'maple' },
+      { label: "Compound, pinnate (multiple leaflets in a row — ash)", next: 'ash' },
+      { label: "Compound, palmate (5–7 leaflets in a hand shape — horse chestnut)", matches: ['horse_chestnut'] },
+      { label: "Heart-shaped, large", matches: ['catalpa'] }
+    ]
+  },
+  maple: {
+    q: "Maple specifics?",
+    options: [
+      { label: "Deeply cut leaves, silvery underside", matches: ['silver_maple'] },
+      { label: "Compound leaves, irregular form, leans", matches: ['boxelder'] },
+      { label: "Leaves wider than long, dark, sap is milky", matches: ['norway_maple'] },
+      { label: "Classic 5-lobe, U-shaped notches, red fall", matches: ['sugar_maple', 'black_maple'] },
+      { label: "Smaller leaves, red flowers in spring, red fall", matches: ['red_maple', 'freeman_maple'] }
+    ]
+  },
+  ash: {
+    q: "Ash specifics?",
+    options: [
+      { label: "Diamond-pattern bark, larger size", matches: ['white_ash'] },
+      { label: "Wet sites, thinner bark", matches: ['black_ash', 'green_ash'] }
+    ]
+  },
+  alternate: {
+    q: "Leaf shape?",
+    options: [
+      { label: "Lobed (like an oak)", next: 'oak' },
+      { label: "Compound (walnut, locust, hickory)", next: 'compound' },
+      { label: "Simple, toothed (cherry, birch, etc.)", next: 'simple_alt' },
+      { label: "Simple, smooth-edged", next: 'smooth_alt' },
+      { label: "Star/tulip shaped", matches: ['tulip_poplar'] },
+      { label: "Fan-shaped (no other tree like it)", matches: ['ginkgo'] },
+      { label: "Long toothed leaf, spiny burr fruit (chestnut)", matches: ['chinese_chestnut'] }
+    ]
+  },
+  oak: {
+    q: "Oak leaf type?",
+    options: [
+      { label: "Pointed lobes with bristles (red oak group)", next: 'red_oak_group' },
+      { label: "Rounded lobes, no bristles (white oak group)", next: 'white_oak_group' }
+    ]
+  },
+  red_oak_group: {
+    q: "Red oak details?",
+    options: [
+      { label: "Tall, smooth gray bark with stripes, large leaves", matches: ['red_oak'] },
+      { label: "Strongly pyramidal shape, drooping lower branches", matches: ['pin_oak'] }
+    ]
+  },
+  white_oak_group: {
+    q: "White oak details?",
+    options: [
+      { label: "Pale gray flaky bark, deeply lobed leaves", matches: ['white_oak'] },
+      { label: "Massive limbs, corky bark, large acorns with fringed cap", matches: ['bur_oak'] },
+      { label: "Wet sites, peeling bark", matches: ['swamp_white_oak'] }
+    ]
+  },
+  compound: {
+    q: "Compound leaf details?",
+    options: [
+      { label: "Long compound, walnut smell, dark furrowed bark", matches: ['black_walnut'] },
+      { label: "Like walnut but lighter, husk is sticky", matches: ['butternut'] },
+      { label: "Large leaflets, shaggy peeling bark (hickory)", matches: ['shagbark_hickory'] },
+      { label: "Thorny trunk, big seed pods (locust)", next: 'locust' }
+    ]
+  },
+  locust: {
+    q: "Locust thorns?",
+    options: [
+      { label: "Big branched thorns, dark bark", matches: ['honey_locust'] },
+      { label: "Small paired thorns, fragrant white flowers", matches: ['black_locust'] }
+    ]
+  },
+  simple_alt: {
+    q: "Bark or other clues?",
+    options: [
+      { label: "White peeling bark", matches: ['white_birch'] },
+      { label: "Reddish papery peeling bark, wet sites", matches: ['river_birch'] },
+      { label: "Yellow/bronze peeling bark", matches: ['yellow_birch'] },
+      { label: "Smooth gray-white bark, smaller tree", matches: ['gray_birch'] },
+      { label: "Reddish-brown horizontal bark stripes (cherry-like)", next: 'cherry' },
+      { label: "Glossy leaves, white flowers in spring (pear/apple)", next: 'pear_apple' },
+      { label: "Mottled green/cream peeling bark, big leaves", matches: ['sycamore'] },
+      { label: "Smooth gray bark, beech-like", matches: ['beech'] },
+      { label: "Heart-shaped leaves, sweet flowers (linden)", next: 'linden' },
+      { label: "Triangular leaves, fluffy seeds, wet sites", matches: ['cottonwood', 'poplar_aspen'] },
+      { label: "Long narrow leaves, droopy, by water", matches: ['willow'] },
+      { label: "Heart-shaped leaves, edible berries (mulberry)", matches: ['mulberry'] },
+      { label: "Rough corky/warty bark, asymmetric leaf base", matches: ['hackberry'] }
+    ]
+  },
+  cherry: {
+    q: "Cherry size?",
+    options: [
+      { label: "Large mature tree, dark scaly bark", matches: ['black_cherry'] },
+      { label: "Small shrubby tree", matches: ['choke_cherry'] },
+      { label: "Showy pink/white flowers in spring", matches: ['ornamental_cherry'] }
+    ]
+  },
+  pear_apple: {
+    q: "Tree form?",
+    options: [
+      { label: "Tight teardrop shape, white flowers, smelly", matches: ['callery_pear'] },
+      { label: "Older fruit tree, irregular shape", matches: ['pear', 'apple'] },
+      { label: "Small ornamental, pink flowers", matches: ['crabapple'] },
+      { label: "Thorny, small red fruits", matches: ['hawthorn'] }
+    ]
+  },
+  linden: {
+    q: "Linden size?",
+    options: [
+      { label: "Large native, big leaves", matches: ['basswood'] },
+      { label: "Smaller leaves, tighter form, often street tree", matches: ['littleleaf_linden'] }
+    ]
+  },
+  smooth_alt: {
+    q: "Other features?",
+    options: [
+      { label: "Smooth gray bark, beech nuts", matches: ['beech'] },
+      { label: "Vase shape, classic American street tree", matches: ['american_elm'] },
+      { label: "Big saucer flowers, large glossy leaves", matches: ['magnolia'] },
+      { label: "Tall, fan-shaped leaves", matches: ['ginkgo'] }
+    ]
+  }
+};
+
+/* =================== MATH ENGINE =================== */
+function greenWeightLbs(sp, dbh_in) {
+  const dbh_cm = dbh_in * 2.54;
+  const dryKg = Math.exp(sp.b0 + sp.b1 * Math.log(dbh_cm));
+  return dryKg * sp.moisture * 2.20462;
+}
+function autoHeightFt(sp, dbh_in) {
+  return Math.round(4.5 + sp.heightA * (1 - Math.exp(-sp.heightB * dbh_in)));
+}
+function autoCrownRadiusFt(sp, dbh_in) {
+  return Math.round((sp.crownIntercept + sp.crownSlope * dbh_in) / 2);
+}
+function greenDensityLbsPerFt3(sp) {
+  return sp.sg * 62.4 * sp.moisture;
+}
+function cutsFromMass(massLbs, avgDiamIn, cutLengthFt, density, forkMult) {
+  if (massLbs <= 0) return 0;
+  const radiusFt = (avgDiamIn / 2) / 12;
+  const xsArea = Math.PI * radiusFt * radiusFt;
+  const volume = massLbs / density;
+  const linearFt = volume / xsArea;
+  return Math.max(1, Math.round((linearFt / cutLengthFt) * forkMult));
+}
+function logCuts(massLbs, avgDiamIn, cutLengthFt, density) {
+  if (massLbs <= 0) return 0;
+  const radiusFt = (avgDiamIn / 2) / 12;
+  const xsArea = Math.PI * radiusFt * radiusFt;
+  const volume = massLbs / density;
+  const linearFt = volume / xsArea;
+  return Math.max(1, Math.round(linearFt / cutLengthFt));
+}
+function splitLogMassByClass(dbh_in, totalLogMass) {
+  if (dbh_in <= 18) return { c12_18: totalLogMass, c18_24: 0, c24plus: 0 };
+  if (dbh_in <= 24) return { c12_18: totalLogMass * 0.40, c18_24: totalLogMass * 0.60, c24plus: 0 };
+  return { c12_18: totalLogMass * 0.30, c18_24: totalLogMass * 0.35, c24plus: totalLogMass * 0.35 };
+}
+
+function compute(speciesKey, dbh_in, trimPct) {
+  const sp = SPECIES[speciesKey];
+  const grp = sp.diamGroup;
+  const brushDist = BRUSH_DIAM_DIST[grp];
+  const brushSec = BRUSH_SEC_PER_CUT[sp.brushHandling];
+
+  const totalGreen = greenWeightLbs(sp, dbh_in);
+  const density = greenDensityLbsPerFt3(sp);
+
+  // Pre-existing trim reduces total tree mass proportionally — applies to both brush and log mass
+  // since trim work can include lead removal, not just small branches
+  const trimMult = 1 - (trimPct / 100);
+  const brushMass = totalGreen * sp.brushFrac * trimMult;
+  const logMass = totalGreen * (1 - sp.brushFrac) * trimMult;
+  const woodyBrushMass = brushMass * (1 - sp.foliageFrac);
+
+  const m_lt4 = woodyBrushMass * brushDist.frac_lt4;
+  const m_4to8 = woodyBrushMass * brushDist.frac_4to8;
+  const m_8to12 = woodyBrushMass * brushDist.frac_8to12;
+
+  const fork_lt4 = grp === 'conifer' ? 1.20 : 1.50;
+  const fork_4to8 = grp === 'conifer' ? 1.10 : 1.30;
+  const fork_8to12 = 1.15;
+
+  const cuts_lt4 = cutsFromMass(m_lt4, brushDist.d_avg_lt4, 15, density, fork_lt4);
+  const cuts_4to8 = cutsFromMass(m_4to8, brushDist.d_avg_4to8, 15, density, fork_4to8);
+  const cuts_8to12 = cutsFromMass(m_8to12, brushDist.d_avg_8to12, 15, density, fork_8to12);
+
+  const brushCuts = cuts_lt4 + cuts_4to8 + cuts_8to12;
+  const brushSecTotal = brushCuts * brushSec;
+
+  const split = splitLogMassByClass(dbh_in, logMass);
+  const cuts_log12_18 = logCuts(split.c12_18, 15, 8, density);
+  const cuts_log18_24 = logCuts(split.c18_24, 21, 8, density);
+  const cuts_log24plus = logCuts(split.c24plus, Math.max(28, dbh_in - 4), 8, density);
+  const sec_log12_18 = cuts_log12_18 * 30;
+  const sec_log18_24 = cuts_log18_24 * 60;
+  const sec_log24plus = cuts_log24plus * 90;
+
+  const logCutsTotal = cuts_log12_18 + cuts_log18_24 + cuts_log24plus;
+  const logSec = sec_log12_18 + sec_log18_24 + sec_log24plus;
+  const totalSec = brushSecTotal + logSec;
+
+  return {
+    totalGreen, brushMass, logMass,
+    handlingProfile: sp.brushHandling,
+    brushSecPerCut: brushSec,
+    brushBreakdown: [
+      { label: 'Brush <4″', diam: '<4″', cutLen: 15, cuts: cuts_lt4, sec: brushSec, total: cuts_lt4 * brushSec },
+      { label: 'Brush 4–8″', diam: '4–8″', cutLen: 15, cuts: cuts_4to8, sec: brushSec, total: cuts_4to8 * brushSec },
+      { label: 'Brush 8–12″', diam: '8–12″', cutLen: 15, cuts: cuts_8to12, sec: brushSec, total: cuts_8to12 * brushSec }
+    ],
+    logBreakdown: [
+      { label: 'Log 12–18″', diam: '12–18″', cutLen: 8, cuts: cuts_log12_18, sec: 30, total: sec_log12_18 },
+      { label: 'Log 18–24″', diam: '18–24″', cutLen: 8, cuts: cuts_log18_24, sec: 60, total: sec_log18_24 },
+      { label: 'Log 24″+', diam: '24″+', cutLen: 8, cuts: cuts_log24plus, sec: 90, total: sec_log24plus }
+    ],
+    brushCuts, logCutsTotal, totalCuts: brushCuts + logCutsTotal,
+    brushSecTotal, logSec, totalSec
+  };
+}
+
+/* =================== UI =================== */
+const speciesSel = document.getElementById('species');
+
+// Build grouped species dropdown
+function buildSpeciesDropdown() {
+  speciesSel.innerHTML = '';
+  const groups = {};
+  Object.entries(SPECIES).forEach(([key, sp]) => {
+    if (!groups[sp.group]) groups[sp.group] = [];
+    groups[sp.group].push({ key, name: sp.name });
+  });
+  // Preferred group order
+  const order = ["Maples","Oaks","Ashes","Birches","Walnuts & Hickories","Locusts","Cherries & Plums","Pears & Apples","Other Hardwoods","Conifers"];
+  order.forEach(g => {
+    if (!groups[g]) return;
+    const og = document.createElement('optgroup');
+    og.label = g;
+    groups[g].forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.key;
+      opt.textContent = s.name;
+      og.appendChild(opt);
+    });
+    speciesSel.appendChild(og);
+  });
+}
+buildSpeciesDropdown();
+speciesSel.value = 'silver_maple';
+
+const dbhSlider = document.getElementById('dbh');
+const dbhVal = document.getElementById('dbhVal');
+const heightInput = document.getElementById('heightInput');
+const crownInput = document.getElementById('crownInput');
+const heightTag = document.getElementById('heightTag');
+const crownTag = document.getElementById('crownTag');
+
+let heightOverride = null;
+let crownOverride = null;
+let trimPct = 5;
+
+function fmt(n, dec=0) {
+  if (!isFinite(n)) return '—';
+  return n.toLocaleString('en-US', { maximumFractionDigits: dec, minimumFractionDigits: dec });
+}
+function formatTime(sec) {
+  if (sec < 60) return `${Math.round(sec)}s`;
+  const m = Math.floor(sec / 60);
+  const s = Math.round(sec % 60);
+  return s === 0 ? `${m}m` : `${m}m ${s}s`;
+}
+
+function syncInputs() {
+  const sp = SPECIES[speciesSel.value];
+  const dbh = parseFloat(dbhSlider.value);
+  if (heightOverride === null) {
+    heightInput.value = autoHeightFt(sp, dbh);
+    heightTag.textContent = 'AUTO FROM SPECIES + DBH';
+    heightTag.classList.remove('modified');
+  } else {
+    heightInput.value = heightOverride;
+    heightTag.textContent = 'USER OVERRIDE';
+    heightTag.classList.add('modified');
+  }
+  if (crownOverride === null) {
+    crownInput.value = autoCrownRadiusFt(sp, dbh);
+    crownTag.textContent = 'AUTO FROM SPECIES + DBH';
+    crownTag.classList.remove('modified');
+  } else {
+    crownInput.value = crownOverride;
+    crownTag.textContent = 'USER OVERRIDE';
+    crownTag.classList.add('modified');
+  }
+}
+
+function render() {
+  const speciesKey = speciesSel.value;
+  const dbh = parseFloat(dbhSlider.value);
+  dbhVal.textContent = dbh;
+
+  syncInputs();
+  const heightUsed = parseInt(heightInput.value) || autoHeightFt(SPECIES[speciesKey], dbh);
+  const crownUsed = parseInt(crownInput.value) || autoCrownRadiusFt(SPECIES[speciesKey], dbh);
+
+  const r = compute(speciesKey, dbh, trimPct);
+
+  document.getElementById('height').textContent = heightUsed;
+  document.getElementById('crown').textContent = crownUsed;
+  document.getElementById('crownDiam').textContent = crownUsed * 2;
+  document.getElementById('weightTotal').textContent = fmt(r.totalGreen, 0);
+  document.getElementById('weightTons').textContent = fmt(r.totalGreen / 2000, 2);
+  document.getElementById('brushMass').textContent = fmt(r.brushMass, 0);
+  document.getElementById('logMass').textContent = fmt(r.logMass, 0);
+  document.getElementById('profile').textContent = r.handlingProfile.toUpperCase();
+  document.getElementById('brushTimeRule').textContent = `${r.brushSecPerCut} sec/cut (${r.handlingProfile})`;
+
+  const tbody = document.getElementById('cutTable');
+  tbody.innerHTML = '';
+  [...r.brushBreakdown, ...r.logBreakdown].forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.label}</td>
+      <td class="dim">${row.diam}</td>
+      <td class="dim">${row.cutLen} ft</td>
+      <td class="num">${row.cuts}</td>
+      <td class="dim">${row.sec}s</td>
+      <td class="num">${formatTime(row.total)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  const totalTr = document.createElement('tr');
+  totalTr.className = 'total';
+  totalTr.innerHTML = `
+    <td>TOTAL</td><td></td><td></td>
+    <td class="num">${r.totalCuts}</td><td></td>
+    <td class="num">${formatTime(r.totalSec)}</td>
+  `;
+  tbody.appendChild(totalTr);
+
+  document.getElementById('brushCuts').textContent = r.brushCuts;
+  document.getElementById('logCuts').textContent = r.logCutsTotal;
+  document.getElementById('totalCuts').textContent = r.totalCuts;
+  document.getElementById('totalTime').textContent = fmt(r.totalSec / 60, 1);
+  document.getElementById('totalSec').textContent = `${fmt(r.totalSec, 0)} sec total`;
+
+  const bar = document.getElementById('timeBar');
+  bar.innerHTML = '';
+  const segs = [
+    { cls: 'seg-brush', sec: r.brushSecTotal, label: 'Brush' },
+    { cls: 'seg-log12', sec: r.logBreakdown[0].total, label: '12–18' },
+    { cls: 'seg-log18', sec: r.logBreakdown[1].total, label: '18–24' },
+    { cls: 'seg-log24', sec: r.logBreakdown[2].total, label: '24+' }
+  ];
+  segs.forEach(s => {
+    if (s.sec <= 0) return;
+    const pct = (s.sec / r.totalSec) * 100;
+    const div = document.createElement('div');
+    div.className = s.cls;
+    div.style.width = pct + '%';
+    div.textContent = pct >= 8 ? s.label : '';
+    bar.appendChild(div);
+  });
+}
+
+speciesSel.addEventListener('change', () => {
+  heightOverride = null;
+  crownOverride = null;
+  render();
+});
+dbhSlider.addEventListener('input', render);
+
+document.getElementById('heightUp').addEventListener('click', () => {
+  heightOverride = (parseInt(heightInput.value) || 0) + 1;
+  render();
+});
+document.getElementById('heightDown').addEventListener('click', () => {
+  heightOverride = Math.max(1, (parseInt(heightInput.value) || 0) - 1);
+  render();
+});
+heightInput.addEventListener('change', () => {
+  const v = parseInt(heightInput.value);
+  if (!isNaN(v) && v > 0) heightOverride = v;
+  render();
+});
+document.getElementById('resetHeight').addEventListener('click', () => {
+  heightOverride = null;
+  render();
+});
+document.getElementById('crownUp').addEventListener('click', () => {
+  crownOverride = (parseInt(crownInput.value) || 0) + 1;
+  render();
+});
+document.getElementById('crownDown').addEventListener('click', () => {
+  crownOverride = Math.max(1, (parseInt(crownInput.value) || 0) - 1);
+  render();
+});
+crownInput.addEventListener('change', () => {
+  const v = parseInt(crownInput.value);
+  if (!isNaN(v) && v > 0) crownOverride = v;
+  render();
+});
+document.getElementById('resetCrown').addEventListener('click', () => {
+  crownOverride = null;
+  render();
+});
+
+// Trim segmented control
+document.getElementById('trimSeg').addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#trimSeg button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  trimPct = parseInt(e.target.dataset.v);
+  render();
+});
+
+/* =================== ID QUIZ =================== */
+const quizModal = document.getElementById('quizModal');
+const quizBody = document.getElementById('quizBody');
+let quizPath = ['start'];
+
+function renderQuiz() {
+  const nodeKey = quizPath[quizPath.length - 1];
+  const node = QUIZ[nodeKey];
+  if (!node) return;
+  let html = `<div class="quiz-step"><h3>${node.q}</h3><div class="quiz-options">`;
+  node.options.forEach((opt, i) => {
+    html += `<button data-i="${i}">${opt.label}</button>`;
+  });
+  html += `</div>`;
+  if (quizPath.length > 1) {
+    html += `<button class="quiz-back">← BACK</button>`;
+  }
+  html += `</div>`;
+  quizBody.innerHTML = html;
+  quizBody.querySelectorAll('.quiz-options button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.dataset.i);
+      const opt = node.options[i];
+      if (opt.matches) {
+        showMatches(opt.matches);
+      } else if (opt.next) {
+        quizPath.push(opt.next);
+        renderQuiz();
+      }
+    });
+  });
+  const backBtn = quizBody.querySelector('.quiz-back');
+  if (backBtn) backBtn.addEventListener('click', () => {
+    quizPath.pop();
+    renderQuiz();
+  });
+}
+
+function showMatches(speciesKeys) {
+  let html = `<div class="quiz-result"><strong style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.15em;">LIKELY MATCHES</strong>`;
+  html += `<p style="font-size:12px;margin-top:8px;">Tap one to use it:</p><div class="matches">`;
+  speciesKeys.forEach(k => {
+    if (SPECIES[k]) {
+      html += `<button class="match" data-k="${k}">${SPECIES[k].name}</button>`;
+    }
+  });
+  html += `</div><button class="quiz-back">← START OVER</button></div>`;
+  quizBody.innerHTML = html;
+  quizBody.querySelectorAll('button.match').forEach(btn => {
+    btn.addEventListener('click', () => {
+      speciesSel.value = btn.dataset.k;
+      heightOverride = null;
+      crownOverride = null;
+      render();
+      closeQuiz();
+    });
+  });
+  quizBody.querySelector('.quiz-back').addEventListener('click', () => {
+    quizPath = ['start'];
+    renderQuiz();
+  });
+}
+
+function openQuiz() {
+  quizPath = ['start'];
+  renderQuiz();
+  quizModal.classList.add('open');
+}
+function closeQuiz() {
+  quizModal.classList.remove('open');
+}
+document.getElementById('openQuiz').addEventListener('click', openQuiz);
+document.getElementById('quizClose').addEventListener('click', closeQuiz);
+quizModal.addEventListener('click', (e) => {
+  if (e.target === quizModal) closeQuiz();
+});
+
+render();
+</script>
+</body>
+</html>

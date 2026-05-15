@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<title>TreeQ — Billing</title>
+<style>
+  :root {
+    --forest: #2d5a3d;
+    --forest-dark: #1f4029;
+    --gold: #e9c466;
+    --cream: #f4f8f1;
+    --ink: #1a2a1f;
+    --muted: #6b7a6f;
+    --border: #d9e1d6;
+    --shadow: 0 1px 2px rgba(45,90,61,.08), 0 4px 12px rgba(45,90,61,.06);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { max-width: 580px; margin: 0 auto; padding: 36px 24px; }
+  h1 { color: var(--forest); margin: 0 0 8px; }
+  .sub { color: var(--muted); margin-bottom: 22px; }
+  .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 22px;
+    box-shadow: var(--shadow); margin-bottom: 16px; }
+  .price { font-size: 36px; font-weight: 700; color: var(--forest); }
+  .plan-tag {
+    display: inline-block; background: var(--gold); color: var(--forest-dark);
+    padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;
+  }
+  ul { padding-left: 20px; line-height: 1.5; color: var(--ink); }
+  button.cta {
+    width: 100%; padding: 14px; border: 0; background: var(--forest); color: white;
+    border-radius: 10px; font: inherit; font-size: 15px; font-weight: 600;
+    cursor: not-allowed; opacity: 0.7; margin-top: 12px;
+  }
+  .nav { font-size: 13px; color: var(--muted); margin-top: 20px; }
+  .nav a { color: var(--forest-dark); text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<h1>TreeQ Billing</h1>
+<div class="sub">During the early-access period, every feature is free. Stripe wiring is staged behind a flag.</div>
+
+<div class="card">
+  <span class="plan-tag">Current plan</span>
+  <div class="price">$0<span style="font-size:14px; color:var(--muted); margin-left:6px;">/ month</span></div>
+  <ul>
+    <li>Unlimited conversational estimates</li>
+    <li>Notion source ingestion</li>
+    <li>Voice transcription</li>
+    <li>All future features for early adopters</li>
+  </ul>
+  <button class="cta" disabled>Upgrade — coming soon</button>
+</div>
+
+<div class="card">
+  <span class="plan-tag" style="background:var(--cream); color:var(--muted);">Coming later</span>
+  <div class="price" style="color:var(--muted);">$X / mo</div>
+  <ul>
+    <li>Stripe-checkout subscription (B2B SaaS — no IAP)</li>
+    <li>Per-tenant usage caps + overage</li>
+    <li>Annual discount</li>
+  </ul>
+</div>
+
+<div class="nav"><a href="/admin.html">← Admin</a> · <a href="/dashboard.html">Dashboard</a></div>
+</body>
+</html>

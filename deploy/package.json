@@ -1,0 +1,13 @@
+{
+  "name": "spartan-cut-estimator",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Spartan Aerial Cut Estimator — Cloudflare Pages + Workers split deployment.",
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public --project-name=spartan-cut-estimator"
+  },
+  "devDependencies": {
+    "wrangler": "^3.80.0"
+  }
+}

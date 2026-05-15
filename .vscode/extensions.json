@@ -1,0 +1,22 @@
+﻿{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "supabase.vscode-supabase-extension",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    "mikestead.dotenv",
+    "eamodio.gitlens",
+    "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker",
+    "wmaurer.change-case",
+    "ionic.ionic",
+    "redhat.vscode-yaml",
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-mermaid",
+    "tamasfe.even-better-toml"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript-next"
+  ]
+}

@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>TreeQ — v2.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     SPARTAN / NEXT MILLION — Mobile Cut Estimator v2.3
+     Light theme, forest-on-cream, Jobber-style layout grammar.
+     ========================================================= */
+  :root {
+    /* Brand */
+    --forest:        #2d5a3d;
+    --forest-deep:   #1f3f2a;
+    --forest-tint:   #3d7050;
+    --gold:          #c9a23c;
+    --gold-bright:   #e9c466;
+
+    /* Surfaces */
+    --bg:            #f4f8f1;
+    --surface:       #ffffff;
+    --surface-2:     #f0f4ec;
+    --line:          #e3ead8;
+
+    /* Ink */
+    --ink:           #14241b;
+    --ink-2:         #314a3a;
+    --ink-3:         #6a7e72;
+    --ink-faint:     #98a89d;
+
+    /* Status */
+    --ok-bg:         #dcefdc;
+    --ok-fg:         #2c6738;
+    --warn-bg:       #fff4d6;
+    --warn-fg:       #8a6a14;
+
+    /* Time-bar segments (cool→warm by class size) */
+    --seg-brush:     #4a8158;
+    --seg-log12:     #c9a23c;
+    --seg-log18:     #b08838;
+    --seg-log24:     #8a6a2a;
+
+    /* Type scale */
+    --t-display:  28px;
+    --t-h1:       22px;
+    --t-h2:       18px;
+    --t-body:     16px;
+    --t-meta:     14px;
+    --t-tiny:     12px;
+
+    /* Radii / spacing */
+    --r-sm:  8px;
+    --r-md:  12px;
+    --r-lg:  16px;
+    --r-pill: 999px;
+    --tap:   48px;
+    --pad:   16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: #ddd;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--ink-2);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* Phone frame for desktop preview; full-width on actual phone */
+  .app {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 32px rgba(0,0,0,0.08);
+    padding-bottom: 40px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px var(--pad);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .brand-block { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 36px; height: 36px;
+    background: var(--forest);
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--gold-bright);
+  }
+  .brand-mark svg { width: 22px; height: 22px; }
+  .brand-name {
+    font-size: 15px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .topbar-version {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    color: var(--ink-faint); text-transform: uppercase;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--surface);
+    padding: 22px var(--pad) 18px;
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .hero--hidden { display: none; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 26px; padding: 0 10px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-tiny); font-weight: 600; letter-spacing: 0.02em;
+  }
+  .pill.ok    { background: var(--ok-bg);   color: var(--ok-fg); }
+  .pill.warn  { background: var(--warn-bg); color: var(--warn-fg); }
+  .pill .dot  { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.85; }
+
+  .hero-title {
+    font-size: var(--t-display); font-weight: 800; letter-spacing: -0.01em;
+    color: var(--ink); line-height: 1.15;
+    margin: 10px 0 4px;
+  }
+  .hero-sub {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.05em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .stat {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .stat-val {
+    font-size: 26px; font-weight: 800; color: var(--ink);
+    line-height: 1; letter-spacing: -0.02em;
+  }
+  .stat-unit {
+    font-size: 13px; font-weight: 700; color: var(--ink-3);
+    margin-left: 2px;
+  }
+  .stat-lbl {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .stat.hero-stat {
+    background: var(--forest);
+    border-color: var(--forest);
+  }
+  .stat.hero-stat .stat-val { color: var(--gold-bright); }
+  .stat.hero-stat .stat-unit { color: rgba(255,255,255,0.7); }
+  .stat.hero-stat .stat-lbl { color: rgba(255,255,255,0.75); }
+  .stat-note {
+    font-size: 9px; color: var(--ink-faint); margin-top: 2px;
+    font-weight: 500;
+  }
+  .stat.hero-stat .stat-note { color: rgba(255,255,255,0.6); }
+
+  .time-strip { margin-top: 16px; }
+  .time-strip-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .time-bar {
+    display: flex; height: 28px;
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+  }
+  .time-bar > div {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: white;
+    transition: width 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .seg-brush { background: var(--seg-brush); }
+  .seg-log12 { background: var(--seg-log12); }
+  .seg-log18 { background: var(--seg-log18); }
+  .seg-log24 { background: var(--seg-log24); }
+
+  /* ---------- Section labels ---------- */
+  .section-label {
+    font-size: var(--t-tiny); font-weight: 700; letter-spacing: 0.1em;
+    color: var(--ink-3); text-transform: uppercase;
+    padding: 22px var(--pad) 10px;
+  }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .card + .card { border-top: 0; }
+  .card-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px var(--pad) 6px;
+    min-height: var(--tap);
+  }
+  .card-row .row-label {
+    font-size: var(--t-meta); font-weight: 700; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .card-row .row-value {
+    font-size: var(--t-meta); font-weight: 700; color: var(--ink);
+  }
+  .card-row .row-value-big {
+    font-size: 22px; font-weight: 800; color: var(--forest);
+    letter-spacing: -0.01em;
+  }
+  .card-content {
+    padding: 6px var(--pad) 14px;
+  }
+
+  /* ---------- Buttons ---------- */
+  .text-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--forest);
+    font-family: inherit;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    padding: 6px 10px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .text-btn:active { background: var(--surface-2); }
+  .icon-btn {
+    width: var(--tap); height: var(--tap);
+    display: inline-flex; align-items: center; justify-content: center;
+    background: transparent; border: 0;
+    color: var(--forest); cursor: pointer;
+    border-radius: var(--r-md);
+  }
+  .icon-btn:active { background: var(--surface-2); }
+  .icon-btn svg { width: 22px; height: 22px; }
+
+  /* ---------- Form fields ---------- */
+  select, input[type=number] {
+    font-family: inherit;
+  }
+  .select-wrap select {
+    width: 100%;
+    height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 0 14px;
+    font-size: var(--t-body); font-weight: 600;
+    color: var(--ink);
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232d5a3d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+  }
+  .select-wrap select:focus {
+    outline: none;
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
+  }
+  .location-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+
+  optgroup { color: var(--forest); font-weight: 700; }
+  optgroup option { color: var(--ink); font-weight: 400; }
+
+  /* ---------- DBH slider ---------- */
+  .slider-wrap { padding-top: 4px; }
+  .slider-wrap input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; border-radius: 999px;
+    background: var(--line);
+    outline: none;
+    margin: 8px 0 6px;
+  }
+  .slider-wrap input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px; border-radius: 999px;
+  }
+  .slider-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--forest);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    margin-top: -11px;
+  }
+  .slider-wrap input[type="range"]::-moz-range-thumb {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--forest);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+  .slider-meta {
+    display: flex; justify-content: space-between;
+    font-size: 11px; font-weight: 600; color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  /* ---------- Stepper ---------- */
+  .stepper {
+    display: grid; grid-template-columns: 56px 1fr 56px;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .stepper button {
+    height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    font-size: 24px; font-weight: 700;
+    color: var(--ink); cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .stepper button:active {
+    background: var(--forest);
+    color: white;
+    border-color: var(--forest);
+  }
+  .stepper input {
+    height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    text-align: center;
+    font-size: 18px; font-weight: 700;
+    color: var(--ink);
+    font-family: inherit;
+  }
+  .stepper input:focus {
+    outline: none;
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
+  }
+  .auto-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--ink-faint); text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .auto-tag.modified { color: var(--gold); }
+
+
+  /* ---------- DBH oversize toggle (small grayed-out checkbox) ---------- */
+  .oversize-toggle {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 10px;
+    font-size: 12px; font-weight: 500;
+    color: var(--ink-faint);
+    cursor: pointer;
+    user-select: none;
+  }
+  .oversize-toggle input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--ink-3);
+    cursor: pointer;
+    margin: 0;
+  }
+  .oversize-toggle:hover { color: var(--ink-3); }
+
+  /* ---------- Row description (small helper text under the row label) ---------- */
+  .row-desc {
+    font-size: 11px; font-weight: 500;
+    color: var(--ink-faint);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+  .card-row .row-stack { display: flex; flex-direction: column; }
+
+  /* ---------- Calculate button ---------- */
+  .calc-wrap {
+    padding: 18px var(--pad) 4px;
+  }
+  .calc-button {
+    width: 100%;
+    min-height: 52px;
+    background: var(--forest);
+    color: var(--bg);
+    border: 0;
+    border-radius: var(--r-md);
+    font-family: inherit;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .calc-button:active { background: var(--forest-deep); }
+
+  /* ---------- Trim segmented control ---------- */
+  .seg-row {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .seg-row button {
+    height: 44px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+  }
+  .seg-row button:active { background: var(--surface-2); }
+  .seg-row button.active {
+    background: var(--forest);
+    color: white;
+    border-color: var(--forest);
+  }
+
+  /* ---------- Key-value rows (tree profile, cut rules) ---------- */
+  .kv-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px var(--pad);
+    border-bottom: 1px solid var(--surface-2);
+    font-size: var(--t-meta);
+  }
+  .kv-row:last-child { border-bottom: 0; }
+  .kv-row .k { color: var(--ink-3); font-weight: 500; }
+  .kv-row .v { color: var(--ink); font-weight: 700; }
+  .kv-row .v-accent { color: var(--forest); }
+
+  /* ---------- Cut breakdown table ---------- */
+  .cuts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .cuts-table th, .cuts-table td {
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--surface-2);
+  }
+  .cuts-table th {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .cuts-table th:first-child, .cuts-table td:first-child { padding-left: var(--pad); }
+  .cuts-table th:last-child, .cuts-table td:last-child { padding-right: var(--pad); }
+  .cuts-table td { color: var(--ink); font-weight: 500; }
+  .cuts-table td.dim { color: var(--ink-3); font-weight: 400; }
+  .cuts-table td.num { text-align: right; font-weight: 700; color: var(--ink); }
+  .cuts-table tr.total {
+    background: var(--surface-2);
+  }
+  .cuts-table tr.total td {
+    border-bottom: 0;
+    font-weight: 800;
+    color: var(--forest);
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 24px var(--pad);
+    text-align: center;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--ink-faint); text-transform: uppercase;
+  }
+
+  /* ---------- Modal (ID Quiz) ---------- */
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(20, 36, 27, 0.55);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+    padding: 0;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 16px var(--pad) 24px;
+    position: relative;
+  }
+  .modal::before {
+    content: '';
+    display: block;
+    width: 36px; height: 4px;
+    background: var(--line);
+    border-radius: 999px;
+    margin: 0 auto 14px;
+  }
+  .modal-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 36px; height: 36px;
+    background: var(--surface-2);
+    border: 0; color: var(--ink-2);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px; font-weight: 600; line-height: 1;
+    font-family: inherit;
+  }
+  .modal-close:active { background: var(--line); }
+  .modal h2 {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--ink); margin-bottom: 6px;
+    padding-right: 40px;
+  }
+  .modal p {
+    font-size: var(--t-meta); color: var(--ink-3);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .quiz-step h3 {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--forest); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .quiz-options {
+    display: grid; gap: 8px;
+  }
+  .quiz-options button {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--t-meta); font-weight: 500;
+    border-radius: var(--r-md);
+    line-height: 1.4;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .quiz-options button:active {
+    background: var(--surface-2);
+    border-color: var(--forest);
+  }
+  .quiz-result {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    padding: 14px;
+    border-radius: var(--r-md);
+    margin-top: 8px;
+  }
+  .quiz-result strong {
+    /* override JS inline style to keep visual consistency */
+    display: block;
+  }
+  .matches { display: grid; gap: 8px; margin-top: 10px; }
+  button.match {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 12px 14px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--t-meta); font-weight: 600;
+    border-radius: var(--r-md);
+  }
+  button.match:active {
+    background: var(--forest);
+    color: white;
+    border-color: var(--forest);
+  }
+  .quiz-back {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-3);
+    font-family: inherit;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    padding: 8px 14px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+  .quiz-back:active { background: var(--surface-2); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5h6"/><path d="M5 22V11l7-4 7 4v11"/><path d="M9 22v-6h6v6"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">TreeQ</div>
+        <div class="brand-sub">Next Million</div>
+      </div>
+    </div>
+    <div class="topbar-version">v2.3</div>
+  </header>
+
+  <div class="scroll-zone">
+
+  <!-- ============ HERO / LIVE SUMMARY ============ -->
+  <section class="hero hero--hidden" id="hero">
+    <span class="pill ok"><span class="dot"></span>Live Estimate</span>
+    <h1 class="hero-title" id="heroTitle">Aerial cut estimate</h1>
+    <div class="hero-sub" id="heroSub">Open-field · 10/10 operator</div>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-val"><span id="brushCuts">—</span></div>
+        <div class="stat-lbl">Brush</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val"><span id="logCuts">—</span></div>
+        <div class="stat-lbl">Logs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val"><span id="totalCuts">—</span></div>
+        <div class="stat-lbl">Total cuts</div>
+      </div>
+      <div class="stat hero-stat">
+        <div class="stat-val"><span id="totalTime">—</span><span class="stat-unit">m</span></div>
+        <div class="stat-lbl">Aerial time</div>
+        <div class="stat-note" id="totalSec">— sec</div>
+      </div>
+    </div>
+
+    <div class="time-strip">
+      <div class="time-strip-label">Time composition</div>
+      <div class="time-bar" id="timeBar"></div>
+    </div>
+  </section>
+
+  <!-- ============ INPUTS ============ -->
+  <div class="section-label">Inputs</div>
+
+  <!-- Location -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Location</span>
+    </div>
+    <div class="card-content select-wrap">
+      <div class="location-pair">
+        <select id="state">
+          <option value="NY">New York</option>
+          <option value="" disabled>(more coming)</option>
+        </select>
+        <select id="city">
+          <option value="rochester">Rochester</option>
+          <option value="" disabled>(more coming)</option>
+        </select>
+      </div>
+      <div class="auto-tag">Drives species list + zone defaults</div>
+    </div>
+  </div>
+
+  <!-- Species -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Species</span>
+      <button class="text-btn" id="openQuiz">Help me ID</button>
+    </div>
+    <div class="card-content select-wrap">
+      <select id="species"></select>
+    </div>
+  </div>
+
+  <!-- DBH -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">DBH (Diameter at Breast Height)</span>
+      <span class="row-value-big"><span id="dbhVal">24</span>″</span>
+    </div>
+    <div class="card-content slider-wrap">
+      <input type="range" id="dbh" min="6" max="48" step="1" value="24" />
+      <div class="slider-meta" id="sliderMeta"><span>6″</span><span>48″</span></div>
+      <label class="oversize-toggle">
+        <input type="checkbox" id="dbhOversize" />
+        <span>Tree over 48″ (extends slider to 90″)</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Height -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Height (ft)</span>
+      <button class="text-btn" id="resetHeight">Auto</button>
+    </div>
+    <div class="card-content">
+      <div class="stepper">
+        <button id="heightDown" aria-label="Decrease height">−</button>
+        <input type="number" id="heightInput" step="1" inputmode="numeric" />
+        <button id="heightUp" aria-label="Increase height">+</button>
+      </div>
+      <div class="auto-tag" id="heightTag">Auto from species + DBH</div>
+    </div>
+  </div>
+
+  <!-- Crown radius -->
+  <div class="card">
+    <div class="card-row">
+      <div class="row-stack">
+        <span class="row-label">Crown radius (ft)</span>
+        <span class="row-desc">Trunk to farthest branch tip, measured from ground</span>
+      </div>
+      <button class="text-btn" id="resetCrown">Auto</button>
+    </div>
+    <div class="card-content">
+      <div class="stepper">
+        <button id="crownDown" aria-label="Decrease crown">−</button>
+        <input type="number" id="crownInput" step="1" inputmode="numeric" />
+        <button id="crownUp" aria-label="Increase crown">+</button>
+      </div>
+      <div class="auto-tag" id="crownTag">Auto from species + DBH</div>
+    </div>
+  </div>
+
+  <!-- Pre-existing trim -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Pre-existing trim</span>
+    </div>
+    <div class="card-content">
+      <div class="seg-row" id="trimSeg">
+        <button data-v="5" class="active">0–10%</button>
+        <button data-v="15">10–20%</button>
+        <button data-v="25">20–30%</button>
+        <button data-v="35">30–40%</button>
+        <button data-v="45">40–50%</button>
+      </div>
+      <div class="auto-tag">Reduces brush AND log mass proportionally</div>
+    </div>
+  </div>
+
+  <!-- Calculate button (reveals hero on first press) -->
+  <div class="calc-wrap">
+    <button type="button" class="calc-button" id="calcBtn">Calculate</button>
+  </div>
+
+  </div><!-- /.scroll-zone -->
+
+  <!-- ============ TREE PROFILE ============ -->
+  <div class="section-label">Tree profile</div>
+  <div class="card">
+    <div class="kv-row"><span class="k">Height (used)</span><span class="v"><span id="height">—</span> ft</span></div>
+    <div class="kv-row"><span class="k">Crown radius</span><span class="v"><span id="crown">—</span> ft</span></div>
+    <div class="kv-row"><span class="k">Crown diameter</span><span class="v"><span id="crownDiam">—</span> ft</span></div>
+    <div class="kv-row"><span class="k">Green weight</span><span class="v"><span id="weightTotal">—</span> lbs</span></div>
+    <div class="kv-row"><span class="k">Green weight (tons)</span><span class="v"><span id="weightTons">—</span> T</span></div>
+    <div class="kv-row"><span class="k">Brush mass (effective)</span><span class="v"><span id="brushMass">—</span> lbs</span></div>
+    <div class="kv-row"><span class="k">Log mass (&gt;12″)</span><span class="v"><span id="logMass">—</span> lbs</span></div>
+    <div class="kv-row"><span class="k">Handling profile</span><span class="v v-accent" id="profile">—</span></div>
+  </div>
+
+  <!-- ============ CUT BREAKDOWN ============ -->
+  <div class="section-label">Cut breakdown</div>
+  <div class="card">
+    <table class="cuts-table">
+      <thead>
+        <tr>
+          <th>Class</th><th>Diameter</th><th>Cut length</th>
+          <th>Cuts</th><th>Sec/cut</th><th class="num">Time</th>
+        </tr>
+      </thead>
+      <tbody id="cutTable"></tbody>
+    </table>
+  </div>
+
+  <!-- ============ CUT RULES ============ -->
+  <div class="section-label">Cut rules</div>
+  <div class="card">
+    <div class="kv-row"><span class="k">Brush &lt;4″ (15 ft sections)</span><span class="v v-accent">20 sec/cut</span></div>
+    <div class="kv-row"><span class="k">Brush 4–8″ (15 ft sections)</span><span class="v v-accent">30 sec/cut</span></div>
+    <div class="kv-row"><span class="k">Brush 8–12″ (15 ft sections)</span><span class="v v-accent">60 sec/cut</span></div>
+    <div class="kv-row"><span class="k">Log 12–18″</span><span class="v">8 ft @ 2 min</span></div>
+    <div class="kv-row"><span class="k">Log 18–24″</span><span class="v">8 ft @ 3 min</span></div>
+    <div class="kv-row"><span class="k">Log 24″+</span><span class="v">8 ft @ 4 min</span></div>
+  </div>
+
+  <footer>
+    TreeQ · Spartan Tree &amp; Landscape · Next Million · v2.3 · Calibration values are server-side
+  </footer>
+</div>
+
+<!-- ID QUIZ MODAL -->
+<div class="modal-bg" id="quizModal">
+  <div class="modal">
+    <button class="modal-close" id="quizClose" aria-label="Close">×</button>
+    <h2>Help Me Identify</h2>
+    <p>Answer a few quick questions to narrow down the species.</p>
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SPARTAN CUT ESTIMATOR — Frontend v2.0 (thin client)
+
+   The species database, biomass coefficients, brush-handling
+   profiles, and math engine are NOT in this file. They live on
+   the server at /api/* and never touch the browser. View Source
+   on this page reveals only the UI shell + the ID quiz tree.
+   ============================================================ */
+
+let SPECIES_LIST = [];        // [{key, name, group}, ...]
+let SPECIES_BY_KEY = {};      // {key: {name, group}}
+
+/* =================== ID QUIZ DATA ===================
+   References species KEYS only — no calibration values.
+   Safe to keep client-side. */
+const QUIZ = {
+  start: {
+    q: "Leaves or needles?",
+    options: [
+      { label: "Needles or scale-like (evergreen)", next: 'conifer' },
+      { label: "Broad leaves (deciduous)", next: 'deciduous' }
+    ]
+  },
+  conifer: {
+    q: "What kind of needles?",
+    options: [
+      { label: "Long needles in clusters of 2–5 (pine)", next: 'pine' },
+      { label: "Short single needles, square cross-section (spruce)", next: 'spruce' },
+      { label: "Short flat needles, soft (hemlock/fir)", matches: ['hemlock'] },
+      { label: "Tiny scale-like leaves (cedar/arborvitae)", matches: ['arborvitae'] }
+    ]
+  },
+  pine: {
+    q: "Pine needle count per bundle?",
+    options: [
+      { label: "5 needles (soft, blue-green)", matches: ['white_pine'] },
+      { label: "2 needles (long, reddish bark)", matches: ['red_pine'] },
+      { label: "2 needles (short, twisted, orange bark)", matches: ['scotch_pine'] }
+    ]
+  },
+  spruce: {
+    q: "Spruce color/feel?",
+    options: [
+      { label: "Dark green, drooping branches", matches: ['norway_spruce'] },
+      { label: "Light blue-green, sharp needles", matches: ['blue_spruce'] },
+      { label: "Pale green/grayish", matches: ['white_spruce'] }
+    ]
+  },
+  deciduous: {
+    q: "Leaf arrangement on twig?",
+    options: [
+      { label: "Opposite (leaves directly across from each other)", next: 'opposite' },
+      { label: "Alternate (leaves staggered)", next: 'alternate' }
+    ]
+  },
+  opposite: {
+    q: "Leaf shape?",
+    options: [
+      { label: "Lobed (like a maple)", next: 'maple' },
+      { label: "Compound, pinnate (multiple leaflets in a row — ash)", next: 'ash' },
+      { label: "Compound, palmate (5–7 leaflets in a hand shape — horse chestnut)", matches: ['horse_chestnut'] },
+      { label: "Heart-shaped, large", matches: ['catalpa'] }
+    ]
+  },
+  maple: {
+    q: "Maple specifics?",
+    options: [
+      { label: "Deeply cut leaves, silvery underside", matches: ['silver_maple'] },
+      { label: "Compound leaves, irregular form, leans", matches: ['boxelder'] },
+      { label: "Leaves wider than long, dark, sap is milky", matches: ['norway_maple'] },
+      { label: "Classic 5-lobe, U-shaped notches, red fall", matches: ['sugar_maple', 'black_maple'] },
+      { label: "Smaller leaves, red flowers in spring, red fall", matches: ['red_maple', 'freeman_maple'] }
+    ]
+  },
+  ash: {
+    q: "Ash specifics?",
+    options: [
+      { label: "Diamond-pattern bark, larger size", matches: ['white_ash'] },
+      { label: "Wet sites, thinner bark", matches: ['black_ash', 'green_ash'] }
+    ]
+  },
+  alternate: {
+    q: "Leaf shape?",
+    options: [
+      { label: "Lobed (like an oak)", next: 'oak' },
+      { label: "Compound (walnut, locust, hickory)", next: 'compound' },
+      { label: "Simple, toothed (cherry, birch, etc.)", next: 'simple_alt' },
+      { label: "Simple, smooth-edged", next: 'smooth_alt' },
+      { label: "Star/tulip shaped", matches: ['tulip_poplar'] },
+      { label: "Fan-shaped (no other tree like it)", matches: ['ginkgo'] },
+      { label: "Long toothed leaf, spiny burr fruit (chestnut)", matches: ['chinese_chestnut'] }
+    ]
+  },
+  oak: {
+    q: "Oak leaf type?",
+    options: [
+      { label: "Pointed lobes with bristles (red oak group)", next: 'red_oak_group' },
+      { label: "Rounded lobes, no bristles (white oak group)", next: 'white_oak_group' }
+    ]
+  },
+  red_oak_group: {
+    q: "Red oak details?",
+    options: [
+      { label: "Tall, smooth gray bark with stripes, large leaves", matches: ['red_oak'] },
+      { label: "Strongly pyramidal shape, drooping lower branches", matches: ['pin_oak'] }
+    ]
+  },
+  white_oak_group: {
+    q: "White oak details?",
+    options: [
+      { label: "Pale gray flaky bark, deeply lobed leaves", matches: ['white_oak'] },
+      { label: "Massive limbs, corky bark, large acorns with fringed cap", matches: ['bur_oak'] },
+      { label: "Wet sites, peeling bark", matches: ['swamp_white_oak'] }
+    ]
+  },
+  compound: {
+    q: "Compound leaf details?",
+    options: [
+      { label: "Long compound, walnut smell, dark furrowed bark", matches: ['black_walnut'] },
+      { label: "Like walnut but lighter, husk is sticky", matches: ['butternut'] },
+      { label: "Large leaflets, shaggy peeling bark (hickory)", matches: ['shagbark_hickory'] },
+      { label: "Thorny trunk, big seed pods (locust)", next: 'locust' }
+    ]
+  },
+  locust: {
+    q: "Locust thorns?",
+    options: [
+      { label: "Big branched thorns, dark bark", matches: ['honey_locust'] },
+      { label: "Small paired thorns, fragrant white flowers", matches: ['black_locust'] }
+    ]
+  },
+  simple_alt: {
+    q: "Bark or other clues?",
+    options: [
+      { label: "White peeling bark", matches: ['white_birch'] },
+      { label: "Reddish papery peeling bark, wet sites", matches: ['river_birch'] },
+      { label: "Yellow/bronze peeling bark", matches: ['yellow_birch'] },
+      { label: "Smooth gray-white bark, smaller tree", matches: ['gray_birch'] },
+      { label: "Reddish-brown horizontal bark stripes (cherry-like)", next: 'cherry' },
+      { label: "Glossy leaves, white flowers in spring (pear/apple)", next: 'pear_apple' },
+      { label: "Mottled green/cream peeling bark, big leaves", matches: ['sycamore'] },
+      { label: "Smooth gray bark, beech-like", matches: ['beech'] },
+      { label: "Heart-shaped leaves, sweet flowers (linden)", next: 'linden' },
+      { label: "Triangular leaves, fluffy seeds, wet sites", matches: ['cottonwood', 'poplar_aspen'] },
+      { label: "Long narrow leaves, droopy, by water", matches: ['willow'] },
+      { label: "Heart-shaped leaves, edible berries (mulberry)", matches: ['mulberry'] },
+      { label: "Rough corky/warty bark, asymmetric leaf base", matches: ['hackberry'] }
+    ]
+  },
+  cherry: {
+    q: "Cherry size?",
+    options: [
+      { label: "Large mature tree, dark scaly bark", matches: ['black_cherry'] },
+      { label: "Small shrubby tree", matches: ['choke_cherry'] },
+      { label: "Showy pink/white flowers in spring", matches: ['ornamental_cherry'] }
+    ]
+  },
+  pear_apple: {
+    q: "Tree form?",
+    options: [
+      { label: "Tight teardrop shape, white flowers, smelly", matches: ['callery_pear'] },
+      { label: "Older fruit tree, irregular shape", matches: ['pear', 'apple'] },
+      { label: "Small ornamental, pink flowers", matches: ['crabapple'] },
+      { label: "Thorny, small red fruits", matches: ['hawthorn'] }
+    ]
+  },
+  linden: {
+    q: "Linden size?",
+    options: [
+      { label: "Large native, big leaves", matches: ['basswood'] },
+      { label: "Smaller leaves, tighter form, often street tree", matches: ['littleleaf_linden'] }
+    ]
+  },
+  smooth_alt: {
+    q: "Other features?",
+    options: [
+      { label: "Smooth gray bark, beech nuts", matches: ['beech'] },
+      { label: "Vase shape, classic American street tree", matches: ['american_elm'] },
+      { label: "Big saucer flowers, large glossy leaves", matches: ['magnolia'] },
+      { label: "Tall, fan-shaped leaves", matches: ['ginkgo'] }
+    ]
+  }
+};
+
+/* =================== UI ELEMENTS =================== */
+const speciesSel = document.getElementById('species');
+const dbhSlider  = document.getElementById('dbh');
+const dbhVal     = document.getElementById('dbhVal');
+const heightInput = document.getElementById('heightInput');
+const crownInput  = document.getElementById('crownInput');
+const heightTag   = document.getElementById('heightTag');
+const crownTag    = document.getElementById('crownTag');
+
+let heightOverride = null;
+let crownOverride = null;
+let trimPct = 5;
+
+let lastAuto = { height: null, crown: null };  // populated from API
+let inflightAbort = null;                      // current in-flight estimate request
+
+function fmt(n, dec = 0) {
+  if (!isFinite(n)) return '—';
+  return n.toLocaleString('en-US', { maximumFractionDigits: dec, minimumFractionDigits: dec });
+}
+function formatTime(sec) {
+  if (sec < 60) return `${Math.round(sec)}s`;
+  const m = Math.floor(sec / 60);
+  const s = Math.round(sec % 60);
+  return s === 0 ? `${m}m` : `${m}m ${s}s`;
+}
+
+/* =================== INITIAL LOAD =================== */
+async function loadSpecies() {
+  const resp = await fetch('/api/species');
+  if (!resp.ok) throw new Error('Failed to load species list');
+  const data = await resp.json();
+  SPECIES_LIST = data.species;
+  SPECIES_BY_KEY = {};
+  SPECIES_LIST.forEach(s => { SPECIES_BY_KEY[s.key] = { name: s.name, group: s.group }; });
+
+  // Populate the <select> with optgroups.
+  // Group order: Cameron's residential-removal frequency. Alphabetical within.
+  speciesSel.innerHTML = '';
+  const byGroup = {};
+  SPECIES_LIST.forEach(s => {
+    if (!byGroup[s.group]) byGroup[s.group] = [];
+    byGroup[s.group].push(s);
+  });
+  const order = [
+    "Ashes",
+    "Maples",
+    "Conifers",
+    "Locusts",
+    "Other Hardwoods",
+    "Oaks",
+    "Pears & Apples",
+    "Walnuts & Hickories",
+    "Cherries & Plums",
+    "Birches"
+  ];
+  order.forEach(g => {
+    if (!byGroup[g]) return;
+    const og = document.createElement('optgroup');
+    og.label = g;
+    byGroup[g].slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(spec => {
+      const opt = document.createElement('option');
+      opt.value = spec.key;
+      opt.textContent = spec.name;
+      og.appendChild(opt);
+    });
+    speciesSel.appendChild(og);
+  });
+  speciesSel.value = 'silver_maple';
+}
+
+/* =================== ESTIMATE FETCH =================== */
+async function fetchEstimate() {
+  // Cancel any in-flight request before issuing a new one
+  if (inflightAbort) inflightAbort.abort();
+  const ac = new AbortController();
+  inflightAbort = ac;
+
+  const speciesKey = speciesSel.value;
+  const dbh = parseFloat(dbhSlider.value);
+  const url = `/api/estimate?species=${encodeURIComponent(speciesKey)}&dbh=${dbh}&trim=${trimPct}`;
+
+  try {
+    const resp = await fetch(url, { signal: ac.signal });
+    if (!resp.ok) {
+      const errBody = await resp.json().catch(() => ({}));
+      throw new Error(errBody.error || `estimate failed: ${resp.status}`);
+    }
+    return await resp.json();
+  } catch (err) {
+    if (err.name === 'AbortError') return null;
+    console.error('Estimate error:', err);
+    return null;
+  } finally {
+    if (inflightAbort === ac) inflightAbort = null;
+  }
+}
+
+/* =================== RENDER =================== */
+function syncHeightCrownInputs() {
+  // Reflect override state in input values + tag
+  if (heightOverride === null) {
+    if (lastAuto.height !== null) heightInput.value = lastAuto.height;
+    heightTag.textContent = 'Auto from species + DBH';
+    heightTag.classList.remove('modified');
+  } else {
+    heightInput.value = heightOverride;
+    heightTag.textContent = 'User override';
+    heightTag.classList.add('modified');
+  }
+  if (crownOverride === null) {
+    if (lastAuto.crown !== null) crownInput.value = lastAuto.crown;
+    crownTag.textContent = 'Auto from species + DBH';
+    crownTag.classList.remove('modified');
+  } else {
+    crownInput.value = crownOverride;
+    crownTag.textContent = 'User override';
+    crownTag.classList.add('modified');
+  }
+}
+
+async function render() {
+  const dbh = parseFloat(dbhSlider.value);
+  dbhVal.textContent = dbh;
+
+  const r = await fetchEstimate();
+  if (!r) return;  // aborted or errored — leave previous render
+
+  // Track auto values from server so override toggling stays correct
+  lastAuto.height = r.autoHeight;
+  lastAuto.crown = r.autoCrown;
+  syncHeightCrownInputs();
+
+  const heightUsed = (heightOverride !== null) ? heightOverride : r.autoHeight;
+  const crownUsed  = (crownOverride !== null) ? crownOverride : r.autoCrown;
+
+  // Hero
+  document.getElementById('heroTitle').textContent = `${dbh}″ ${r.speciesName}`;
+  document.getElementById('heroSub').textContent = `${r.speciesGroup} · Open-field · 10/10 operator`;
+
+  // Tree profile
+  document.getElementById('height').textContent = heightUsed;
+  document.getElementById('crown').textContent = crownUsed;
+  document.getElementById('crownDiam').textContent = crownUsed * 2;
+  document.getElementById('weightTotal').textContent = fmt(r.totalGreen, 0);
+  document.getElementById('weightTons').textContent = fmt(r.totalGreen / 2000, 2);
+  document.getElementById('brushMass').textContent = fmt(r.brushMass, 0);
+  document.getElementById('logMass').textContent = fmt(r.logMass, 0);
+  document.getElementById('profile').textContent = r.handlingProfile.toUpperCase();
+
+  // Cut breakdown table
+  const tbody = document.getElementById('cutTable');
+  tbody.innerHTML = '';
+  [...r.brushBreakdown, ...r.logBreakdown].forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.label}</td>
+      <td class="dim">${row.diam}</td>
+      <td class="dim">${row.cutLen} ft</td>
+      <td class="num">${row.cuts}</td>
+      <td class="dim">${row.sec}s</td>
+      <td class="num">${formatTime(row.total)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  const totalTr = document.createElement('tr');
+  totalTr.className = 'total';
+  totalTr.innerHTML = `
+    <td>TOTAL</td><td></td><td></td>
+    <td class="num">${r.totalCuts}</td><td></td>
+    <td class="num">${formatTime(r.totalSec)}</td>
+  `;
+  tbody.appendChild(totalTr);
+
+  // Stat grid
+  document.getElementById('brushCuts').textContent = r.brushCuts;
+  document.getElementById('logCuts').textContent = r.logCutsTotal;
+  document.getElementById('totalCuts').textContent = r.totalCuts;
+  document.getElementById('totalTime').textContent = fmt(r.totalSec / 60, 1);
+  document.getElementById('totalSec').textContent = `${fmt(r.totalSec, 0)} sec total`;
+
+  // Time composition bar
+  const bar = document.getElementById('timeBar');
+  bar.innerHTML = '';
+  const segs = [
+    { cls: 'seg-brush', sec: r.brushSecTotal, label: 'Brush' },
+    { cls: 'seg-log12', sec: r.logBreakdown[0].total, label: '12–18' },
+    { cls: 'seg-log18', sec: r.logBreakdown[1].total, label: '18–24' },
+    { cls: 'seg-log24', sec: r.logBreakdown[2].total, label: '24+' }
+  ];
+  segs.forEach(s => {
+    if (s.sec <= 0) return;
+    const pct = (s.sec / r.totalSec) * 100;
+    const div = document.createElement('div');
+    div.className = s.cls;
+    div.style.width = pct + '%';
+    div.textContent = pct >= 8 ? s.label : '';
+    bar.appendChild(div);
+  });
+}
+
+/* =================== EVENT WIRING =================== */
+speciesSel.addEventListener('change', () => {
+  heightOverride = null;
+  crownOverride = null;
+  render();
+});
+dbhSlider.addEventListener('input', render);
+
+document.getElementById('dbhOversize').addEventListener('change', (e) => {
+  const meta = document.getElementById('sliderMeta');
+  if (e.target.checked) {
+    dbhSlider.min = 49;
+    dbhSlider.max = 90;
+    dbhSlider.value = 49;
+    meta.innerHTML = '<span>49″</span><span>90″</span>';
+  } else {
+    dbhSlider.min = 6;
+    dbhSlider.max = 48;
+    if (parseFloat(dbhSlider.value) > 48) dbhSlider.value = 24;
+    meta.innerHTML = '<span>6″</span><span>48″</span>';
+  }
+  render();
+});
+
+document.getElementById('heightUp').addEventListener('click', () => {
+  heightOverride = (parseInt(heightInput.value) || 0) + 1;
+  render();
+});
+document.getElementById('heightDown').addEventListener('click', () => {
+  heightOverride = Math.max(1, (parseInt(heightInput.value) || 0) - 1);
+  render();
+});
+heightInput.addEventListener('change', () => {
+  const v = parseInt(heightInput.value);
+  if (!isNaN(v) && v > 0) heightOverride = v;
+  render();
+});
+document.getElementById('resetHeight').addEventListener('click', () => {
+  heightOverride = null;
+  render();
+});
+document.getElementById('crownUp').addEventListener('click', () => {
+  crownOverride = (parseInt(crownInput.value) || 0) + 1;
+  render();
+});
+document.getElementById('crownDown').addEventListener('click', () => {
+  crownOverride = Math.max(1, (parseInt(crownInput.value) || 0) - 1);
+  render();
+});
+crownInput.addEventListener('change', () => {
+  const v = parseInt(crownInput.value);
+  if (!isNaN(v) && v > 0) crownOverride = v;
+  render();
+});
+document.getElementById('resetCrown').addEventListener('click', () => {
+  crownOverride = null;
+  render();
+});
+
+document.getElementById('trimSeg').addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#trimSeg button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  trimPct = parseInt(e.target.dataset.v);
+  render();
+});
+
+// Calculate button — reveals the hero on first press, then re-renders.
+// Live updates from inputs continue to flow into the (now visible) hero.
+document.getElementById('calcBtn').addEventListener('click', () => {
+  const hero = document.getElementById('hero');
+  hero.classList.remove('hero--hidden');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* =================== ID QUIZ =================== */
+const quizModal = document.getElementById('quizModal');
+const quizBody = document.getElementById('quizBody');
+let quizPath = ['start'];
+
+function renderQuiz() {
+  const nodeKey = quizPath[quizPath.length - 1];
+  const node = QUIZ[nodeKey];
+  if (!node) return;
+  let html = `<div class="quiz-step"><h3>${node.q}</h3><div class="quiz-options">`;
+  node.options.forEach((opt, i) => {
+    html += `<button data-i="${i}">${opt.label}</button>`;
+  });
+  html += `</div>`;
+  if (quizPath.length > 1) {
+    html += `<button class="quiz-back">← Back</button>`;
+  }
+  html += `</div>`;
+  quizBody.innerHTML = html;
+  quizBody.querySelectorAll('.quiz-options button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.dataset.i);
+      const opt = node.options[i];
+      if (opt.matches) {
+        showMatches(opt.matches);
+      } else if (opt.next) {
+        quizPath.push(opt.next);
+        renderQuiz();
+      }
+    });
+  });
+  const backBtn = quizBody.querySelector('.quiz-back');
+  if (backBtn) backBtn.addEventListener('click', () => {
+    quizPath.pop();
+    renderQuiz();
+  });
+}
+
+function showMatches(speciesKeys) {
+  let html = `<div class="quiz-result"><strong style="color:var(--forest);font-size:11px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;">Likely matches</strong>`;
+  html += `<p style="font-size:13px;margin-top:6px;color:var(--ink-3);">Tap one to use it:</p><div class="matches">`;
+  speciesKeys.forEach(k => {
+    if (SPECIES_BY_KEY[k]) {
+      html += `<button class="match" data-k="${k}">${SPECIES_BY_KEY[k].name}</button>`;
+    }
+  });
+  html += `</div><button class="quiz-back">← Start over</button></div>`;
+  quizBody.innerHTML = html;
+  quizBody.querySelectorAll('button.match').forEach(btn => {
+    btn.addEventListener('click', () => {
+      speciesSel.value = btn.dataset.k;
+      heightOverride = null;
+      crownOverride = null;
+      render();
+      closeQuiz();
+    });
+  });
+  quizBody.querySelector('.quiz-back').addEventListener('click', () => {
+    quizPath = ['start'];
+    renderQuiz();
+  });
+}
+
+function openQuiz() {
+  quizPath = ['start'];
+  renderQuiz();
+  quizModal.classList.add('open');
+}
+function closeQuiz() {
+  quizModal.classList.remove('open');
+}
+document.getElementById('openQuiz').addEventListener('click', openQuiz);
+document.getElementById('quizClose').addEventListener('click', closeQuiz);
+quizModal.addEventListener('click', (e) => {
+  if (e.target === quizModal) closeQuiz();
+});
+
+/* =================== BOOT =================== */
+(async () => {
+  try {
+    await loadSpecies();
+    await render();
+  } catch (err) {
+    console.error('Boot failed:', err);
+    document.getElementById('heroTitle').textContent = 'Cannot reach API';
+    document.getElementById('heroSub').textContent = err.message || 'Check console';
+  }
+})();
+</script>
+</body>
+</html>

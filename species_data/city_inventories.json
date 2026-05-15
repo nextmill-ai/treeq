@@ -1,0 +1,1605 @@
+[
+  {
+    "city": "New York City",
+    "total": 652168,
+    "rows": [
+      {
+        "common": "London planetree",
+        "scientific": "",
+        "count": 87014
+      },
+      {
+        "common": "honeylocust",
+        "scientific": "",
+        "count": 64263
+      },
+      {
+        "common": "Callery pear",
+        "scientific": "",
+        "count": 58931
+      },
+      {
+        "common": "pin oak",
+        "scientific": "",
+        "count": 53185
+      },
+      {
+        "common": "Norway maple",
+        "scientific": "",
+        "count": 34189
+      },
+      {
+        "common": "littleleaf linden",
+        "scientific": "",
+        "count": 29742
+      },
+      {
+        "common": "cherry",
+        "scientific": "",
+        "count": 29279
+      },
+      {
+        "common": "Japanese zelkova",
+        "scientific": "",
+        "count": 29258
+      },
+      {
+        "common": "ginkgo",
+        "scientific": "",
+        "count": 21024
+      },
+      {
+        "common": "Sophora",
+        "scientific": "",
+        "count": 19338
+      },
+      {
+        "common": "red maple",
+        "scientific": "",
+        "count": 17246
+      },
+      {
+        "common": "green ash",
+        "scientific": "",
+        "count": 16251
+      },
+      {
+        "common": "American linden",
+        "scientific": "",
+        "count": 13530
+      },
+      {
+        "common": "silver maple",
+        "scientific": "",
+        "count": 12277
+      },
+      {
+        "common": "sweetgum",
+        "scientific": "",
+        "count": 10657
+      },
+      {
+        "common": "northern red oak",
+        "scientific": "",
+        "count": 8400
+      },
+      {
+        "common": "silver linden",
+        "scientific": "",
+        "count": 7995
+      },
+      {
+        "common": "American elm",
+        "scientific": "",
+        "count": 7975
+      },
+      {
+        "common": "maple",
+        "scientific": "",
+        "count": 7080
+      },
+      {
+        "common": "purple-leaf plum",
+        "scientific": "",
+        "count": 6879
+      },
+      {
+        "common": "swamp white oak",
+        "scientific": "",
+        "count": 6598
+      },
+      {
+        "common": "crimson king maple",
+        "scientific": "",
+        "count": 5923
+      },
+      {
+        "common": "Chinese elm",
+        "scientific": "",
+        "count": 5345
+      },
+      {
+        "common": "'Schubert' chokecherry",
+        "scientific": "",
+        "count": 4888
+      },
+      {
+        "common": "Japanese tree lilac",
+        "scientific": "",
+        "count": 4568
+      }
+    ],
+    "source": "https://data.cityofnewyork.us/resource/uvpi-gqnh.json"
+  },
+  {
+    "city": "Denver",
+    "total": 368678,
+    "rows": [
+      {
+        "common": "Ash, Green",
+        "scientific": "",
+        "count": 24905
+      },
+      {
+        "common": "Honey Locust",
+        "scientific": "",
+        "count": 18791
+      },
+      {
+        "common": "Linden, Littleleaf",
+        "scientific": "",
+        "count": 13775
+      },
+      {
+        "common": "Maple, Silver",
+        "scientific": "",
+        "count": 11766
+      },
+      {
+        "common": "Elm, Siberian",
+        "scientific": "",
+        "count": 11402
+      },
+      {
+        "common": "Hackberry, Common",
+        "scientific": "",
+        "count": 11242
+      },
+      {
+        "common": "Ash, White",
+        "scientific": "",
+        "count": 10362
+      },
+      {
+        "common": "Pear, Flowering",
+        "scientific": "",
+        "count": 9965
+      },
+      {
+        "common": "Crabapple, Flowering",
+        "scientific": "",
+        "count": 8911
+      },
+      {
+        "common": "Pine, Austrian",
+        "scientific": "",
+        "count": 8418
+      },
+      {
+        "common": "Spruce, Blue",
+        "scientific": "",
+        "count": 8393
+      },
+      {
+        "common": "Maple, Norway",
+        "scientific": "",
+        "count": 7621
+      },
+      {
+        "common": "Pine, Ponderosa",
+        "scientific": "",
+        "count": 7457
+      },
+      {
+        "common": "Maple, Freeman 'Autumn Blaze'",
+        "scientific": "",
+        "count": 7382
+      },
+      {
+        "common": "Oak, Bur",
+        "scientific": "",
+        "count": 6253
+      },
+      {
+        "common": "Oak, Swamp White",
+        "scientific": "",
+        "count": 6244
+      },
+      {
+        "common": "Honeylocust",
+        "scientific": "",
+        "count": 6079
+      },
+      {
+        "common": "Linden, American",
+        "scientific": "",
+        "count": 5567
+      },
+      {
+        "common": "Oak, Northern Red",
+        "scientific": "",
+        "count": 5268
+      },
+      {
+        "common": "Coffeetree, Kentucky",
+        "scientific": "",
+        "count": 5156
+      },
+      {
+        "common": "Maple, freeman",
+        "scientific": "",
+        "count": 5113
+      },
+      {
+        "common": "Catalpa, Western",
+        "scientific": "",
+        "count": 4860
+      },
+      {
+        "common": "Juniper, Rocky Mountain",
+        "scientific": "",
+        "count": 4422
+      },
+      {
+        "common": "Elm, American",
+        "scientific": "",
+        "count": 4253
+      },
+      {
+        "common": "Cottonwood, Eastern",
+        "scientific": "",
+        "count": 3778
+      }
+    ],
+    "source": "https://data.colorado.gov/resource/wz8h-dap6.json"
+  },
+  {
+    "city": "Seattle",
+    "total": 267090,
+    "rows": [
+      {
+        "common": "(Smooth) Japanese Maple",
+        "scientific": "Acer palmatum",
+        "count": 8407
+      },
+      {
+        "common": "Red Maple",
+        "scientific": "Acer rubrum",
+        "count": 7636
+      },
+      {
+        "common": "Apple/Crabapple",
+        "scientific": "Malus sp.",
+        "count": 7218
+      },
+      {
+        "common": "Norway Maple",
+        "scientific": "Acer platanoides",
+        "count": 6574
+      },
+      {
+        "common": "Purpleleaf Plum variety",
+        "scientific": "Prunus cerasifera cv/hyb",
+        "count": 6417
+      },
+      {
+        "common": "Double Chinese Cherry",
+        "scientific": "Prunus serrulata",
+        "count": 5356
+      },
+      {
+        "common": "Thundercloud Purpleleaf Plum",
+        "scientific": "Prunus cerasifera `Thunderclou",
+        "count": 5081
+      },
+      {
+        "common": "Sweetgum",
+        "scientific": "Liquidambar styraciflua",
+        "count": 4989
+      },
+      {
+        "common": "English Midland Hawthorn",
+        "scientific": "Crataegus laevigata",
+        "count": 4971
+      },
+      {
+        "common": "Cherry/Plum/Laurel",
+        "scientific": "Prunus sp.",
+        "count": 4872
+      },
+      {
+        "common": "Kwanzan Flowering Cherry",
+        "scientific": "Prunus  `Kwanzan` (Sato Zakura",
+        "count": 4325
+      },
+      {
+        "common": "Blireiana Purpleleaf Plum",
+        "scientific": "Prunus x blireiana",
+        "count": 4250
+      },
+      {
+        "common": "Callery Pear",
+        "scientific": "Pyrus calleryana",
+        "count": 3929
+      },
+      {
+        "common": "Kousa Dogwood",
+        "scientific": "Cornus kousa",
+        "count": 3685
+      },
+      {
+        "common": "Japanese Snowbell Tree",
+        "scientific": "Styrax japonicus",
+        "count": 3431
+      },
+      {
+        "common": "(European) White Birch",
+        "scientific": "Betula pendula",
+        "count": 3368
+      },
+      {
+        "common": "Paperbark Maple",
+        "scientific": "Acer griseum",
+        "count": 3355
+      },
+      {
+        "common": "Bigleaf Maple",
+        "scientific": "Acer macrophyllum",
+        "count": 3311
+      },
+      {
+        "common": "Red Oak",
+        "scientific": "Quercus rubra",
+        "count": 3019
+      },
+      {
+        "common": "Katsura Tree",
+        "scientific": "Cercidiphyllum japonicum",
+        "count": 2919
+      },
+      {
+        "common": "Littleleaf Linden",
+        "scientific": "Tilia cordata",
+        "count": 2862
+      },
+      {
+        "common": "Western Red Cedar",
+        "scientific": "Thuja plicata",
+        "count": 2780
+      },
+      {
+        "common": "Douglas Fir",
+        "scientific": "Pseudotsuga menziesii",
+        "count": 2720
+      },
+      {
+        "common": "London Plane (Tree)",
+        "scientific": "Platanus x acerifolia",
+        "count": 2231
+      },
+      {
+        "common": "Norwegian Sunset Maple",
+        "scientific": "Acer truncatum x A platanoides",
+        "count": 2216
+      }
+    ],
+    "source": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/SDOT_Trees_CDL/FeatureServer/0"
+  },
+  {
+    "city": "Boston",
+    "total": 52511,
+    "rows": [
+      {
+        "common": "Honeylocust",
+        "scientific": "Gleditsia triacanthos",
+        "count": 6527
+      },
+      {
+        "common": "Linden, Littleleaf",
+        "scientific": "Tilia cordata",
+        "count": 3521
+      },
+      {
+        "common": "Maple, Norway",
+        "scientific": "Acer platanoides",
+        "count": 3179
+      },
+      {
+        "common": "Maple, Red",
+        "scientific": "Acer rubrum",
+        "count": 2759
+      },
+      {
+        "common": "Empty Pit/Planting Site",
+        "scientific": "Empty Pit/Planting Site",
+        "count": 2423
+      },
+      {
+        "common": "Oak, Pin",
+        "scientific": "Quercus palustris",
+        "count": 2284
+      },
+      {
+        "common": "Ash, Green",
+        "scientific": "Fraxinus pennsylvanica",
+        "count": 1860
+      },
+      {
+        "common": "Pear, Callery",
+        "scientific": "Pyrus calleryana",
+        "count": 1757
+      },
+      {
+        "common": "Zelkova, Japanese",
+        "scientific": "Zelkova serrata",
+        "count": 1717
+      },
+      {
+        "common": "Oak, Northern Red",
+        "scientific": "Quercus rubra",
+        "count": 1546
+      },
+      {
+        "common": "Elm, Accolade",
+        "scientific": "Ulmus carpinifolia 'accolade'",
+        "count": 1199
+      },
+      {
+        "common": "Ginkgo",
+        "scientific": "Ginkgo biloba",
+        "count": 1166
+      },
+      {
+        "common": "Planetree, London",
+        "scientific": "Platanus x acerifolia",
+        "count": 1084
+      },
+      {
+        "common": "Oak, Swamp White",
+        "scientific": "Quercus bicolor",
+        "count": 987
+      },
+      {
+        "common": "Honeylocust, Thornless",
+        "scientific": "Gleditsia triacanthos inermis",
+        "count": 939
+      },
+      {
+        "common": "Apple/Crabapple",
+        "scientific": "Malus species",
+        "count": 845
+      },
+      {
+        "common": "Lilac, Japanese Tree",
+        "scientific": "Syringa reticulata",
+        "count": 801
+      },
+      {
+        "common": "Sweetgum, Common",
+        "scientific": "Liquidambar styraciflua",
+        "count": 751
+      },
+      {
+        "common": "Maple, Hedge",
+        "scientific": "Acer campestre",
+        "count": 683
+      },
+      {
+        "common": "Elm, American",
+        "scientific": "Ulmus americana",
+        "count": 592
+      },
+      {
+        "common": "Hackberry, Northern",
+        "scientific": "Celtis occidentalis",
+        "count": 568
+      },
+      {
+        "common": "Crabapple spp.",
+        "scientific": "Malus spp.",
+        "count": 496
+      },
+      {
+        "common": "Pagoda Tree, Japanese",
+        "scientific": "Sophora japonica",
+        "count": 484
+      },
+      {
+        "common": "Linden, Silver",
+        "scientific": "Tilia tomentosa",
+        "count": 480
+      },
+      {
+        "common": "Basswood, American",
+        "scientific": "Tilia americana",
+        "count": 470
+      }
+    ],
+    "source": "Boston CKAN resource 995cd80f-2489-41bf-b16b-113dba4f2797"
+  },
+  {
+    "city": "Tempe AZ (Phoenix proxy)",
+    "total": 49307,
+    "rows": [
+      {
+        "common": "Brush Box",
+        "scientific": "",
+        "count": 4447
+      },
+      {
+        "common": "London Plane",
+        "scientific": "",
+        "count": 3588
+      },
+      {
+        "common": "Broad Leaf Paperbark",
+        "scientific": "",
+        "count": 3475
+      },
+      {
+        "common": "Water Gum",
+        "scientific": "",
+        "count": 2269
+      },
+      {
+        "common": "Spotted Gum",
+        "scientific": "",
+        "count": 1611
+      },
+      {
+        "common": "Jacaranda",
+        "scientific": "",
+        "count": 1560
+      },
+      {
+        "common": "Sydney Red Gum",
+        "scientific": "",
+        "count": 1314
+      },
+      {
+        "common": "Golden Robinia",
+        "scientific": "",
+        "count": 1219
+      },
+      {
+        "common": "Tuckeroo",
+        "scientific": "",
+        "count": 1142
+      },
+      {
+        "common": "Weeping Bottlebrush",
+        "scientific": "",
+        "count": 1008
+      },
+      {
+        "common": "River She Oak",
+        "scientific": "",
+        "count": 1007
+      },
+      {
+        "common": "Blueberry Ash",
+        "scientific": "",
+        "count": 999
+      },
+      {
+        "common": "Crepe Myrtle",
+        "scientific": "",
+        "count": 931
+      },
+      {
+        "common": "Cabbage Tree Palm",
+        "scientific": "",
+        "count": 926
+      },
+      {
+        "common": "Port Jackson or Rusty Fig",
+        "scientific": "",
+        "count": 894
+      },
+      {
+        "common": "Tallow Wood",
+        "scientific": "",
+        "count": 819
+      },
+      {
+        "common": "Hills Fig",
+        "scientific": "",
+        "count": 805
+      },
+      {
+        "common": "Lemon Scented Gum",
+        "scientific": "",
+        "count": 724
+      },
+      {
+        "common": "Chinese Pistacia",
+        "scientific": "",
+        "count": 711
+      },
+      {
+        "common": "Swamp Mahogany",
+        "scientific": "",
+        "count": 616
+      },
+      {
+        "common": "Not Applicable",
+        "scientific": "",
+        "count": 598
+      },
+      {
+        "common": "Evergreen Ash",
+        "scientific": "",
+        "count": 580
+      },
+      {
+        "common": "Sydney Blue Gum",
+        "scientific": "",
+        "count": 551
+      },
+      {
+        "common": "Weeping Lilly Pilly",
+        "scientific": "",
+        "count": 550
+      },
+      {
+        "common": "Crows Ash",
+        "scientific": "",
+        "count": 547
+      }
+    ],
+    "source": "https://services1.arcgis.com/cNVyNtjGVZybOQWZ/arcgis/rest/services/Trees/FeatureServer/0"
+  },
+  {
+    "city": "Atlanta (Trees Atlanta)",
+    "total": 121316,
+    "rows": [
+      {
+        "common": "Eastern redbud",
+        "scientific": "Cercis canadensis",
+        "count": 5104
+      },
+      {
+        "common": "White oak",
+        "scientific": "Quercus alba",
+        "count": 3676
+      },
+      {
+        "common": "Trident maple 'ABMTF'",
+        "scientific": "Acer buergerianum 'ABMTF'",
+        "count": 3075
+      },
+      {
+        "common": "American hornbeam",
+        "scientific": "Carpinus caroliniana",
+        "count": 3032
+      },
+      {
+        "common": "Serviceberry 'Autumn Brilliance'",
+        "scientific": "Amelanchier x grandiflora 'Autumn Brilliance'",
+        "count": 3023
+      },
+      {
+        "common": "Tuliptree",
+        "scientific": "Liriodendron tulipifera",
+        "count": 2592
+      },
+      {
+        "common": "Nuttall oak",
+        "scientific": "Quercus texana",
+        "count": 2449
+      },
+      {
+        "common": "Shumard oak",
+        "scientific": "Quercus shumardii",
+        "count": 2251
+      },
+      {
+        "common": "Sweetbay magnolia",
+        "scientific": "Magnolia virginiana",
+        "count": 1990
+      },
+      {
+        "common": "Overcup oak",
+        "scientific": "Quercus lyrata",
+        "count": 1983
+      },
+      {
+        "common": "Blackgum",
+        "scientific": "Nyssa sylvatica",
+        "count": 1937
+      },
+      {
+        "common": "Persian parrotia",
+        "scientific": "Parrotia persica",
+        "count": 1880
+      },
+      {
+        "common": "Bald cypress",
+        "scientific": "Taxodium distichum",
+        "count": 1859
+      },
+      {
+        "common": "Willow oak",
+        "scientific": "Quercus phellos",
+        "count": 1732
+      },
+      {
+        "common": "Blackgum 'Wildfire'",
+        "scientific": "Nyssa sylvatica 'Wildfire'",
+        "count": 1724
+      },
+      {
+        "common": "White fringetree",
+        "scientific": "Chionanthus virginicus",
+        "count": 1435
+      },
+      {
+        "common": "Red maple 'October Glory'",
+        "scientific": "Acer rubrum 'October Glory'",
+        "count": 1387
+      },
+      {
+        "common": "American elm 'Princeton'",
+        "scientific": "Ulmus americana 'Princeton'",
+        "count": 1375
+      },
+      {
+        "common": "Flowering dogwood",
+        "scientific": "Cornus florida",
+        "count": 1259
+      },
+      {
+        "common": "Crape myrtle 'Natchez'",
+        "scientific": "Lagerstroemia indica x fauriei 'Natchez'",
+        "count": 1239
+      },
+      {
+        "common": "American hophornbeam",
+        "scientific": "Ostrya virginiana",
+        "count": 1203
+      },
+      {
+        "common": "American beech",
+        "scientific": "Fagus grandifolia",
+        "count": 1072
+      },
+      {
+        "common": "Southern red oak",
+        "scientific": "Quercus falcata",
+        "count": 1064
+      },
+      {
+        "common": "Red maple",
+        "scientific": "Acer rubrum",
+        "count": 1062
+      },
+      {
+        "common": "American sycamore",
+        "scientific": "Platanus occidentalis",
+        "count": 1040
+      }
+    ],
+    "source": "Trees Atlanta ArcGIS (per-cultivar via Perplexity, common names synthesized)",
+    "note": "common names synthesized by Perplexity from Genus/Species/Cultivar (Trees Atlanta inventory has no common-name field)"
+  },
+  {
+    "city": "Los Angeles County Parks (proxy; LA City API lacks species)",
+    "total": 4312,
+    "rows": [
+      {
+        "common": "Pine - Canary Island",
+        "scientific": "Pinus canariensis",
+        "count": 586
+      },
+      {
+        "common": "Pine - Aleppo",
+        "scientific": "Pinus halepensis",
+        "count": 204
+      },
+      {
+        "common": "Pine - Eldarica",
+        "scientific": "Pinus eldarica",
+        "count": 184
+      },
+      {
+        "common": "Elm - Chinese",
+        "scientific": "Ulmus parvifolia",
+        "count": 179
+      },
+      {
+        "common": "Palm - Mexican Fan",
+        "scientific": "Washingtonia robusta",
+        "count": 170
+      },
+      {
+        "common": "Sycamore - London Plane",
+        "scientific": "Platanus acerifolia",
+        "count": 151
+      },
+      {
+        "common": "Jacaranda",
+        "scientific": "Jacaranda mimosifolia",
+        "count": 138
+      },
+      {
+        "common": "Ash - Shamel",
+        "scientific": "Fraxinus uhdei",
+        "count": 133
+      },
+      {
+        "common": "Pine - Stone",
+        "scientific": "Pinus pinea",
+        "count": 123
+      },
+      {
+        "common": "Sycamore - California",
+        "scientific": "Platanus racemosa",
+        "count": 114
+      },
+      {
+        "common": "Liquidambar",
+        "scientific": "Liquidambar styraciflua",
+        "count": 109
+      },
+      {
+        "common": "Mulberry - White",
+        "scientific": "Morus alba",
+        "count": 109
+      },
+      {
+        "common": "Ficus - Nitida",
+        "scientific": "Ficus microcarpa 'nitada'",
+        "count": 106
+      },
+      {
+        "common": "Tristania (Brisbane Box)",
+        "scientific": "Tristania conferta",
+        "count": 90
+      },
+      {
+        "common": "Crape Myrtle",
+        "scientific": "Lagerstroemia indica",
+        "count": 82
+      },
+      {
+        "common": "Chinese Pistache",
+        "scientific": "Pistacia chinensis",
+        "count": 68
+      },
+      {
+        "common": "Tipu",
+        "scientific": "Tipuana tipu",
+        "count": 66
+      },
+      {
+        "common": "Eucalyptus - Red Ironbark",
+        "scientific": "Eucalyptus sideroxylon",
+        "count": 58
+      },
+      {
+        "common": "Elm - Siberian",
+        "scientific": "Ulmus pumila",
+        "count": 56
+      },
+      {
+        "common": "Melaleuca",
+        "scientific": "Melaleuca quinquenervia",
+        "count": 56
+      },
+      {
+        "common": "Plum - Purple-Leaf",
+        "scientific": "Prunus cerasifera",
+        "count": 52
+      },
+      {
+        "common": "Bottlebrush - Lemon",
+        "scientific": "Callistemon citrinus",
+        "count": 51
+      },
+      {
+        "common": "Olive",
+        "scientific": "Olea europaea",
+        "count": 48
+      },
+      {
+        "common": "Palm - Queen",
+        "scientific": "Syagrus romanzoffianum",
+        "count": 43
+      },
+      {
+        "common": "Eucalyptus - Cladocalyx",
+        "scientific": "Eucalyptus cladocalyx",
+        "count": 42
+      }
+    ],
+    "source": "https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/LACO_PARK_TREES_PHASES1_AND_1/FeatureServer/0"
+  },
+  {
+    "city": "Rochester NY",
+    "total": 64520,
+    "rows": [
+      {
+        "common": "MAPLE - NRWY",
+        "scientific": "Acer platanoides",
+        "count": 6479
+      },
+      {
+        "common": "HONEYLOCUST",
+        "scientific": "Gleditsia triacanthos",
+        "count": 5917
+      },
+      {
+        "common": "LINDEN - LITTLE LEAF",
+        "scientific": "Tilia cordata",
+        "count": 2744
+      },
+      {
+        "common": "LONDON PLANETREE",
+        "scientific": "Platanus acerifolia",
+        "count": 2742
+      },
+      {
+        "common": "MAPLE - NRWY 'CRIMSON KING'",
+        "scientific": "Acer platanoides",
+        "count": 2214
+      },
+      {
+        "common": "ASH - GREEN",
+        "scientific": "Fraxinus pennsylvanica",
+        "count": 2210
+      },
+      {
+        "common": "OAK - NORTHERN RED",
+        "scientific": "Quercus rubra",
+        "count": 2162
+      },
+      {
+        "common": "MAPLE - HEDGE",
+        "scientific": "Acer campestre",
+        "count": 1532
+      },
+      {
+        "common": "ZELKOVA - JAPANESE",
+        "scientific": "Zelkova serrata",
+        "count": 1303
+      },
+      {
+        "common": "MAPLE - RED",
+        "scientific": "Acer rubrum",
+        "count": 1198
+      },
+      {
+        "common": "MAPLE - NRWY 'SCHWEDLER'",
+        "scientific": "Acer platanoides",
+        "count": 1141
+      },
+      {
+        "common": "JAP TREE LILAC - 'IVSIL'",
+        "scientific": "Syringa reticulata",
+        "count": 1103
+      },
+      {
+        "common": "MAPLE - SUGAR",
+        "scientific": "Acer saccharum",
+        "count": 1059
+      },
+      {
+        "common": "CHERRY - 'KWANZAN'",
+        "scientific": "Prunus serrulata",
+        "count": 987
+      },
+      {
+        "common": "PEAR - 'CHANT OR CLEVE'",
+        "scientific": "Pyrus calleryana",
+        "count": 950
+      },
+      {
+        "common": "MAPLE - NRWY COLUMN",
+        "scientific": "Acer platanoides",
+        "count": 910
+      },
+      {
+        "common": "MAPLE - SILVER",
+        "scientific": "Acer saccharinum",
+        "count": 905
+      },
+      {
+        "common": "HACKBERRY",
+        "scientific": "Celtis occidentalis",
+        "count": 873
+      },
+      {
+        "common": "JAP TREE LILAC",
+        "scientific": "Syringa reticulata",
+        "count": 864
+      },
+      {
+        "common": "SWEETGUM",
+        "scientific": "Liquidambar styraciflua",
+        "count": 760
+      },
+      {
+        "common": "PEAR - CALLERY",
+        "scientific": "Pyrus calleryana",
+        "count": 649
+      },
+      {
+        "common": "LINDEN - AMERICAN",
+        "scientific": "Tilia americana",
+        "count": 617
+      },
+      {
+        "common": "OAK - WHITE",
+        "scientific": "Quercus alba",
+        "count": 539
+      },
+      {
+        "common": "HAWTHORN - COCKSPUR",
+        "scientific": "Crataegus crusgalli",
+        "count": 504
+      },
+      {
+        "common": "GINGKO",
+        "scientific": "Gingko biloba",
+        "count": 504
+      }
+    ],
+    "source": "https://maps.cityofrochester.gov/server/rest/services/Open_Data/Trees_Open_Data/FeatureServer/0"
+  },
+  {
+    "city": "San Francisco",
+    "total": 195359,
+    "rows": [
+      {
+        "common": "Platanus x hispanica :: Sycamore: London Plane",
+        "scientific": "",
+        "count": 11859
+      },
+      {
+        "common": "Tree(s) ::",
+        "scientific": "",
+        "count": 10588
+      },
+      {
+        "common": "Lophostemon confertus :: Brisbane Box",
+        "scientific": "",
+        "count": 10206
+      },
+      {
+        "common": "Metrosideros excelsa :: New Zealand Xmas Tree",
+        "scientific": "",
+        "count": 8832
+      },
+      {
+        "common": "Tristaniopsis laurina :: Swamp Myrtle",
+        "scientific": "",
+        "count": 7506
+      },
+      {
+        "common": "Pittosporum undulatum :: Victorian Box",
+        "scientific": "",
+        "count": 7193
+      },
+      {
+        "common": "Prunus cerasifera :: Cherry Plum",
+        "scientific": "",
+        "count": 6657
+      },
+      {
+        "common": "Magnolia grandiflora :: Southern Magnolia",
+        "scientific": "",
+        "count": 6524
+      },
+      {
+        "common": "Arbutus 'Marina' :: Hybrid Strawberry Tree",
+        "scientific": "",
+        "count": 5722
+      },
+      {
+        "common": "Ficus microcarpa nitida 'Green Gem' :: Indian Laurel Fig Tree 'Green Gem'",
+        "scientific": "",
+        "count": 5519
+      },
+      {
+        "common": "Prunus serrulata 'Kwanzan' :: Kwanzan Flowering Cherry",
+        "scientific": "",
+        "count": 3972
+      },
+      {
+        "common": "Acacia melanoxylon :: Blackwood Acacia",
+        "scientific": "",
+        "count": 3936
+      },
+      {
+        "common": "Maytenus boaria :: Mayten",
+        "scientific": "",
+        "count": 3867
+      },
+      {
+        "common": "Olea europaea :: Olive Tree",
+        "scientific": "",
+        "count": 3739
+      },
+      {
+        "common": "Corymbia ficifolia :: Red Flowering Gum",
+        "scientific": "",
+        "count": 3550
+      },
+      {
+        "common": "Ginkgo biloba :: Maidenhair Tree",
+        "scientific": "",
+        "count": 3388
+      },
+      {
+        "common": "Callistemon citrinus :: Lemon Bottlebrush",
+        "scientific": "",
+        "count": 3295
+      },
+      {
+        "common": "Pyrus calleryana :: Ornamental Pear",
+        "scientific": "",
+        "count": 2972
+      },
+      {
+        "common": "Prunus serrulata :: Ornamental Cherry",
+        "scientific": "",
+        "count": 2684
+      },
+      {
+        "common": "Eriobotrya deflexa :: Bronze Loquat",
+        "scientific": "",
+        "count": 2496
+      },
+      {
+        "common": "Ulmus parvifolia :: Chinese Elm",
+        "scientific": "",
+        "count": 2381
+      },
+      {
+        "common": "Pinus radiata :: Monterey Pine",
+        "scientific": "",
+        "count": 2284
+      },
+      {
+        "common": "Ligustrum lucidum :: Glossy Privet",
+        "scientific": "",
+        "count": 2170
+      },
+      {
+        "common": "Pyrus kawakamii :: Evergreen Pear",
+        "scientific": "",
+        "count": 1976
+      },
+      {
+        "common": "Cupressus macrocarpa :: Monterey Cypress",
+        "scientific": "",
+        "count": 1919
+      }
+    ],
+    "source": "https://services.arcgis.com/Zs2aNLFN00jrS4gG/arcgis/rest/services/Street_Tree_List_from_DataSF_pulled_daily_/FeatureServer/0",
+    "fields_used": [
+      "qspecies",
+      null
+    ]
+  },
+  {
+    "city": "Sacramento",
+    "total": 99500,
+    "rows": [
+      {
+        "common": "London plane tree",
+        "scientific": "Platanus X acerifolia",
+        "count": 13286
+      },
+      {
+        "common": "pistache, Chinese",
+        "scientific": "Pistacia chinensis",
+        "count": 5089
+      },
+      {
+        "common": "oak, valley",
+        "scientific": "Quercus lobata",
+        "count": 4581
+      },
+      {
+        "common": "Japanese zelkova",
+        "scientific": "Zelkova serrata",
+        "count": 4415
+      },
+      {
+        "common": "crape myrtle",
+        "scientific": "Lagerstroemia indica",
+        "count": 4028
+      },
+      {
+        "common": "pear, flowering ornamental",
+        "scientific": "Pyrus calleryana spp",
+        "count": 3278
+      },
+      {
+        "common": "redwood, coast",
+        "scientific": "Sequoia sempervirens",
+        "count": 2873
+      },
+      {
+        "common": "maple, red",
+        "scientific": "Acer rubrum",
+        "count": 2248
+      },
+      {
+        "common": "oak, red",
+        "scientific": "Quercus rubra",
+        "count": 2173
+      },
+      {
+        "common": "ash, Modesto",
+        "scientific": "Fraxinus velutina modesto",
+        "count": 1770
+      },
+      {
+        "common": "sweetgum, American",
+        "scientific": "Liquidambar styraciflua",
+        "count": 1720
+      },
+      {
+        "common": "oak, coast live",
+        "scientific": "Quercus agrifolia",
+        "count": 1448
+      },
+      {
+        "common": "horsetail tree",
+        "scientific": "Casuarina equisetifolia",
+        "count": 1441
+      },
+      {
+        "common": "elm, Chinese",
+        "scientific": "Ulmus parvifolia",
+        "count": 1357
+      },
+      {
+        "common": "palm, Mexican fan",
+        "scientific": "Washingtonia robusta",
+        "count": 1338
+      },
+      {
+        "common": "maidenhair tree",
+        "scientific": "Ginkgo biloba",
+        "count": 1249
+      },
+      {
+        "common": "plum, purple-leaf",
+        "scientific": "Prunus cerasifera spp",
+        "count": 1237
+      },
+      {
+        "common": "hackberry, common",
+        "scientific": "Celtis occidentalis",
+        "count": 1198
+      },
+      {
+        "common": "tupelo / sour gum",
+        "scientific": "Nyssa sylvatica",
+        "count": 1173
+      },
+      {
+        "common": "cypress, Italian",
+        "scientific": "Cupressus sempervirens",
+        "count": 1170
+      },
+      {
+        "common": "magnolia, southern",
+        "scientific": "Magnolia grandiflora",
+        "count": 1155
+      },
+      {
+        "common": "elm, English",
+        "scientific": "Ulmus procera",
+        "count": 1115
+      },
+      {
+        "common": "oak, spp",
+        "scientific": "Quercus spp",
+        "count": 1047
+      },
+      {
+        "common": "hackberry, Chinese",
+        "scientific": "Celtis sinensis",
+        "count": 1045
+      },
+      {
+        "common": "maple, trident",
+        "scientific": "Acer buergeranum",
+        "count": 1044
+      }
+    ],
+    "source": "https://services9.arcgis.com/mt4kvYhNXSa5AqLG/arcgis/rest/services/Sac_City_Trees/FeatureServer/0",
+    "fields_used": [
+      "SPECIES",
+      "BOTANICAL"
+    ]
+  },
+  {
+    "city": "Philadelphia",
+    "total": 151713,
+    "rows": [
+      {
+        "common": "PLATANUS X ACERIFOLIA - LONDON PLANETREE",
+        "scientific": "",
+        "count": 16335
+      },
+      {
+        "common": "ACER RUBRUM - RED MAPLE",
+        "scientific": "",
+        "count": 10288
+      },
+      {
+        "common": "PRUNUS SPECIES - OTHER CHERRY",
+        "scientific": "",
+        "count": 7545
+      },
+      {
+        "common": "PYRUS CALLERYANA - CALLERY PEAR",
+        "scientific": "",
+        "count": 7252
+      },
+      {
+        "common": "GLEDITSIA TRIACANTHOS - HONEYLOCUST",
+        "scientific": "",
+        "count": 5021
+      },
+      {
+        "common": "QUERCUS RUBRA - NORTHERN RED OAK",
+        "scientific": "",
+        "count": 4926
+      },
+      {
+        "common": "ZELKOVA SERRATA - JAPANESE ZELKOVA",
+        "scientific": "",
+        "count": 4474
+      },
+      {
+        "common": "ACER PLATANOIDES - NORWAY MAPLE",
+        "scientific": "",
+        "count": 4324
+      },
+      {
+        "common": "SYRINGA RETICULATA - JAPANESE TREE LILAC",
+        "scientific": "",
+        "count": 3740
+      },
+      {
+        "common": "GINKGO BILOBA - GINKGO",
+        "scientific": "",
+        "count": 3717
+      },
+      {
+        "common": "CERCIS CANADENSIS - EASTERN REDBUD",
+        "scientific": "",
+        "count": 2823
+      },
+      {
+        "common": "TILIA SPECIES - OTHER LINDEN",
+        "scientific": "",
+        "count": 2733
+      },
+      {
+        "common": "MALUS SPECIES - OTHER CRABAPPLE",
+        "scientific": "",
+        "count": 2528
+      },
+      {
+        "common": "PRUNUS SERRULATA - KWANZAN CHERRY",
+        "scientific": "",
+        "count": 2528
+      },
+      {
+        "common": "ACER SACCHARUM - SUGAR MAPLE",
+        "scientific": "",
+        "count": 2507
+      },
+      {
+        "common": "ACER CAMPESTRE - HEDGE MAPLE",
+        "scientific": "",
+        "count": 2470
+      },
+      {
+        "common": "QUERCUS PALUSTRIS - PIN OAK",
+        "scientific": "",
+        "count": 2470
+      },
+      {
+        "common": "CRATAEGUS SPECIES - OTHER HAWTHORN",
+        "scientific": "",
+        "count": 1848
+      },
+      {
+        "common": "SOPHORA JAPONICA - JAPANESE PAGODA TREE",
+        "scientific": "",
+        "count": 1839
+      },
+      {
+        "common": "TILIA CORDATA - LITTLE LEAF LINDEN",
+        "scientific": "",
+        "count": 1792
+      },
+      {
+        "common": "ACER SPECIES - OTHER MAPLE",
+        "scientific": "",
+        "count": 1744
+      },
+      {
+        "common": "AMELANCHIER SPECIES - OTHER SERVICEBERRY",
+        "scientific": "",
+        "count": 1724
+      },
+      {
+        "common": "ULMUS SPECIES - OTHER ELM",
+        "scientific": "",
+        "count": 1673
+      },
+      {
+        "common": "CLADRASTIS KENTUKEA - YELLOWWOOD",
+        "scientific": "",
+        "count": 1658
+      },
+      {
+        "common": "LIQUIDAMBAR STYRACIFLUA - SWEETGUM",
+        "scientific": "",
+        "count": 1530
+      }
+    ],
+    "source": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/ppr_tree_inventory_2024/FeatureServer/0",
+    "fields_used": [
+      "tree_name",
+      null
+    ]
+  },
+  {
+    "city": "Washington DC",
+    "total": 220154,
+    "rows": [
+      {
+        "common": "Red maple",
+        "scientific": "Acer rubrum",
+        "count": 0
+      },
+      {
+        "common": "Willow oak",
+        "scientific": "Quercus phellos",
+        "count": 0
+      },
+      {
+        "common": "Pin oak",
+        "scientific": "Quercus palustris",
+        "count": 0
+      },
+      {
+        "common": "American elm",
+        "scientific": "Ulmus americana",
+        "count": 0
+      },
+      {
+        "common": "Japanese zelkova",
+        "scientific": "Zelkova serrata",
+        "count": 0
+      },
+      {
+        "common": "London plane tree",
+        "scientific": "Platanus x acerifolia",
+        "count": 0
+      },
+      {
+        "common": "Red oak",
+        "scientific": "Quercus rubra",
+        "count": 0
+      },
+      {
+        "common": "Other (See Notes)",
+        "scientific": "Other (See Notes)",
+        "count": 0
+      },
+      {
+        "common": "Crape myrtle",
+        "scientific": "Lagerstroemia indica",
+        "count": 0
+      },
+      {
+        "common": "Eastern redbud",
+        "scientific": "Cercis canadensis",
+        "count": 0
+      },
+      {
+        "common": "Swamp white oak",
+        "scientific": "Quercus bicolor",
+        "count": 0
+      },
+      {
+        "common": "Sugar maple",
+        "scientific": "Acer saccharum",
+        "count": 0
+      },
+      {
+        "common": "Chinese elm",
+        "scientific": "Ulmus parvifolia",
+        "count": 0
+      },
+      {
+        "common": "Hackberry",
+        "scientific": "Celtis occidentalis",
+        "count": 0
+      },
+      {
+        "common": "Chinese pistache",
+        "scientific": "Pistacia chinensis",
+        "count": 0
+      },
+      {
+        "common": "Ginkgo (male)",
+        "scientific": "Ginkgo biloba (male)",
+        "count": 0
+      },
+      {
+        "common": "Blackgum",
+        "scientific": "Nyssa sylvatica",
+        "count": 0
+      },
+      {
+        "common": "Scarlet oak",
+        "scientific": "Quercus coccinea",
+        "count": 0
+      },
+      {
+        "common": "Kwanzan cherry",
+        "scientific": "Prunus serrulata 'Kwanzan'",
+        "count": 0
+      },
+      {
+        "common": "Overcup oak",
+        "scientific": "Quercus lyrata",
+        "count": 0
+      },
+      {
+        "common": "Cherry",
+        "scientific": "Prunus species",
+        "count": 0
+      },
+      {
+        "common": "Kentucky coffeetree",
+        "scientific": "Gymnocladus dioicus",
+        "count": 0
+      },
+      {
+        "common": "Norway maple",
+        "scientific": "Acer platanoides",
+        "count": 0
+      },
+      {
+        "common": "Littleleaf linden",
+        "scientific": "Tilia cordata",
+        "count": 0
+      },
+      {
+        "common": "Bald cypress",
+        "scientific": "Taxodium distichum",
+        "count": 0
+      }
+    ],
+    "source": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Urban_Tree_Canopy/MapServer/23"
+  },
+  {
+    "city": "Portland OR",
+    "total": null,
+    "rows": [],
+    "error": "no common field"
+  }
+]

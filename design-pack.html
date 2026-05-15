@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Spartan / Next Million — Mobile Design Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     SPARTAN / NEXT MILLION DESIGN TOKENS
+     Layout patterns inspired by Jobber (bottom tabs, FAB,
+     section rows, status pills) — none of which are protectable
+     trade dress on their own. Palette, typography, icons, and
+     copy are 100% Spartan/Next Million originals.
+     ========================================================= */
+  :root {
+    /* Brand colors */
+    --forest:        #2d5a3d;
+    --forest-deep:   #1f3f2a;
+    --forest-tint:   #3d7050;
+    --gold:          #e9c466;
+    --gold-deep:     #c9a23c;
+
+    /* Surfaces */
+    --bg:            #f4f8f1;   /* page background — almost-white green */
+    --surface:       #ffffff;   /* cards / sheets */
+    --surface-2:     #f0f4ec;   /* subtle section dividers */
+    --line:          #e3ead8;   /* hairline borders */
+
+    /* Ink */
+    --ink:           #14241b;   /* headings */
+    --ink-2:         #314a3a;   /* body */
+    --ink-3:         #6a7e72;   /* muted / metadata */
+
+    /* Status */
+    --status-warn-bg:    #fff4d6;
+    --status-warn-fg:    #8a6a14;
+    --status-ok-bg:      #dcefdc;
+    --status-ok-fg:      #2c6738;
+    --status-info-bg:    #e0ecf6;
+    --status-info-fg:    #1f4a73;
+    --status-danger-bg:  #fbe1de;
+    --status-danger-fg:  #8a2e26;
+
+    /* Type scale (mobile-first) */
+    --t-display:  28px;
+    --t-h1:       22px;
+    --t-h2:       18px;
+    --t-body:     16px;
+    --t-meta:     14px;
+    --t-tiny:     12px;
+
+    /* Radii / spacing */
+    --r-sm:  8px;
+    --r-md:  12px;
+    --r-lg:  16px;
+    --r-pill: 999px;
+    --tap:   48px;            /* min tap target */
+    --pad:   16px;
+    --gap:   12px;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #ddd;          /* gutter outside the phone frame */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--ink-2);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Page-level layout (phone frame for desktop preview) ---------- */
+  .frame {
+    max-width: 420px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 32px rgba(0,0,0,0.08);
+    position: relative;
+    padding-bottom: 96px; /* room for bottom nav + FAB */
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px var(--pad);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 5;
+  }
+  .topbar .left, .topbar .right { display: flex; align-items: center; gap: 14px; }
+  .icon-btn {
+    width: var(--tap); height: var(--tap);
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--r-md);
+    background: transparent; border: 0; color: var(--ink);
+    cursor: pointer;
+  }
+  .icon-btn:active { background: var(--surface-2); }
+  .icon-btn svg { width: 22px; height: 22px; }
+
+  /* ---------- Section ---------- */
+  section.block { padding: 20px var(--pad) 8px; }
+  .section-label {
+    font-size: var(--t-tiny); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; margin-bottom: 8px;
+  }
+
+  /* ---------- Job header (mirror of Jobber's hero pattern) ---------- */
+  .job-hero {
+    background: var(--surface);
+    padding: 18px var(--pad) 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .meta-row .brand-mark {
+    width: 24px; height: 24px; color: var(--forest);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 26px; padding: 0 10px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-tiny); font-weight: 600; letter-spacing: 0.02em;
+  }
+  .pill.warn   { background: var(--status-warn-bg);   color: var(--status-warn-fg); }
+  .pill.ok     { background: var(--status-ok-bg);     color: var(--status-ok-fg); }
+  .pill.info   { background: var(--status-info-bg);   color: var(--status-info-fg); }
+  .pill.danger { background: var(--status-danger-bg); color: var(--status-danger-fg); }
+  .pill .dot   { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.85; }
+
+  .job-title {
+    font-size: var(--t-display); line-height: 1.15; font-weight: 800;
+    color: var(--ink); margin: 4px 0 6px; letter-spacing: -0.01em;
+  }
+  .job-subtitle {
+    font-size: var(--t-h2); font-weight: 700; color: var(--ink-3);
+    text-transform: uppercase; letter-spacing: 0.02em; margin: 0 0 18px;
+  }
+  .address-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px; padding-top: 4px;
+  }
+  .address {
+    color: var(--ink); font-size: var(--t-body); line-height: 1.4;
+  }
+  .address-row .icon-btn { color: var(--forest); }
+
+  /* ---------- Primary action row ---------- */
+  .action-row {
+    display: flex; gap: 10px;
+    padding: 16px var(--pad) 4px;
+  }
+  .btn-primary {
+    flex: 1; height: 56px;
+    background: var(--forest);
+    color: white; font-weight: 600; font-size: var(--t-body);
+    border: 0; border-radius: var(--r-md);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+  .btn-primary:active { background: var(--forest-deep); }
+  .btn-icon-square {
+    width: 56px; height: 56px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink); cursor: pointer;
+  }
+  .btn-icon-square:active { background: var(--surface-2); }
+
+  .helper {
+    font-size: var(--t-meta); color: var(--ink-3);
+    padding: 6px var(--pad) 0;
+  }
+
+  /* ---------- Tab switcher (underlined) ---------- */
+  .tabs {
+    display: flex; gap: 28px;
+    padding: 18px var(--pad) 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .tab {
+    padding-bottom: 12px;
+    font-size: var(--t-h2); font-weight: 700;
+    color: var(--ink-3);
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+  }
+  .tab.active { color: var(--ink); border-bottom-color: var(--forest); }
+
+  /* ---------- Collapsible / nav rows ---------- */
+  .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px var(--pad);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    min-height: var(--tap);
+    cursor: pointer;
+  }
+  .row:active { background: var(--surface-2); }
+  .row .label { font-size: var(--t-h2); font-weight: 700; color: var(--ink); }
+  .row .sub   { font-size: var(--t-meta); color: var(--ink-3); margin-top: 2px; }
+  .row .end   { color: var(--forest); display: inline-flex; }
+  .row .end svg { width: 22px; height: 22px; }
+
+  .row.subtle { background: var(--bg); }
+  .row.value-row { background: var(--surface); }
+  .row.value-row .end { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Card list (line items) ---------- */
+  .lineitem {
+    display: grid; grid-template-columns: 56px 1fr auto;
+    gap: 12px; align-items: start;
+    padding: 14px var(--pad);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .lineitem .thumb {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, #4a8158, #2d5a3d);
+    border-radius: var(--r-sm);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--gold);
+  }
+  .lineitem .name { font-weight: 700; color: var(--ink); font-size: var(--t-body); }
+  .lineitem .desc { font-size: var(--t-meta); color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
+  .lineitem .qty  { font-size: var(--t-meta); color: var(--ink-3); margin-top: 6px; }
+  .lineitem .price{ font-size: var(--t-body); font-weight: 700; color: var(--ink); white-space: nowrap; }
+
+  /* ---------- Form fields ---------- */
+  .field { padding: 14px var(--pad); }
+  .field label {
+    display: block;
+    font-size: var(--t-tiny); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; margin-bottom: 8px;
+  }
+  .field input[type=text],
+  .field input[type=number],
+  .field select {
+    width: 100%; height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 0 14px;
+    font-size: var(--t-body); font-family: inherit;
+    color: var(--ink);
+  }
+  .field input:focus, .field select:focus {
+    outline: none; border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
+  }
+  .stepper {
+    display: grid; grid-template-columns: 56px 1fr 56px; gap: 8px; align-items: stretch;
+  }
+  .stepper button {
+    height: 52px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    font-size: 22px; font-weight: 700; color: var(--ink); cursor: pointer;
+  }
+  .stepper button:active { background: var(--surface-2); }
+  .stepper input { text-align: center; }
+
+  /* ---------- Slider ---------- */
+  .range {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; border-radius: 999px;
+    background: linear-gradient(to right, var(--forest) var(--pct, 50%), var(--line) var(--pct, 50%));
+    outline: none;
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface); border: 3px solid var(--forest);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+
+  /* ---------- Bottom navigation ---------- */
+  .bottomnav {
+    position: fixed;
+    left: 50%; transform: translateX(-50%);
+    bottom: 0; width: 100%; max-width: 420px;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    height: 72px;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 10;
+  }
+  .navitem {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
+    color: var(--ink-3);
+    font-size: var(--t-tiny); font-weight: 600;
+    cursor: pointer; position: relative;
+  }
+  .navitem.active { color: var(--forest); }
+  .navitem svg { width: 24px; height: 24px; }
+  .badge {
+    position: absolute; top: 8px; right: calc(50% - 22px);
+    background: #c9342b; color: white;
+    font-size: 10px; font-weight: 700;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  /* ---------- Floating Action Button ---------- */
+  .fab {
+    position: fixed; right: 20px; bottom: 92px;
+    width: 56px; height: 56px;
+    background: var(--ink); color: white;
+    border: 0; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+    cursor: pointer;
+    z-index: 11;
+  }
+  .fab svg { width: 26px; height: 26px; }
+  .fab:active { transform: translateY(1px); }
+
+  /* ---------- Specimen / spec strip ---------- */
+  .spec-strip {
+    background: var(--forest);
+    color: white;
+    padding: 18px var(--pad);
+    margin-top: 24px;
+  }
+  .spec-strip h2 { margin: 0 0 6px; font-size: var(--t-h1); font-weight: 800; letter-spacing: -0.01em; color: var(--gold); }
+  .spec-strip p  { margin: 0; font-size: var(--t-meta); line-height: 1.5; opacity: 0.92; }
+
+  .swatches {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; padding: 14px var(--pad);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .swatch {
+    display: flex; flex-direction: column; align-items: stretch;
+    border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden;
+  }
+  .swatch .chip { height: 56px; }
+  .swatch .meta { padding: 6px 8px; font-size: 10px; color: var(--ink-3); font-weight: 600; }
+
+  .typescale { padding: 14px var(--pad); background: var(--surface); border-bottom: 1px solid var(--line); }
+  .typescale .display { font-size: var(--t-display); font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+  .typescale .h1 { font-size: var(--t-h1); font-weight: 800; color: var(--ink); margin-top: 8px; }
+  .typescale .h2 { font-size: var(--t-h2); font-weight: 700; color: var(--ink); margin-top: 8px; }
+  .typescale .body { font-size: var(--t-body); color: var(--ink-2); margin-top: 8px; }
+  .typescale .meta { font-size: var(--t-meta); color: var(--ink-3); margin-top: 8px; }
+  .typescale .tiny { font-size: var(--t-tiny); color: var(--ink-3); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px var(--pad); background: var(--surface); border-bottom: 1px solid var(--line); }
+
+  .legal-note {
+    background: var(--gold); color: #4a3a0d;
+    padding: 14px var(--pad);
+    font-size: var(--t-meta); line-height: 1.5;
+  }
+  .legal-note strong { color: var(--forest-deep); }
+
+</style>
+</head>
+<body>
+
+<!-- ========================================================
+     SAMPLE: JOB DETAIL SCREEN
+     Mirrors the *layout pattern* of Jobber's job detail screen
+     using Spartan brand colors, original copy, and the Lucide
+     open-source icon set (ISC license).
+     ======================================================== -->
+<div class="frame">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="left">
+      <button class="icon-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </button>
+    </div>
+    <div class="right">
+      <button class="icon-btn" aria-label="Call">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92Z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="AI assist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero / job header -->
+  <div class="job-hero">
+    <div class="meta-row">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span class="pill warn"><span class="dot"></span>Unscheduled</span>
+    </div>
+    <div class="job-title">Job #1214 for Sandy Horn for $1,650.00</div>
+    <div class="job-subtitle">LS 1 Charlie 1 Farmington</div>
+    <div class="address-row">
+      <div class="address">1774 Spartan Drive<br/>Farmington, New York 14425</div>
+      <button class="icon-btn" aria-label="Directions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-9-9 18-2-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Helper text + primary action -->
+  <div class="helper">This job hasn't been scheduled</div>
+  <div class="action-row">
+    <button class="btn-primary">Go to Visits</button>
+    <button class="btn-icon-square" aria-label="More actions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+    </button>
+  </div>
+
+  <!-- Tab switcher -->
+  <div class="tabs">
+    <div class="tab active">Job</div>
+    <div class="tab">Notes</div>
+  </div>
+
+  <!-- Section rows -->
+  <div class="row">
+    <div>
+      <div class="label">Instructions</div>
+    </div>
+    <div class="end">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <div class="label">Checklists</div>
+    </div>
+    <div class="end">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="row subtle">
+    <div>
+      <div class="label" style="font-weight:600;font-size:var(--t-body);">Basic Form</div>
+    </div>
+    <div class="end"></div>
+  </div>
+
+  <!-- Line items -->
+  <section class="block" style="padding-bottom:0;">
+    <div class="section-label">Product / Service</div>
+  </section>
+  <div class="row" style="border-top:1px solid var(--line);">
+    <div class="label" style="font-weight:700;font-size:var(--t-body);">Line items</div>
+    <div class="end">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+    </div>
+  </div>
+
+  <div class="lineitem">
+    <div class="thumb">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5h6"/><path d="M5 22V11l7-4 7 4v11"/><path d="M9 22v-6h6v6"/></svg>
+    </div>
+    <div>
+      <div class="name">LS — Planting</div>
+      <div class="desc">(12) NewGen Liberty Belle® Boxwood<br/>Bristol's to deliver — plants already reserved</div>
+      <div class="qty">1 × $1,650.00</div>
+    </div>
+    <div class="price">$1,650.00</div>
+  </div>
+
+  <!-- ========================================================
+       DESIGN TOKENS REFERENCE STRIPS BELOW
+       ======================================================== -->
+
+  <div class="spec-strip">
+    <h2>Design Tokens</h2>
+    <p>Same Spartan/Next Million palette you've been building with — applied to a Jobber-style layout grammar.</p>
+  </div>
+
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:var(--forest)"></div><div class="meta">FOREST · #2D5A3D</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--forest-deep)"></div><div class="meta">DEEP · #1F3F2A</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--gold)"></div><div class="meta">GOLD · #E9C466</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--bg)"></div><div class="meta">BG · #F4F8F1</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--surface)"></div><div class="meta">SURFACE · #FFF</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--surface-2)"></div><div class="meta">DIVIDER · #F0F4EC</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ink)"></div><div class="meta">INK · #14241B</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ink-3)"></div><div class="meta">META · #6A7E72</div></div>
+  </div>
+
+  <div class="typescale">
+    <div class="tiny">Type Scale · Inter</div>
+    <div class="display">Display · 28/800</div>
+    <div class="h1">H1 · 22/800</div>
+    <div class="h2">H2 · 18/700</div>
+    <div class="body">Body · 16/400 — readable on a glove-tap.</div>
+    <div class="meta">Meta · 14/400 for secondary info.</div>
+    <div class="tiny">Tiny / All-caps label · 12/600</div>
+  </div>
+
+  <div class="pill-row">
+    <span class="pill warn"><span class="dot"></span>Unscheduled</span>
+    <span class="pill ok"><span class="dot"></span>Scheduled</span>
+    <span class="pill info"><span class="dot"></span>In Progress</span>
+    <span class="pill danger"><span class="dot"></span>Overdue</span>
+  </div>
+
+  <!-- Form spec -->
+  <section class="block">
+    <div class="section-label">Form Inputs</div>
+  </section>
+  <div class="field">
+    <label>Species</label>
+    <select>
+      <option>Silver Maple</option>
+      <option>Red Oak</option>
+      <option>White Pine</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>DBH (in)</label>
+    <div class="stepper">
+      <button>−</button>
+      <input type="number" value="24" />
+      <button>+</button>
+    </div>
+  </div>
+  <div class="field">
+    <label>Height (ft) — slider</label>
+    <input type="range" class="range" min="20" max="120" value="66" oninput="this.style.setProperty('--pct', ((this.value-20)/100*100)+'%')" style="--pct:46%;">
+  </div>
+
+  <div class="legal-note">
+    <strong>What this borrows:</strong> bottom tabs, FAB, status pills, big primary action button, collapsible section rows, large hero title, tab switcher with underline. These are <em>functional UI patterns</em> — not protectable.<br/><br/>
+    <strong>What stays original:</strong> palette (Spartan forest/gold/cream), typography (Inter, free), iconography (Lucide, ISC license), copy, and brand marks. No Jobber assets are used.
+  </div>
+
+  <!-- FAB and bottom nav -->
+  <button class="fab" aria-label="Add">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+  </button>
+  <div class="bottomnav">
+    <div class="navitem active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span class="badge">4</span>
+      Home
+    </div>
+    <div class="navitem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+      Schedule
+    </div>
+    <div class="navitem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Timesheet
+    </div>
+    <div class="navitem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      Search
+    </div>
+    <div class="navitem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+      More
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

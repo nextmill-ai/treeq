@@ -1,0 +1,52 @@
+---
+description: TreeQ project rules — always applied
+alwaysApply: true
+---
+
+# TreeQ — Cursor project rules
+
+You are working inside the TreeQ codebase. Read this before every change.
+
+## Canonical paths
+- **Project root (canonical):** `C:\Users\camer\Projects\Claude Cowork\TreeQ\`
+- **Do NOT write** to `C:\Users\camer\OneDrive\Documents\Claude\Projects\TreeQ\` — that copy is deprecated (2026-05-12) due to OneDrive sync truncation. Treat it as read-only legacy.
+- If a path reference points at OneDrive, fix it to point at the canonical path and tell Cameron the source.
+
+## Architecture
+- **Front end:** static (vanilla JS, no framework). Lives at the project root.
+- **Back end:** Netlify Functions in `netlify/functions/`. Node 20+.
+- **DB:** Supabase (Postgres + Edge Functions). Migrations in `supabase/migrations/`.
+- **Native:** Capacitor 7 wrap of the same web app for iOS + Android. App Store rule 4.2 requires 3+ native bridges (camera, geolocation, speech, push, splash already wired).
+- **LLM:** Anthropic SDK (`@anthropic-ai/sdk`), Claude Sonnet 4.6 for the interim estimator.
+- **Voice:** Web Speech API does NOT work in iOS WKWebView. Use `@capacitor-community/speech-recognition` plugin + Whisper fallback.
+
+## Hard rules
+
+1. **Methodology stays server-side.** Pricing formulas, multipliers, coefficients, calibration data, and the estimator prompt must never be shipped to the client. They live in Netlify Functions or Supabase Edge Functions. The client posts inputs and receives a price + breakdown — nothing more.
+2. **System prompt source of truth:** `netlify/functions/_prompts/system.md`. Pricing extract for the LLM: `research/spartan_pricing_extract.md`. Update these, not inline string literals.
+3. **Multi-tenant from day one.** Every table that holds tenant data must have a `tenant_id` (Spartan is the first tenant, not the only one). Use Supabase RLS, never trust client-supplied tenant IDs.
+4. **No paywall yet.** Cameron is in user-base build phase — auth and Stripe scaffolding may exist but stay behind feature flags (`PAYWALL_ENABLED=false`). Don't gate features.
+5. **Spartan pricing invariants:**
+   - Labor: $125 ground / $250 climber / $500 crane (per hour).
+   - Hazard modifiers: 2× obstacle, 3× high-power-line. **Never stack** — take the highest.
+   - "Minimums are inviolable."
+   - 8" limb = tree (not a limb).
+   - Bucket truck has no bundled-minimum.
+   - Multiplier order: Priority Scheduling is applied LAST.
+6. **Notion is schema source of truth** for operational tables (Dump Spots, Vendors, Subcontractors, Plant Price Comparison, Materials, Fleet Maintenance). Mirror to Supabase, don't reinvent.
+
+## File-writing discipline (Cowork-specific — applies in Cursor too if Claude Code is invoked)
+- Don't use Edit/Write for changes >20 lines in this folder; use shell here-docs via terminal. OneDrive-style truncation has bitten this project repeatedly.
+- After any non-trivial write, run `./verify_edit.sh PATH [EXPECTED_LINE_COUNT]` and check the last 5 lines match intent.
+- Never overwrite an existing file with a Write call if the new content is larger than the old.
+
+## Style
+- Plain JS on the front end. No build step on the client side unless explicitly approved.
+- Netlify Functions: CommonJS (`exports.handler = async ...`) or ESM if the file is in an ESM package — match the existing function's style.
+- Supabase queries: prefer typed RPCs over raw SQL in the client; keep SQL in `supabase/migrations/`.
+- Comments explain *why*, not *what*. Skip obvious comments.
+
+## When generating new features
+- Confirm whether the change touches the methodology (server-side) or UX (client-side) before writing code.
+- Reference `MEMORY.md` and `CLAUDE_CODE_OVERNIGHT.md` for current priorities before suggesting new work.
+- Don't add HR, marketing-automation, or paid analytics tooling — solo build phase.

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>TreeQ — Admin (Spartan)</title>
+<style>
+  :root {
+    --forest: #2d5a3d;
+    --forest-dark: #1f4029;
+    --forest-soft: #3d6f4f;
+    --gold: #e9c466;
+    --cream: #f4f8f1;
+    --cream-deep: #e9efe4;
+    --ink: #1a2a1f;
+    --muted: #6b7a6f;
+    --border: #d9e1d6;
+    --danger: #c2410c;
+    --ok: #2d7a3d;
+    --shadow: 0 1px 2px rgba(45,90,61,.08), 0 4px 12px rgba(45,90,61,.06);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { max-width: 980px; margin: 0 auto; padding: 24px 24px 64px; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0; font-size: 24px; color: var(--forest); letter-spacing: -0.01em; }
+  header .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  header nav a { color: var(--forest-dark); text-decoration: none; font-size: 13px; margin-left: 16px; }
+  header nav a:hover { text-decoration: underline; }
+
+  section.panel { background: white; border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px; box-shadow: var(--shadow); margin-bottom: 18px; }
+  section.panel h2 { margin: 0 0 12px; font-size: 18px; color: var(--forest); }
+  section.panel .desc { color: var(--muted); font-size: 13px; margin-bottom: 14px; line-height: 1.4; }
+
+  .source-row, .doc-row {
+    display: grid; gap: 8px 12px; padding: 12px 0; border-top: 1px dashed var(--border);
+    grid-template-columns: 28px 1fr auto auto; align-items: center;
+  }
+  .source-row:first-child, .doc-row:first-child { border-top: 0; padding-top: 0; }
+  .src-icon { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px;
+    background: var(--cream-deep); color: var(--forest); }
+  .src-icon svg { width: 16px; height: 16px; }
+  .src-name { font-weight: 600; color: var(--ink); }
+  .src-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .src-count { font-size: 12px; color: var(--muted); }
+  .status-pill {
+    font-size: 11px; padding: 4px 8px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.04em;
+    font-weight: 600; white-space: nowrap;
+  }
+  .status-pill.connected { background: #e6f2e8; color: var(--ok); }
+  .status-pill.syncing   { background: #fff4e0; color: #b27800; }
+  .status-pill.error     { background: #fee9e0; color: var(--danger); }
+  .status-pill.disconnected { background: #eef0ed; color: var(--muted); }
+  .status-pill.pending, .status-pill.parsing, .status-pill.embedding { background: #fff4e0; color: #b27800; }
+  .status-pill.indexed   { background: #e6f2e8; color: var(--ok); }
+  .status-pill.failed    { background: #fee9e0; color: var(--danger); }
+
+  button.action {
+    padding: 8px 14px; border: 1px solid var(--border); background: white; border-radius: 8px;
+    font: inherit; font-size: 13px; color: var(--forest-dark); cursor: pointer;
+  }
+  button.action:hover { background: var(--cream-deep); }
+  button.action.primary { background: var(--forest); color: white; border-color: var(--forest); }
+  button.action.primary:hover { background: var(--forest-dark); }
+  button.action:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .drop-zone {
+    margin-top: 14px; padding: 28px; border: 2px dashed var(--border); border-radius: 12px;
+    background: var(--cream); text-align: center; color: var(--muted); cursor: pointer;
+  }
+  .drop-zone.dragover { border-color: var(--forest); background: var(--cream-deep); color: var(--forest-dark); }
+  .drop-zone strong { color: var(--forest-dark); }
+
+  .placeholder {
+    padding: 12px 14px; border: 1px dashed var(--border); border-radius: 10px;
+    background: var(--cream); color: var(--muted); font-size: 13px; margin-top: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .test-input { display: flex; gap: 8px; margin-bottom: 12px; }
+  .test-input input { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font: inherit; }
+  .test-output { padding: 14px; background: var(--cream); border-radius: 10px; min-height: 80px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+  .test-output .src { display: block; margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .test-output strong { color: var(--forest-dark); }
+
+  .docs-table { display: flex; flex-direction: column; }
+  .doc-row { grid-template-columns: 28px 1fr auto auto; }
+  .doc-title { font-weight: 500; color: var(--ink); word-break: break-word; }
+  .doc-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .doc-actions { display: flex; gap: 6px; }
+
+  .empty { padding: 18px; color: var(--muted); font-size: 13px; text-align: center; font-style: italic; }
+  .err { background: #fee9e0; color: var(--danger); padding: 10px 12px; border-radius: 8px; font-size: 13px; margin: 8px 0; }
+  .summary { display: flex; gap: 20px; margin-bottom: 14px; flex-wrap: wrap; }
+  .summary div { font-size: 12px; color: var(--muted); }
+  .summary div strong { color: var(--forest); font-size: 16px; display: block; }
+
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: grid; place-items: center; padding: 20px; z-index: 99; }
+  .modal { background: white; border-radius: 14px; padding: 22px; max-width: 520px; width: 100%;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+  .modal h3 { margin: 0 0 8px; color: var(--forest); font-size: 18px; }
+  .modal p { margin: 6px 0; font-size: 14px; color: var(--ink); }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>TreeQ Admin</h1>
+    <div class="sub">Spartan Tree & Landscape — Owner controls</div>
+  </div>
+  <nav>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/quick-estimate.html">Legacy estimator</a>
+  </nav>
+</header>
+
+<section class="panel" id="sources-panel">
+  <h2>Connected sources</h2>
+  <div class="desc">Where TreeQ pulls its answers from. The Notion sync indexes Spartan's TreeQ Source Data DBs (Vendors, Dump Spots, Subcontractors, Plant Prices, Pickup Spots). Other connectors are coming.</div>
+  <div class="summary" id="summary"></div>
+  <div id="sources-list" class="docs-table"></div>
+
+  <h2 style="margin-top:22px; font-size:14px;">Other sources (coming soon)</h2>
+  <div class="placeholder">
+    <span><strong>QuickBooks Online</strong> — pull customers, invoices, payment status.</span>
+    <button class="action" disabled title="Coming soon">Connect</button>
+  </div>
+  <div class="placeholder">
+    <span><strong>Jobber CSV</strong> — bulk import existing clients + jobs.</span>
+    <button class="action" disabled title="Coming soon">Connect</button>
+  </div>
+  <div class="placeholder">
+    <span><strong>Google Drive</strong> — pull SOPs and contractor docs.</span>
+    <button class="action" disabled title="Coming soon">Connect</button>
+  </div>
+</section>
+
+<section class="panel" id="docs-panel">
+  <h2>Indexed documents</h2>
+  <div class="desc">Every page from a connected source ends up here. Tap Retry on a failed doc to re-trigger ingestion.</div>
+  <div id="docs-list" class="docs-table"></div>
+</section>
+
+<section class="panel" id="upload-panel">
+  <h2>Upload a document</h2>
+  <div class="desc">Drop a PDF, .md, .txt, or .docx. The file is registered now; the parsing + embedding pipeline runs in the background (v0.1 stub queues files at status Pending).</div>
+  <div id="drop-zone" class="drop-zone">
+    <strong>Drop a file here</strong> or <button class="action primary" id="file-pick-btn">Choose file</button>
+    <div style="margin-top:6px; font-size:12px;">Max 50 MB. PDF, DOC/DOCX, MD, TXT supported.</div>
+  </div>
+  <input type="file" id="file-input" hidden />
+  <div id="upload-status" style="margin-top: 10px;"></div>
+</section>
+
+<section class="panel" id="test-panel">
+  <h2>Test panel</h2>
+  <div class="desc">See exactly what your salesperson would see. The query runs through the same /treeq-ai endpoint, with the same operational context.</div>
+  <div class="test-input">
+    <input id="test-q" type="text" placeholder="e.g. Who's our trailer repair vendor?" />
+    <button class="action primary" id="test-go">Ask</button>
+  </div>
+  <div id="test-output" class="test-output">Result will render here.</div>
+</section>
+
+<script type="module">
+'use strict';
+window.addEventListener('error', e => console.error('[Admin]', e.message));
+
+const $ = (sel) => document.querySelector(sel);
+
+const ADMIN_API = '/.netlify/functions/admin-data';
+const SYNC_API = '/.netlify/functions/sync-notion';
+const UPLOAD_API = '/.netlify/functions/upload-doc';
+const TREEQ_API = '/.netlify/functions/treeq-ai';
+
+// ---------- helpers ----------
+function el(tag, props = {}, children = []) {
+  const e = document.createElement(tag);
+  Object.entries(props).forEach(([k, v]) => {
+    if (k === 'class') e.className = v;
+    else if (k === 'style') e.style.cssText = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v);
+  });
+  for (const c of (Array.isArray(children) ? children : [children])) {
+    if (c == null) continue;
+    e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return e;
+}
+
+function timeAgo(iso) {
+  if (!iso) return 'never';
+  const t = new Date(iso).getTime();
+  const sec = Math.round((Date.now() - t) / 1000);
+  if (sec < 60) return `${sec}s ago`;
+  if (sec < 3600) return `${Math.round(sec/60)}m ago`;
+  if (sec < 86400) return `${Math.round(sec/3600)}h ago`;
+  return `${Math.round(sec/86400)}d ago`;
+}
+
+const SOURCE_ICONS = {
+  notion: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+  file_upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  google_drive: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17h16M9 4l-6 11 4 6"/></svg>',
+  quickbooks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg>',
+  jobber_csv: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>',
+};
+
+// ---------- load & render ----------
+async function loadAdminData() {
+  try {
+    const resp = await fetch(ADMIN_API);
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    renderSummary(data.counts);
+    renderSources(data.sources);
+    renderDocuments(data.documents);
+  } catch (e) {
+    console.error(e);
+    $('#sources-list').innerHTML = `<div class="err">Could not load admin data: ${e.message}</div>`;
+  }
+}
+
+function renderSummary(counts) {
+  const c = counts || { sources: 0, documents: 0, chunks: 0 };
+  $('#summary').innerHTML = '';
+  for (const [label, n] of [['Sources', c.sources], ['Documents', c.documents], ['Chunks (embedded)', c.chunks]]) {
+    const div = el('div', {}, [
+      el('strong', {}, String(n ?? 0)),
+      label,
+    ]);
+    $('#summary').appendChild(div);
+  }
+}
+
+function renderSources(sources) {
+  const list = $('#sources-list');
+  list.innerHTML = '';
+  if (!sources || !sources.length) {
+    list.appendChild(el('div', { class: 'empty' }, 'No sources connected yet. Trigger a sync below.'));
+    addNotionTriggerRow(list, null);
+    return;
+  }
+  for (const s of sources) {
+    const icon = el('div', { class: 'src-icon' });
+    icon.innerHTML = SOURCE_ICONS[s.kind] || SOURCE_ICONS.file_upload;
+    const info = el('div', {}, [
+      el('div', { class: 'src-name' }, s.display_name || s.kind),
+      el('div', { class: 'src-sub' }, `${s.kind} · ${s.document_count || 0} docs · last sync ${timeAgo(s.last_synced_at)}${s.last_error ? ' · ⚠ ' + s.last_error : ''}`),
+    ]);
+    const pill = el('span', { class: 'status-pill ' + (s.status || '') }, s.status || 'unknown');
+    const actions = el('div', { class: 'doc-actions' });
+    if (s.kind === 'notion') {
+      const btn = el('button', { class: 'action', onclick: () => triggerNotionSync(s.id) }, 'Re-sync');
+      actions.appendChild(btn);
+    }
+    list.appendChild(el('div', { class: 'source-row' }, [icon, info, pill, actions]));
+  }
+  // If no Notion source, also offer a trigger.
+  if (!sources.some((s) => s.kind === 'notion')) {
+    addNotionTriggerRow(list, null);
+  }
+}
+
+function addNotionTriggerRow(list, _src) {
+  const icon = el('div', { class: 'src-icon' });
+  icon.innerHTML = SOURCE_ICONS.notion;
+  const info = el('div', {}, [
+    el('div', { class: 'src-name' }, 'Notion — Spartan workspace'),
+    el('div', { class: 'src-sub' }, 'Not yet synced. The first sync indexes the 5 source DBs.'),
+  ]);
+  const pill = el('span', { class: 'status-pill disconnected' }, 'not synced');
+  const actions = el('div', { class: 'doc-actions' });
+  actions.appendChild(el('button', { class: 'action primary', onclick: () => triggerNotionSync() }, 'Sync now'));
+  list.appendChild(el('div', { class: 'source-row' }, [icon, info, pill, actions]));
+}
+
+async function triggerNotionSync(_sourceId) {
+  if (!confirm('Trigger a full Notion re-sync? This calls the Notion + OpenAI Embeddings APIs.')) return;
+  try {
+    const resp = await fetch(SYNC_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+    alert(`Sync complete. ${data.total_documents} docs · ${data.total_chunks} chunks.\n\n${Object.entries(data.per_db).map(([k,v]) => `${k}: ${v.docCount ?? '—'} docs`).join('\n')}`);
+    loadAdminData();
+  } catch (e) {
+    alert('Sync failed: ' + e.message);
+  }
+}
+
+function renderDocuments(docs) {
+  const list = $('#docs-list');
+  list.innerHTML = '';
+  if (!docs || !docs.length) {
+    list.appendChild(el('div', { class: 'empty' }, 'No documents indexed yet.'));
+    return;
+  }
+  for (const d of docs) {
+    const icon = el('div', { class: 'src-icon' });
+    icon.innerHTML = (d.metadata_json && d.metadata_json.db) ? SOURCE_ICONS.notion : SOURCE_ICONS.file_upload;
+    const link = d.uri ? el('a', { href: d.uri, target: '_blank', rel: 'noopener', style: 'color:inherit;text-decoration:none' }, d.title)
+                       : document.createTextNode(d.title || '(untitled)');
+    const info = el('div', { class: 'doc-title' }, link);
+    const meta = el('div', { class: 'doc-meta' }, `${d.chunk_count || 0} chunks · updated ${timeAgo(d.updated_at)}${d.indexed_status_detail ? ' · ' + d.indexed_status_detail : ''}`);
+    info.appendChild(meta);
+    const pill = el('span', { class: 'status-pill ' + (d.indexed_status || '') }, d.indexed_status || '?');
+    const actions = el('div', { class: 'doc-actions' });
+    if (d.indexed_status === 'failed' || d.indexed_status === 'pending') {
+      actions.appendChild(el('button', { class: 'action', onclick: () => alert('Retry not yet implemented. Re-sync from the source for now.') }, 'Retry'));
+    }
+    list.appendChild(el('div', { class: 'doc-row' }, [icon, info, pill, actions]));
+  }
+}
+
+// ---------- upload ----------
+const dropZone = $('#drop-zone');
+const fileInput = $('#file-input');
+$('#file-pick-btn').addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+async function handleFiles(files) {
+  const out = $('#upload-status');
+  out.innerHTML = '';
+  for (const f of Array.from(files || [])) {
+    const row = el('div', { class: 'placeholder' }, `Uploading ${f.name}…`);
+    out.appendChild(row);
+    try {
+      const resp = await fetch(UPLOAD_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: f.name, mime_type: f.type, size_bytes: f.size }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+      row.textContent = `${f.name} → queued (pending). Background ingestion pipeline not yet implemented.`;
+    } catch (e) {
+      row.textContent = `${f.name} failed: ${e.message}`;
+      row.className = 'err';
+    }
+  }
+  loadAdminData();
+}
+
+// ---------- test panel ----------
+$('#test-go').addEventListener('click', runTest);
+$('#test-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') runTest(); });
+
+async function runTest() {
+  const q = $('#test-q').value.trim();
+  if (!q) return;
+  const out = $('#test-output');
+  out.textContent = 'Asking…';
+  try {
+    const resp = await fetch(TREEQ_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [], user_turn: q }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+    renderTestOutput(data);
+  } catch (e) {
+    out.innerHTML = `<span style="color:var(--danger)">${e.message}</span>`;
+  }
+}
+
+function renderTestOutput(data) {
+  const out = $('#test-output');
+  out.innerHTML = '';
+  if (data.kind === 'ask_question') {
+    const q = data.question || {};
+    const wrap = el('div', {}, [
+      el('strong', {}, 'Asks: '),
+      document.createTextNode(q.message || ''),
+      el('div', { class: 'src' }, `Input kind: ${q.input?.kind || 'unknown'}`),
+    ]);
+    out.appendChild(wrap);
+  } else if (data.kind === 'answer_question') {
+    const a = data.answer || {};
+    out.appendChild(el('div', {}, [el('strong', {}, 'Answer: '), document.createTextNode(a.answer || '')]));
+    if (Array.isArray(a.sources) && a.sources.length) {
+      const sw = el('div', { class: 'src' }, [el('strong', {}, `Sources (${a.sources.length}):`)]);
+      for (const s of a.sources) {
+        sw.appendChild(el('div', {}, `· ${s.title} (${s.kind})`));
+      }
+      out.appendChild(sw);
+    }
+    out.appendChild(el('div', { class: 'src' }, `Confidence: ${a.confidence ?? '?'}`));
+  } else if (data.kind === 'finalize_estimate') {
+    const f = data.estimate || {};
+    out.appendChild(el('div', {}, [el('strong', {}, 'Price: '), document.createTextNode('$' + (f.price ?? '?'))]));
+    out.appendChild(el('div', { class: 'src' }, `Range $${f.price_low ?? '?'} – $${f.price_high ?? '?'}`));
+    if (f.reasoning) out.appendChild(el('div', { class: 'src' }, f.reasoning));
+  } else {
+    out.textContent = JSON.stringify(data, null, 2);
+  }
+  if (data.retrieval) {
+    out.appendChild(el('div', { class: 'src' }, `[retrieval: used=${data.retrieval.used} count=${data.retrieval.count}${data.retrieval.reason ? ' reason=' + data.retrieval.reason : ''}]`));
+  }
+  if (data.usage) {
+    out.appendChild(el('div', { class: 'src' }, `tokens in/out: ${data.usage.input_tokens}/${data.usage.output_tokens} · cost $${data.usage.cost_usd ?? '?'} · ${data.usage.latency_ms}ms`));
+  }
+}
+
+loadAdminData();
+</script>
+</body>
+</html>

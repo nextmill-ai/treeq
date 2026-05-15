@@ -1,0 +1,63 @@
+﻿TreeQ OneDrive -> Canonical safety check
+Generated: 2026-05-14 21:32:50
+OneDrive  : C:\Users\camer\OneDrive\Documents\Claude\Projects\TreeQ
+Canonical : C:\Users\camer\Projects\Claude Cowork\TreeQ
+======================================================================
+Hashing OneDrive...
+  -> 95 relevant files
+Hashing Canonical...
+  -> 120 relevant files
+======================================================================
+RESULTS
+  Matched (identical hash):              81
+  OneDrive-only (would be lost):         1
+  Hash differs (OneDrive may be newer):  13
+======================================================================
+
+FILES ONLY IN ONEDRIVE (would be lost on delete):
+  + .~lock.Spartan_Pricing_Reference.xlsx#  (122 bytes)
+
+FILES WITH DIFFERENT CONTENT (one folder has divergent version):
+  ~ .env.example
+      OneDrive : 1186 bytes  0C004DB4B87CFC48CDF67FDB71B2F6BF
+      Canonical: 1564 bytes  34F6C113A983C26831A23AC87273B466
+  ~ CLAUDE.md
+      OneDrive : 1331 bytes  52BF45F606D8B3DE174CA242902FE634
+      Canonical: 2980 bytes  847F1337896FE54B1C7F723BF5651C6F
+  ~ CLAUDE_CODE_OVERNIGHT.md
+      OneDrive : 24816 bytes  AA2F875ECD24F815F5847A707588A53D
+      Canonical: 25788 bytes  7709111DD50CFD4EEEE4C3860B1BFF17
+  ~ CONTEXT.md
+      OneDrive : 9775 bytes  710C4E956FE864C5425644E9FE5A24FF
+      Canonical: 10959 bytes  F8E7E8FBCB3116E10A4A5F188D28FB12
+  ~ deploy\DEPLOY.md
+      OneDrive : 6888 bytes  06BF1185BEAA4168FD6E2C0AB7D7E257
+      Canonical: 7292 bytes  3E4D819E26AEBF4FC86DBAAEC17706AD
+  ~ deploy\public\index.html
+      OneDrive : 45496 bytes  62F3E15F2EFA39D8FA6D64CE6822A276
+      Canonical: 46853 bytes  E2F912FC16ECDA8A5DAEE592FCBBB7C7
+  ~ HANDOFF.md
+      OneDrive : 35839 bytes  A3AC59F0B9AF13E9EE20DB6689C93B65
+      Canonical: 54961 bytes  0FC98CDD0D80D08686B51971F7BD4AA1
+  ~ netlify.toml
+      OneDrive : 1432 bytes  CB733EC3F46333A7534599AF2F967BA6
+      Canonical: 3037 bytes  7B4AC257EB365048C73D64EA1C9E1057
+  ~ netlify\functions\quick-estimate.js
+      OneDrive : 15596 bytes  299774688AA5C32E5E4B18D436D4E290
+      Canonical: 240 bytes  0592E28B5C6064BE96007EF6A736BD07
+  ~ package.json
+      OneDrive : 518 bytes  F2A298887DE2D5E955EA65677EB54E53
+      Canonical: 1012 bytes  A1994A321C3599477338C79A177DBD85
+  ~ QUICK_ESTIMATE_SETUP.md
+      OneDrive : 6134 bytes  62715C11ACA9519A1D33FAAEE8187199
+      Canonical: 5242 bytes  F4BCBE4ACC69049F85110365E1D24C07
+  ~ quick-estimate.html
+      OneDrive : 19729 bytes  6428EA6F26338F3C86BE65CB5628A2DE
+      Canonical: 9929 bytes  B3E66BCA572581E464BDFAD0DDC2F875
+  ~ TreeQ Waitlist.xlsx
+      OneDrive : 8394 bytes  99346BC645FFB45F2C9CE162621CE832
+      Canonical: 8928 bytes  BB01E0B6506741DE8A09311BCC3A2909
+======================================================================
+DECISION: NOT SAFE to delete. Manual review required.
+STATUS: HALTED - no destructive action taken.
+

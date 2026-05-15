@@ -1,0 +1,55 @@
+# TreeQ — keep Cursor's index lean and keep secrets out of the AI context.
+
+# Dependencies
+node_modules/
+deploy/node_modules/
+tests/node_modules/
+
+# Build / output
+dist/
+build/
+.next/
+out/
+.netlify/
+android/app/build/
+ios/App/build/
+ios/App/Pods/
+ios/DerivedData/
+
+# Secrets — NEVER index these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+supabase/.temp/
+supabase/.branches/
+
+# Logs / caches
+*.log
+.DS_Store
+.cache/
+.turbo/
+
+# Large reference dumps that bloat context for no gain
+species_data/city_inventories.json
+research/spartan_pricing_extract.bak.md
+research/raw_dumps/
+*.xlsx
+*.xlsm
+*.zip
+*.tar.gz
+
+# OneDrive sync artifacts (this project is NOT in OneDrive, but defensive)
+~$*
+*.tmp
+*.swp
+
+# Generated
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

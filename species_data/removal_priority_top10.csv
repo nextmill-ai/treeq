@@ -1,0 +1,141 @@
+city,removal_rank,common_name,scientific_name,count,pct_of_inv,flag,reason
+New York City,1,Callery pear,,58931,9.04,Yes,Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+New York City,2,Norway maple,,34189,5.24,Yes,Invasive (NE/PNW); weak unions; storm-prone
+New York City,3,green ash,,16251,2.49,Yes,EAB - active mortality in 36 states
+New York City,4,silver maple,,12277,1.88,Yes,"Weak wood, storm-prone, surface roots"
+New York City,5,crimson king maple,,5923,0.91,Yes,Norway maple cultivar - same issues
+New York City,6,London planetree,,87014,13.34,Maybe,"Anthracnose, large mature size"
+New York City,7,honeylocust,,64263,9.85,Maybe,"Canker, borers, large planting base"
+New York City,8,pin oak,,53185,8.16,Maybe,Mature removals; iron chlorosis in alkaline soils
+New York City,9,cherry,,29279,4.49,Maybe,"Shorter lifespan, borers, decline"
+New York City,10,sweetgum,,10657,1.63,Maybe,"Gumball nuisance, large size, surface roots"
+Denver,1,"Ash, Green",,24905,6.76,Yes,EAB - active mortality in 36 states (USDA APHIS Jan 2026)
+Denver,2,"Maple, Silver",,11766,3.19,Yes,"Weak wood, storm-prone"
+Denver,3,"Elm, Siberian",,11402,3.09,Yes,Invasive Plains/Mtn West; brittle
+Denver,4,"Ash, White",,10362,2.81,Yes,EAB - active mortality in 36 states
+Denver,5,"Pear, Flowering",,9965,2.7,Yes,Often Bradford/Callery; bans expanding
+Denver,6,"Pine, Austrian",,8418,2.28,Yes,Diplodia tip blight
+Denver,7,"Spruce, Blue",,8393,2.28,Yes,Needle cast/decline
+Denver,8,"Maple, Norway",,7621,2.07,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Denver,9,"Cottonwood, Eastern",,3778,1.02,Yes,"Brittle, storm failure, aggressive roots"
+Denver,10,Honey Locust,,18791,5.1,Maybe,"Canker, borers"
+Seattle,1,Norway Maple,Acer platanoides,6574,2.46,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Seattle,2,Callery Pear,Pyrus calleryana,3929,1.47,Yes,Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+Seattle,3,(European) White Birch,Betula pendula,3368,1.26,Yes,Bronze birch borer
+Seattle,4,Douglas Fir,Pseudotsuga menziesii,2720,1.02,Yes,Hemlock woolly adelgid
+Seattle,5,Apple/Crabapple,Malus sp.,7218,2.7,Maybe,"Shorter lifespan, scab/disease"
+Seattle,6,Purpleleaf Plum variety,Prunus cerasifera cv/hyb,6417,2.4,Maybe,"Shorter lifespan, ornamental decline"
+Seattle,7,Double Chinese Cherry,Prunus serrulata,5356,2.01,Maybe,"Shorter lifespan, borers, decline"
+Seattle,8,Thundercloud Purpleleaf Plum,Prunus cerasifera `Thunderclou,5081,1.9,Maybe,"Shorter lifespan, ornamental decline"
+Seattle,9,Sweetgum,Liquidambar styraciflua,4989,1.87,Maybe,"Gumball nuisance, large size, surface roots"
+Seattle,10,Cherry/Plum/Laurel,Prunus sp.,4872,1.82,Maybe,"Shorter lifespan, borers, decline"
+Boston,1,"Maple, Norway",Acer platanoides,3179,6.05,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Boston,2,"Ash, Green",Fraxinus pennsylvanica,1860,3.54,Yes,EAB - active mortality in 36 states (USDA APHIS Jan 2026)
+Boston,3,"Pear, Callery",Pyrus calleryana,1757,3.35,Yes,Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+Boston,4,Honeylocust,Gleditsia triacanthos,6527,12.43,Maybe,"Canker, borers, large planting base"
+Boston,5,"Oak, Pin",Quercus palustris,2284,4.35,Maybe,Mature removals
+Boston,6,"Oak, Northern Red",Quercus rubra,1546,2.94,Maybe,Oak wilt risk in some regions; mature size
+Boston,7,"Planetree, London",Platanus x acerifolia,1084,2.06,Maybe,"Anthracnose, large size"
+Boston,8,"Honeylocust, Thornless",Gleditsia triacanthos inermis,939,1.79,Maybe,"Canker, borers, large planting base"
+Boston,9,Apple/Crabapple,Malus species,845,1.61,Maybe,"Shorter lifespan, scab/disease"
+Boston,10,"Sweetgum, Common",Liquidambar styraciflua,751,1.43,Maybe,"Gumball nuisance, large size, surface roots"
+Tempe AZ (Phoenix proxy),1,Evergreen Ash,,580,1.18,Yes,EAB - active mortality in 36 states
+Tempe AZ (Phoenix proxy),2,London Plane,,3588,7.28,Maybe,"Anthracnose, large mature size"
+Tempe AZ (Phoenix proxy),3,Brush Box,,4447,9.02,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),4,Broad Leaf Paperbark,,3475,7.05,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),5,Water Gum,,2269,4.6,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),6,Spotted Gum,,1611,3.27,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),7,Jacaranda,,1560,3.16,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),8,Sydney Red Gum,,1314,2.66,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),9,Golden Robinia,,1219,2.47,No,Standing inventory; no current acute removal driver
+Tempe AZ (Phoenix proxy),10,Tuckeroo,,1142,2.32,No,Standing inventory; no current acute removal driver
+Los Angeles County Parks (proxy; LA City API lacks species),1,Ash - Shamel,Fraxinus uhdei,133,3.08,Yes,EAB - active mortality in 36 states
+Los Angeles County Parks (proxy; LA City API lacks species),2,Eucalyptus - Red Ironbark,Eucalyptus sideroxylon,58,1.35,Yes,Wildfire risk + brittle limbs in CA
+Los Angeles County Parks (proxy; LA City API lacks species),3,Elm - Siberian,Ulmus pumila,56,1.3,Yes,Invasive Plains/Mtn West
+Los Angeles County Parks (proxy; LA City API lacks species),4,Eucalyptus - Cladocalyx,Eucalyptus cladocalyx,42,0.97,Yes,Wildfire risk + brittle limbs in CA
+Los Angeles County Parks (proxy; LA City API lacks species),5,Sycamore - London Plane,Platanus acerifolia,151,3.5,Maybe,"Anthracnose, large mature size"
+Los Angeles County Parks (proxy; LA City API lacks species),6,Sycamore - California,Platanus racemosa,114,2.64,Maybe,"Anthracnose, large mature size"
+Los Angeles County Parks (proxy; LA City API lacks species),7,Liquidambar,Liquidambar styraciflua,109,2.53,Maybe,"Gumball nuisance, large size"
+Los Angeles County Parks (proxy; LA City API lacks species),8,Mulberry - White,Morus alba,109,2.53,Maybe,"Fruit nuisance, weak wood"
+Los Angeles County Parks (proxy; LA City API lacks species),9,Plum - Purple-Leaf,Prunus cerasifera,52,1.21,Maybe,"Shorter lifespan, ornamental decline"
+Los Angeles County Parks (proxy; LA City API lacks species),10,Pine - Canary Island,Pinus canariensis,586,13.59,No,Standing inventory; no current acute removal driver
+Rochester NY,1,MAPLE - NRWY,Acer platanoides,6479,10.04,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Rochester NY,2,MAPLE - NRWY 'CRIMSON KING',Acer platanoides,2214,3.43,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Rochester NY,3,ASH - GREEN,Fraxinus pennsylvanica,2210,3.43,Yes,EAB - active mortality in 36 states
+Rochester NY,4,MAPLE - NRWY 'SCHWEDLER',Acer platanoides,1141,1.77,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Rochester NY,5,PEAR - 'CHANT OR CLEVE',Pyrus calleryana,950,1.47,Yes,Banned OH/SC/PA/NJ; bounty programs
+Rochester NY,6,MAPLE - NRWY COLUMN,Acer platanoides,910,1.41,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Rochester NY,7,MAPLE - SILVER,Acer saccharinum,905,1.4,Yes,"Weak wood, storm-prone"
+Rochester NY,8,PEAR - CALLERY,Pyrus calleryana,649,1.01,Yes,Banned OH/SC/PA/NJ; bounty programs
+Rochester NY,9,HONEYLOCUST,Gleditsia triacanthos,5917,9.17,Maybe,"Canker, borers, large planting base"
+Rochester NY,10,LONDON PLANETREE,Platanus acerifolia,2742,4.25,Maybe,"Anthracnose, large mature size"
+Atlanta (Trees Atlanta),1,American beech,Fagus grandifolia,1072,0.88,Yes,Beech leaf disease - 13 states + ON; 5yr sapling mortality
+Atlanta (Trees Atlanta),2,Tuliptree,Liriodendron tulipifera,2592,2.14,Maybe,"Large mature size, storm/conflict"
+Atlanta (Trees Atlanta),3,Willow oak,Quercus phellos,1732,1.43,Maybe,Mature size; common Mid-Atlantic/SE removal
+Atlanta (Trees Atlanta),4,Southern red oak,Quercus falcata,1064,0.88,Maybe,Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Atlanta (Trees Atlanta),5,American sycamore,Platanus occidentalis,1040,0.86,Maybe,"Anthracnose, large mature size"
+Atlanta (Trees Atlanta),6,Eastern redbud,Cercis canadensis,5104,4.21,No,Standing inventory; no current acute removal driver
+Atlanta (Trees Atlanta),7,White oak,Quercus alba,3676,3.03,No,Standing inventory; no current acute removal driver
+Atlanta (Trees Atlanta),8,Trident maple 'ABMTF',Acer buergerianum 'ABMTF',3075,2.53,No,Standing inventory; no current acute removal driver
+Atlanta (Trees Atlanta),9,American hornbeam,Carpinus caroliniana,3032,2.5,No,Standing inventory; no current acute removal driver
+Atlanta (Trees Atlanta),10,Serviceberry 'Autumn Brilliance',Amelanchier x grandiflora 'Autumn Brilliance',3023,2.49,No,Standing inventory; no current acute removal driver
+San Francisco,1,Pyrus calleryana :: Ornamental Pear,,2972,1.52,Yes,Banned OH/SC/PA/NJ; bounty programs
+San Francisco,2,Platanus x hispanica :: Sycamore: London Plane,,11859,6.07,Maybe,"Anthracnose, large mature size"
+San Francisco,3,Prunus cerasifera :: Cherry Plum,,6657,3.41,Maybe,"Shorter lifespan, borers, decline"
+San Francisco,4,Prunus serrulata 'Kwanzan' :: Kwanzan Flowering Cherry,,3972,2.03,Maybe,"Shorter lifespan, ornamental decline"
+San Francisco,5,Prunus serrulata :: Ornamental Cherry,,2684,1.37,Maybe,"Shorter lifespan, borers, decline"
+San Francisco,6,Tree(s) ::,,10588,5.42,No,Standing inventory; no current acute removal driver
+San Francisco,7,Lophostemon confertus :: Brisbane Box,,10206,5.22,No,Standing inventory; no current acute removal driver
+San Francisco,8,Metrosideros excelsa :: New Zealand Xmas Tree,,8832,4.52,No,Standing inventory; no current acute removal driver
+San Francisco,9,Tristaniopsis laurina :: Swamp Myrtle,,7506,3.84,No,Standing inventory; no current acute removal driver
+San Francisco,10,Pittosporum undulatum :: Victorian Box,,7193,3.68,No,Standing inventory; no current acute removal driver
+Sacramento,1,"pear, flowering ornamental",Pyrus calleryana spp,3278,3.29,Yes,Often Bradford/Callery; bans expanding
+Sacramento,2,"ash, Modesto",Fraxinus velutina modesto,1770,1.78,Yes,EAB - active mortality in 36 states
+Sacramento,3,London plane tree,Platanus X acerifolia,13286,13.35,Maybe,"Anthracnose, large mature size"
+Sacramento,4,"oak, red",Quercus rubra,2173,2.18,Maybe,Oak wilt risk in IL/IA/MI/MN/WI
+Sacramento,5,"sweetgum, American",Liquidambar styraciflua,1720,1.73,Maybe,"Gumball nuisance, large size, surface roots"
+Sacramento,6,"plum, purple-leaf",Prunus cerasifera spp,1237,1.24,Maybe,"Shorter lifespan, ornamental decline"
+Sacramento,7,"hackberry, common",Celtis occidentalis,1198,1.2,Maybe,"Storm failure, large size"
+Sacramento,8,"hackberry, Chinese",Celtis sinensis,1045,1.05,Maybe,"Storm failure, large size"
+Sacramento,9,"pistache, Chinese",Pistacia chinensis,5089,5.11,No,Standing inventory; no current acute removal driver
+Sacramento,10,"oak, valley",Quercus lobata,4581,4.6,No,Standing inventory; no current acute removal driver
+Philadelphia,1,PYRUS CALLERYANA - CALLERY PEAR,,7252,4.78,Yes,Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+Philadelphia,2,ACER PLATANOIDES - NORWAY MAPLE,,4324,2.85,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Philadelphia,3,PLATANUS X ACERIFOLIA - LONDON PLANETREE,,16335,10.77,Maybe,"Anthracnose, large mature size"
+Philadelphia,4,PRUNUS SPECIES - OTHER CHERRY,,7545,4.97,Maybe,"Shorter lifespan, borers, decline"
+Philadelphia,5,GLEDITSIA TRIACANTHOS - HONEYLOCUST,,5021,3.31,Maybe,"Canker, borers, large planting base"
+Philadelphia,6,QUERCUS RUBRA - NORTHERN RED OAK,,4926,3.25,Maybe,Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Philadelphia,7,MALUS SPECIES - OTHER CRABAPPLE,,2528,1.67,Maybe,"Shorter lifespan, scab/disease"
+Philadelphia,8,PRUNUS SERRULATA - KWANZAN CHERRY,,2528,1.67,Maybe,"Shorter lifespan, ornamental decline"
+Philadelphia,9,QUERCUS PALUSTRIS - PIN OAK,,2470,1.63,Maybe,Mature removals; iron chlorosis in alkaline soils
+Philadelphia,10,LIQUIDAMBAR STYRACIFLUA - SWEETGUM,,1530,1.01,Maybe,"Gumball nuisance, large size, surface roots"
+Washington DC,1,Norway maple,Acer platanoides,0,0.0,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Washington DC,2,Willow oak,Quercus phellos,0,0.0,Maybe,Mature size; common Mid-Atlantic/SE removal
+Washington DC,3,Pin oak,Quercus palustris,0,0.0,Maybe,Mature removals; iron chlorosis in alkaline soils
+Washington DC,4,London plane tree,Platanus x acerifolia,0,0.0,Maybe,"Anthracnose, large mature size"
+Washington DC,5,Red oak,Quercus rubra,0,0.0,Maybe,Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Washington DC,6,Hackberry,Celtis occidentalis,0,0.0,Maybe,"Storm failure, large size"
+Washington DC,7,Kwanzan cherry,Prunus serrulata 'Kwanzan',0,0.0,Maybe,"Shorter lifespan, ornamental decline"
+Washington DC,8,Cherry,Prunus species,0,0.0,Maybe,"Shorter lifespan, borers, decline"
+Washington DC,9,Red maple,Acer rubrum,0,0.0,No,Standing inventory; no current acute removal driver
+Washington DC,10,American elm,Ulmus americana,0,0.0,No,Standing inventory; no current acute removal driver
+Portland OR,1,Acer platanoides - Norway maple,,18150,7.2,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Portland OR,2,Acer x freemanii - red-silver maple hybrid,,9326,3.7,Yes,"Weak wood, storm-prone, surface roots"
+Portland OR,3,Pyrus calleryana - flowering pear,,6880,2.73,Yes,Banned OH/SC/PA/NJ; bounty programs
+Portland OR,4,Fraxinus spp. - ash,,4988,1.98,Yes,EAB - active mortality in 36 states
+Portland OR,5,Pseudotsuga menziesii - Douglas-fir,,4404,1.75,Yes,Hemlock woolly adelgid
+Portland OR,6,Prunus (cherry species and cultivars) - cherry,,9718,3.85,Maybe,"Shorter lifespan, borers, decline"
+Portland OR,7,Prunus cerasifera - flowering plum,,7472,2.96,Maybe,"Shorter lifespan, ornamental decline"
+Portland OR,8,Malus spp. - ornamental crabapple,,6805,2.7,Maybe,"Shorter lifespan, scab/disease"
+Portland OR,9,Liquidambar styraciflua - sweetgum,,3396,1.35,Maybe,"Gumball nuisance, large size, surface roots"
+Portland OR,10,Acer palmatum - Japanese maple,,5705,2.26,No,Standing inventory; no current acute removal driver
+Pittsburgh,1,Maple: Norway,Acer platanoides,3717,8.13,Yes,Invasive (NE/PNW); weak unions; storm-prone
+Pittsburgh,2,Pear: Callery,Pyrus calleryana,2969,6.5,Yes,Banned OH/SC/PA/NJ; bounty programs
+Pittsburgh,3,Spruce: Colorado,Picea pungens,472,1.03,Yes,Needle cast/decline
+Pittsburgh,4,Maple: Silver,Acer saccharinum,432,0.95,Yes,"Weak wood, storm-prone"
+Pittsburgh,5,London planetree,Platanus x acerifolia,3238,7.08,Maybe,"Anthracnose, large mature size"
+Pittsburgh,6,Honeylocust: Thornless,Gleditsia triacanthos inermis,2019,4.42,Maybe,"Canker, borers, large planting base"
+Pittsburgh,7,Oak: Pin,Quercus palustris,1672,3.66,Maybe,Mature removals
+Pittsburgh,8,Crabapple: Flowering,Malus spp.,1310,2.87,Maybe,"Shorter lifespan, scab/disease"
+Pittsburgh,9,Oak: Northern Red,Quercus rubra,978,2.14,Maybe,Oak wilt risk in IL/IA/MI/MN/WI
+Pittsburgh,10,Sweetgum: American,Liquidambar styraciflua,892,1.95,Maybe,"Gumball nuisance, large size, surface roots"

@@ -1,0 +1,98 @@
+# Netlify config for treeqapp.com
+#
+# The existing single-file deploy (drag-and-drop index.html) still works:
+# `publish = "."` keeps the root as the static site.
+#
+# To deploy the Netlify Functions (treeq-ai, sync-notion, transcribe, jobber-webhook,
+# upload-doc), switch to a git-based deploy or upload the whole folder via the
+# Netlify CLI (`netlify deploy --prod`). Drag-and-drop of a single file will
+# NOT include the functions.
+#
+# Required env vars (set in Netlify dashboard → Site settings → Environment variables):
+#   ANTHROPIC_API_KEY            — sk-ant-...
+#   OPENAI_API_KEY               — sk-... (Whisper for transcribe + embeddings for RAG)
+#   NOTION_API_KEY               — secret_... (internal integration shared w/ the 5
+#                                  TreeQ Source Data DBs in SpartanTreeNY workspace)
+#   SUPABASE_URL                 — https://<project>.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY    — service-role key (server-side only; bypasses RLS)
+#   SPARTAN_ORG_ID               — UUID of the Spartan organization row
+#   SPARTAN_KNOWLEDGE_SOURCE_ID  — UUID of the seeded Notion knowledge_sources row
+#                                  (created on first sync if absent)
+#   NOTION_DB_DUMP_SPOTS, NOTION_DB_VENDORS, NOTION_DB_SUBCONTRACTORS,
+#   NOTION_DB_PLANT_PRICES, NOTION_DB_PICKUP_SPOTS — Notion DB IDs
+#   TREEQ_AUTH_ENABLED           — "true" to flip the auth gate on (default false)
+#   JOBBER_WEBHOOK_SECRET        — for Jobber webhook signature verification (later)
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  # Default per-function timeout — overridden below for AI-heavy endpoints.
+  included_files = ["netlify/functions/_prompts/**"]
+
+[functions."treeq-ai"]
+  timeout = 60
+
+[functions."quick-estimate"]
+  # Kept as an alias to treeq-ai for the legacy quick-estimate.html (A/B comparison only).
+  timeout = 60
+
+[functions."sync-notion"]
+  timeout = 120
+
+[functions."transcribe"]
+  timeout = 60
+
+[functions."upload-doc"]
+  timeout = 60
+
+[functions."jobber-webhook"]
+  timeout = 30
+
+# Friendly API aliases — POST /api/treeq-ai ⇒ /.netlify/functions/treeq-ai, etc.
+[[redirects]]
+  from = "/api/treeq-ai"
+  to   = "/.netlify/functions/treeq-ai"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/transcribe"
+  to   = "/.netlify/functions/transcribe"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/upload-doc"
+  to   = "/.netlify/functions/upload-doc"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/sync-notion"
+  to   = "/.netlify/functions/sync-notion"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/jobber-webhook"
+  to   = "/.netlify/functions/jobber-webhook"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/quick-estimate.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    Cache-Control = "no-store"

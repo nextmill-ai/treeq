@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>TreeQ — Species Picker Mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   TreeQ — Species Picker Mock
+   Validates the picker design in a real browser, divorced
+   from the visualize-widget rendering surface.
+   Design tokens match index.html v1.8 so this can be ported
+   into the live app as the P1 (Favorites) feature.
+   ========================================================= */
+:root {
+  --forest:        #2d5a3d;
+  --forest-deep:   #1f3f2a;
+  --forest-tint:   #3d7050;
+  --gold:          #c9a23c;
+  --gold-bright:   #e9c466;
+  --bg:            #f4f8f1;
+  --surface:       #ffffff;
+  --surface-2:     #f0f4ec;
+  --line:          #e3ead8;
+  --ink:           #14241b;
+  --ink-2:         #314a3a;
+  --ink-3:         #6a7e72;
+  --ink-faint:     #98a89d;
+  --rose:          #c84d4d;
+  --rose-bg:       #fde2e2;
+  --warn-bg:       #fde7d7;
+  --warn-fg:       #9a4216;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body {
+  background: #ddd;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink-2);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.app {
+  max-width: 480px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--bg);
+  box-shadow: 0 0 32px rgba(0,0,0,0.08);
+  padding-bottom: 40px;
+}
+
+/* ------- Top bar ------- */
+.topbar {
+  background: var(--forest);
+  color: white;
+  padding: 16px 16px 18px;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar h1 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.topbar h1 span { color: var(--gold-bright); }
+
+/* ------- Search bar (explicit positioning, no flex tricks) ------- */
+.search-wrap {
+  position: relative;
+  width: 100%;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--ink-faint);
+  pointer-events: none;
+  display: block;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 14px 12px 44px;   /* 44px left clears the icon */
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search-input::placeholder { color: var(--ink-faint); }
+.search-input:focus {
+  border-color: var(--forest-tint);
+  box-shadow: 0 0 0 3px rgba(61,112,80,0.18);
+}
+
+/* ------- Pills ------- */
+.pills {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pills::-webkit-scrollbar { display: none; }
+.pill {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pill:hover { border-color: var(--forest-tint); }
+.pill.active {
+  background: var(--forest);
+  color: white;
+  border-color: var(--forest);
+}
+.pill .count { opacity: 0.7; margin-left: 4px; font-weight: 400; }
+
+/* ------- Genus grid ------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px 16px 24px;
+}
+.tile {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 14px 14px;
+  cursor: pointer;
+  text-align: center;
+  font-family: inherit;
+  color: inherit;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, box-shadow 0.15s, border-color 0.15s;
+}
+.tile:hover { border-color: var(--forest-tint); }
+.tile:active { transform: scale(0.98); }
+
+.tile-leaf {
+  width: 56px;
+  height: 56px;
+  color: var(--forest);
+  margin-bottom: 10px;
+  display: block;
+}
+.tile-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.tile-latin {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-3);
+}
+.tile-count {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* ------- Heart button (explicit SVG, two paths, class-toggle) ------- */
+.heart-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255,255,255,0.92);
+  cursor: pointer;
+  color: var(--ink-faint);
+  padding: 0;
+  display: grid;
+  place-items: center;
+  transition: color 0.15s, background 0.15s, transform 0.1s;
+  font-family: inherit;
+}
+.heart-btn:hover { color: var(--rose); background: white; }
+.heart-btn:active { transform: scale(0.92); }
+.heart-btn.active { color: var(--rose); background: var(--rose-bg); }
+
+/* The button contains BOTH a hollow heart and a filled heart;
+   CSS hides one based on .active state. */
+.heart-btn svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.heart-btn .heart-filled { display: none; }
+.heart-btn.active .heart-empty { display: none; }
+.heart-btn.active .heart-filled { display: block; }
+
+/* ------- Species view (drill-down) ------- */
+.species-view {
+  padding: 16px;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  color: var(--forest);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 0;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 8px;
+}
+.back-btn svg { width: 16px; height: 16px; }
+.species-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.species-subtitle {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+.species-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.species-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.species-row:hover { border-color: var(--forest-tint); }
+.species-row:active { transform: scale(0.99); }
+.species-row .row-leaf {
+  width: 36px;
+  height: 36px;
+  color: var(--forest);
+  flex-shrink: 0;
+  display: block;
+}
+.species-row .info { flex: 1; min-width: 0; }
+.species-row .name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.species-row .latin {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+.species-flag {
+  display: inline-block;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-style: normal;
+}
+.photo-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  flex-shrink: 0;
+  font-family: inherit;
+  padding: 0;
+}
+.photo-btn:hover { color: var(--forest); border-color: var(--forest-tint); }
+.photo-btn svg { width: 18px; height: 18px; }
+
+/* Heart in species row uses inline variant */
+.heart-btn.inline {
+  position: static;
+  width: 36px;
+  height: 36px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+/* ------- Empty state ------- */
+.empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ink-3);
+  grid-column: 1 / -1;
+}
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--ink-faint);
+  margin: 0 auto 12px;
+  display: block;
+}
+.empty h3 { font-size: 16px; color: var(--ink-2); margin-bottom: 4px; font-weight: 600; }
+.empty p { font-size: 13px; max-width: 280px; margin: 0 auto; }
+
+/* ------- Toast for selection feedback ------- */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s, opacity 0.25s;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.hidden { display: none !important; }
+
+/* ------- Flag explanation modal ------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 36, 27, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+  animation: fadeIn 0.15s ease;
+}
+.modal-backdrop.hidden { display: none !important; }
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+.modal-content {
+  position: relative;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 20px 22px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+}
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink-3);
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: inherit;
+  padding: 0;
+}
+.modal-close:hover { background: var(--surface-2); color: var(--ink); }
+#modal-token {
+  display: inline-block;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+#modal-description {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.modal-source {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  font-style: italic;
+}
+
+/* species-flag is now a button — give it explicit affordance */
+.species-flag {
+  cursor: pointer;
+  border: 0;
+  font-family: inherit;
+  transition: filter 0.15s, transform 0.08s;
+}
+.species-flag:hover { filter: brightness(0.92); }
+.species-flag:active { transform: scale(0.94); }
+
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="topbar">
+    <h1>Tree<span>Q</span> · Select Species</h1>
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="M21 21l-4.3-4.3"/>
+      </svg>
+      <input type="text" class="search-input" id="search" placeholder="Search species or genus..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+    </div>
+  </header>
+
+  <div class="pills" id="pills">
+    <button class="pill active" data-filter="all" type="button">All</button>
+    <button class="pill" data-filter="recent" type="button">Recent</button>
+    <button class="pill" data-filter="frequent" type="button">Frequent</button>
+    <button class="pill" data-filter="favorites" type="button">Favorites <span class="count" id="fav-count"></span></button>
+  </div>
+
+  <div id="genus-view">
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div id="species-view" class="species-view hidden">
+    <button class="back-btn" id="back" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+      </svg>
+      Back
+    </button>
+    <h2 class="species-title" id="species-title"></h2>
+    <p class="species-subtitle" id="species-subtitle"></p>
+    <div class="species-list" id="species-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-backdrop hidden" id="flag-modal" role="dialog" aria-modal="true" aria-labelledby="modal-token">
+  <div class="modal-content">
+    <button class="modal-close" id="modal-close" aria-label="Close" type="button">&times;</button>
+    <span id="modal-token"></span>
+    <div id="modal-description"></div>
+    <div class="modal-source" id="modal-source"></div>
+  </div>
+</div>
+<script>
+/* ============================================================
+   Heart paths — sourced from /icons/heart-empty.svg and
+   /icons/heart-filled.svg (Cameron-supplied). Both inlined
+   here so the picker is fully self-contained.
+
+   heart-empty: 512x512 viewBox, compound path (outer heart +
+     inner cutout) — renders as an outlined hollow heart
+     under nonzero fill-rule.
+   heart-filled: 24x24 viewBox, single solid heart path.
+
+   Both use fill="currentColor" so the button's CSS color
+   drives appearance: ink-faint default, rose on hover/active.
+   ============================================================ */
+const HEART_EMPTY_PATH = 'M474.644,74.27C449.391,45.616,414.358,29.836,376,29.836c-53.948,0-88.103,32.22-107.255,59.25c-4.969,7.014-9.196,14.047-12.745,20.665c-3.549-6.618-7.775-13.651-12.745-20.665c-19.152-27.03-53.307-59.25-107.255-59.25c-38.358,0-73.391,15.781-98.645,44.435C13.267,101.605,0,138.213,0,177.351c0,42.603,16.633,82.228,52.345,124.7c31.917,37.96,77.834,77.088,131.005,122.397c19.813,16.884,40.302,34.344,62.115,53.429l0.655,0.574c2.828,2.476,6.354,3.713,9.88,3.713s7.052-1.238,9.88-3.713l0.655-0.574c21.813-19.085,42.302-36.544,62.118-53.431c53.168-45.306,99.085-84.434,131.002-122.395C495.367,259.578,512,219.954,512,177.351C512,138.213,498.733,101.605,474.644,74.27z M309.193,401.614c-17.08,14.554-34.658,29.533-53.193,45.646c-18.534-16.111-36.113-31.091-53.196-45.648C98.745,312.939,30,254.358,30,177.351c0-31.83,10.605-61.394,29.862-83.245C79.34,72.007,106.379,59.836,136,59.836c41.129,0,67.716,25.338,82.776,46.594c13.509,19.064,20.558,38.282,22.962,45.659c2.011,6.175,7.768,10.354,14.262,10.354c6.494,0,12.251-4.179,14.262-10.354c2.404-7.377,9.453-26.595,22.962-45.66c15.06-21.255,41.647-46.593,82.776-46.593c29.621,0,56.66,12.171,76.137,34.27C471.395,115.957,482,145.521,482,177.351C482,254.358,413.255,312.939,309.193,401.614z';
+const HEART_FILLED_PATH = 'm11.466 22.776c.141.144.333.224.534.224s.393-.08.534-.224l9.594-9.721c4.001-4.053 1.158-11.055-4.532-11.055-3.417 0-4.985 2.511-5.596 2.98-.614-.471-2.172-2.98-5.596-2.98-5.672 0-8.55 6.984-4.531 11.055z';
+
+/* ============================================================
+   Species data — sourced from species_data/master_species_list.csv
+   Snapshot of the 36 picker species' CSV rows. Re-build this
+   block when the CSV is updated. (For the deployed app this
+   would come from a fetched JSON, not be inlined.)
+   ============================================================ */
+const SPECIES_DATA = {
+  'Acer rubrum': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
+  'Acer saccharinum': { flag: 'Yes', reason: 'Weak wood, storm-prone' },
+  'Acer saccharum': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
+  'Acer platanoides': { flag: 'Yes', reason: 'Invasive (NE/PNW); weak unions; storm-prone' },
+  'Fraxinus pennsylvanica': { flag: 'Yes', reason: 'EAB - active mortality in 36 states' },
+  'Fraxinus americana': null,  // not in CSV (rural/NE species)
+  'Fraxinus nigra': null,  // not in CSV (rural/NE species)
+  'Pinus strobus': null,  // not in CSV (rural/NE species)
+  'Picea abies': null,  // not in CSV (rural/NE species)
+  'Tsuga canadensis': null,  // not in CSV (rural/NE species)
+  'Juniperus virginiana': null,  // not in CSV (rural/NE species)
+  'Quercus rubra': { flag: 'Maybe', reason: 'Oak wilt risk in IL/IA/MI/MN/WI' },
+  'Quercus palustris': { flag: 'Maybe', reason: 'Mature removals' },
+  'Quercus alba': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
+  'Quercus macrocarpa': null,  // not in CSV (rural/NE species)
+  'Carya ovata': null,  // not in CSV (rural/NE species)
+  'Carya cordiformis': null,  // not in CSV (rural/NE species)
+  'Carya glabra': null,  // not in CSV (rural/NE species)
+  'Betula papyrifera': null,  // not in CSV (rural/NE species)
+  'Betula nigra': null,  // not in CSV (rural/NE species)
+  'Betula alleghaniensis': null,  // not in CSV (rural/NE species)
+  'Betula populifolia': null,  // not in CSV (rural/NE species)
+  'Ulmus americana': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
+  'Ulmus rubra': null,  // not in CSV (rural/NE species)
+  'Ulmus pumila': { flag: 'Yes', reason: 'Invasive Plains/Mtn West' },
+  'Prunus serotina': null,  // not in CSV (rural/NE species)
+  'Prunus pensylvanica': null,  // not in CSV (rural/NE species)
+  'Prunus serrulata \'Kwanzan\'': { flag: 'Maybe', reason: 'Shorter lifespan, ornamental decline' },
+  'Robinia pseudoacacia': { flag: 'No', reason: 'Standing inventory; no current acute removal driver' },
+  'Gleditsia triacanthos': { flag: 'Maybe', reason: 'Canker, borers, large planting base' },
+  'Fagus grandifolia': { flag: 'Yes', reason: 'Beech leaf disease - 13 states + ON; 5yr sapling mortality' },
+  'Liriodendron tulipifera': { flag: 'Maybe', reason: 'Large mature size, storm/conflict' },
+  'Platanus occidentalis': { flag: 'Maybe', reason: 'Anthracnose, large mature size' },
+  'Platanus × acerifolia': { flag: 'Maybe', reason: 'Anthracnose, large size' },
+  'Juglans nigra': null,  // not in CSV (rural/NE species)
+  'Juglans cinerea': null,  // not in CSV (rural/NE species)
+};
+
+/* ============================================================
+   deriveFlag — turn a free-text removal_reason into a short
+   token. Order matters: most specific patterns first.
+   ============================================================ */
+function deriveFlag(reason) {
+  if (!reason) return null;
+  const r = reason.toLowerCase();
+  /* Only species-specific, named conditions get tags. Generics
+     like 'size', 'storm-prone', 'borers', 'decline', 'shorter
+     lifespan' could describe almost any tree — they don't earn a
+     pill here. If the only reason is generic, return null and the
+     species shows no flag. */
+  if (/eab|emerald ash/.test(r)) return 'EAB';
+  if (/hemlock woolly|\bhwa\b/.test(r)) return 'HWA';
+  if (/oak wilt/.test(r)) return 'oak wilt';
+  if (/beech leaf/.test(r)) return 'BLD';
+  if (/bronze birch borer/.test(r)) return 'BBB';
+  if (/diplodia/.test(r)) return 'diplodia';
+  if (/anthracnose/.test(r)) return 'anthracnose';
+  if (/banned|bradford|callery/.test(r)) return 'banned';
+  if (/invasive/.test(r)) return 'invasive';
+  if (/needle cast/.test(r)) return 'needle cast';
+  if (/iron chlorosis|chlorosis/.test(r)) return 'chlorosis';
+  if (/gumball|fruit nuisance/.test(r)) return 'fruit drop';
+  if (/wildfire/.test(r)) return 'wildfire';
+  if (/scab/.test(r)) return 'scab';
+  return null;
+}
+
+/* ============================================================
+   computeFlag — what flag (if any) to display on a species row.
+   - CSV says Yes/Maybe → derive from reason, source = 'csv'
+   - CSV says No        → no flag (overrides any hand-coded one)
+   - Not in CSV         → fall back to hand-coded flag, source = 'authored'
+   - Not in CSV, no hand-coded → no flag
+   The tooltip shows the source so we can audit at a glance.
+   ============================================================ */
+function computeFlag(species) {
+  const csv = SPECIES_DATA[species.latin];
+  if (csv) {
+    if (csv.flag === 'Yes' || csv.flag === 'Maybe') {
+      const token = deriveFlag(csv.reason);
+      if (!token) return null;  // CSV says removable but for a generic reason — no tag
+      return { token: token, reason: csv.reason, source: 'CSV (city-inventory dataset)' };
+    }
+    return null;
+  }
+  if (species.flag) {
+    return { token: species.flag, reason: 'Authored from arboricultural knowledge — species not in city-inventory CSV', source: 'hand-coded' };
+  }
+  return null;
+}
+
+/* Tap-target descriptions — each token gets a one-paragraph
+   explanation users see when they tap a flag pill. */
+const FLAG_DESCRIPTIONS = {
+  'EAB': 'Emerald Ash Borer — invasive beetle (Agrilus planipennis) that has killed hundreds of millions of ash trees across North America. All Fraxinus species are vulnerable; Rochester is in active mortality territory.',
+  'HWA': 'Hemlock Woolly Adelgid — invasive sap-feeding insect (Adelges tsugae) causing widespread mortality of eastern hemlock. Look for white woolly masses at needle bases.',
+  'oak wilt': 'Oak wilt — fungal disease (Bretziella fagacearum) that kills oaks by blocking water transport. Red-oak group dies fast (weeks); white-oak group resists. Spread by sap beetles and root grafts.',
+  'BLD': 'Beech Leaf Disease — emerging nematode-borne disease causing rapid decline and mortality of American beech. Spread aggressively in the Northeast since 2012.',
+  'BBB': 'Bronze Birch Borer — wood-boring beetle (Agrilus anxius) that kills stressed birch trees. Paper and white birches especially vulnerable.',
+  'diplodia': 'Diplodia tip blight — fungal disease (Diplodia sapinea) causing needle browning and shoot dieback in pines, particularly Austrian and Scots pine.',
+  'anthracnose': 'Anthracnose — fungal leaf and twig disease. Sycamore anthracnose (Apiognomonia veneta) is particularly destructive on Platanus, causing repeated defoliation.',
+  'banned': 'Legally banned or under bounty programs in multiple states due to invasive impact. Examples: Callery pear bans in OH/SC/PA/NJ.',
+  'invasive': 'Listed as invasive in the Northeast or other regions. Outcompetes native vegetation; some states require removal.',
+  'needle cast': 'Needle cast — fungal diseases (Rhizosphaera, Stigmina) causing premature needle drop in spruces and other conifers.',
+  'chlorosis': 'Iron chlorosis — leaf yellowing from iron deficiency, common in alkaline soils. Pin oak (Quercus palustris) is especially susceptible and often fails on Rochester urban sites.',
+  'fruit drop': 'Heavy fruit, seed pod, or "gumball" drop creates significant cleanup load and slip hazards. Sweetgum and female ginkgo are common offenders.',
+  'wildfire': 'Elevated wildfire risk due to high oil content (eucalyptus) or brittle limbs that throw embers. Mostly a Western-US concern.',
+  'scab': 'Apple scab (Venturia inaequalis) — fungal disease causing leaf and fruit lesions, premature defoliation. Affects crabapples and apples.'
+};
+
+/* ============================================================
+   Genus icons — placeholder leaf shapes.
+   These are intentionally simple geometric hints; the real
+   botanically-accurate SVGs from the illustrator will swap in
+   here when delivered (same viewBox 0 0 64 64, currentColor,
+   single path or path-group, transparent background).
+   ============================================================ */
+const ICONS = {
+  maple: '<path d="M30 62 L30 50 L22 48 L8 42 L18 32 L14 18 L24 22 L32 6 L40 22 L50 18 L46 32 L56 42 L42 48 L34 50 L34 62 Z"></path>',
+  oak: '<path d="M30 62 L30 54 L28 53 L22 52 L8 44 L22 38 L4 26 L20 18 L12 8 L26 4 L32 2 L38 4 L52 8 L44 18 L60 26 L42 38 L56 44 L42 52 L36 53 L34 54 L34 62 Z"></path>',
+  ash: '<path d="M31 60 L31 12 L33 12 L33 60 Z M32 4 C26 4 22 8 22 14 C26 16 32 16 32 14 C32 16 38 16 42 14 C42 8 38 4 32 4 Z M30 18 C26 14 12 14 8 18 C12 22 26 22 30 18 Z M34 18 C38 14 52 14 56 18 C52 22 38 22 34 18 Z M30 32 C26 28 12 28 8 32 C12 36 26 36 30 32 Z M34 32 C38 28 52 28 56 32 C52 36 38 36 34 32 Z M30 46 C26 42 12 42 8 46 C12 50 26 50 30 46 Z M34 46 C38 42 52 42 56 46 C52 50 38 50 34 46 Z"></path>',
+  conifer: '<path d="M30 60 L8 8 L11 8 L34 60 Z M30 60 L20 4 L23 4 L34 60 Z M30 60 L31 2 L33 2 L34 60 Z M30 60 L41 4 L44 4 L34 60 Z M30 60 L53 8 L56 8 L34 60 Z M26 58 Q32 64 38 58 L38 54 L26 54 Z"></path>',
+  hickory: '<path d="M31 56 L31 24 L33 24 L33 56 Z M32 4 C24 4 18 10 18 22 C24 26 30 26 32 26 C34 26 40 26 46 22 C46 10 40 4 32 4 Z M30 32 C26 28 14 28 10 32 C14 36 26 36 30 32 Z M34 32 C38 28 50 28 54 32 C50 36 38 36 34 32 Z M30 44 C26 40 14 40 10 44 C14 48 26 48 30 44 Z M34 44 C38 40 50 40 54 44 C50 48 38 48 34 44 Z"></path>',
+  birch: '<path d="M30 62 L30 54 C20 54 12 50 10 42 C8 32 14 22 22 14 C26 10 30 6 32 4 C34 6 38 10 42 14 C50 22 56 32 54 42 C52 50 44 54 34 54 L34 62 Z"></path>',
+  elm: '<path d="M30 62 L30 54 L18 56 C6 50 6 28 14 16 C24 4 40 4 50 16 C58 30 58 48 44 48 L34 50 L34 62 Z"></path>',
+  cherry: '<path d="M30 62 L30 50 C24 50 22 44 22 34 C22 24 26 12 32 2 C38 12 42 24 42 34 C42 44 40 50 34 50 L34 62 Z"></path>',
+  locust: '<path d="M31 62 L31 8 L33 8 L33 62 Z M32 4 C29 4 27 6 28 9 C30 9 34 9 36 9 C37 6 35 4 32 4 Z M28 12 C22 10 14 10 12 14 C16 16 26 16 30 14 Z M36 12 C42 10 50 10 52 14 C48 16 38 16 34 14 Z M28 22 C22 20 14 20 12 24 C16 26 26 26 30 24 Z M36 22 C42 20 50 20 52 24 C48 26 38 26 34 24 Z M28 32 C22 30 14 30 12 34 C16 36 26 36 30 34 Z M36 32 C42 30 50 30 52 34 C48 36 38 36 34 34 Z M28 42 C22 40 14 40 12 44 C16 46 26 46 30 44 Z M36 42 C42 40 50 40 52 44 C48 46 38 46 34 44 Z M28 52 C22 50 14 50 12 54 C16 56 26 56 30 54 Z M36 52 C42 50 50 50 52 54 C48 56 38 56 34 54 Z"></path>',
+  beech: '<path fill-rule="evenodd" d="M30 62 L30 52 L26 52 C14 50 8 38 14 22 C20 8 32 4 32 4 C32 4 44 8 50 22 C56 38 50 50 38 52 L34 52 L34 62 Z M31 50 L31 10 L33 10 L33 50 Z M30 18 L20 14 L20 16 L30 20 Z M34 18 L44 14 L44 16 L34 20 Z M30 28 L18 26 L18 28 L30 30 Z M34 28 L46 26 L46 28 L34 30 Z M30 38 L20 38 L20 40 L30 40 Z M34 38 L44 38 L44 40 L34 40 Z"></path>',
+  tulip: '<path d="M30 62 L30 56 L20 52 L8 36 L16 24 L10 12 L24 14 L32 16 L40 14 L54 12 L48 24 L56 36 L44 52 L34 56 L34 62 Z"></path>',
+  sycamore: '<path d="M30 62 L30 52 L16 48 L6 36 L14 26 L16 12 L24 12 L32 6 L40 12 L48 12 L50 26 L58 36 L48 48 L34 52 L34 62 Z"></path>',
+  walnut: '<path d="M31 62 L31 4 L33 4 L33 62 Z M32 2 Q28 4 30 8 Q32 6 34 8 Q36 4 32 2 Z M30 12 Q14 6 8 14 Q20 16 30 14 Z M34 12 Q50 6 56 14 Q44 16 34 14 Z M30 22 Q14 16 8 24 Q20 26 30 24 Z M34 22 Q50 16 56 24 Q44 26 34 24 Z M30 32 Q14 26 8 34 Q20 36 30 34 Z M34 32 Q50 26 56 34 Q44 36 34 34 Z M30 42 Q14 36 8 44 Q20 46 30 44 Z M34 42 Q50 36 56 44 Q44 46 34 44 Z M30 52 Q14 46 8 54 Q20 56 30 54 Z M34 52 Q50 46 56 54 Q44 56 34 54 Z"></path>',
+  other: '<path d="M32 4 C42 4 50 10 50 18 C50 24 46 26 40 28 L36 30 L36 38 L28 38 L28 30 L32 28 C36 26 42 22 42 18 C42 12 38 10 32 10 C26 10 22 14 22 18 L14 18 C14 10 22 4 32 4 Z M28 44 L36 44 L36 52 L28 52 Z"></path>',
+};
+
+/* ============================================================
+   Genera — Rochester market priority.
+   Memory says: Ashes > Maples > Conifers are top-3 most-removed
+   in Cameron's market. Removal-flagged genera get a badge.
+   ============================================================ */
+const GENERA = [
+  { id: 'maple', name: 'Maple', latin: 'Acer', icon: 'maple', removal: true, species: [
+    { id: 'red-maple',     common: 'Red Maple',     latin: 'Acer rubrum' },
+    { id: 'silver-maple',  common: 'Silver Maple',  latin: 'Acer saccharinum', flag: 'storm' },
+    { id: 'sugar-maple',   common: 'Sugar Maple',   latin: 'Acer saccharum' },
+    { id: 'norway-maple',  common: 'Norway Maple',  latin: 'Acer platanoides', flag: 'invasive' },
+  ]},
+  { id: 'ash', name: 'Ash', latin: 'Fraxinus', icon: 'ash', removal: true, species: [
+    { id: 'green-ash', common: 'Green Ash', latin: 'Fraxinus pennsylvanica', flag: 'EAB' },
+    { id: 'white-ash', common: 'White Ash', latin: 'Fraxinus americana',     flag: 'EAB' },
+    { id: 'black-ash', common: 'Black Ash', latin: 'Fraxinus nigra',         flag: 'EAB' },
+  ]},
+  { id: 'conifer', name: 'Conifer', latin: 'Pinus / Picea / Tsuga', icon: 'conifer', removal: true, species: [
+    { id: 'white-pine',    common: 'Eastern White Pine', latin: 'Pinus strobus' },
+    { id: 'norway-spruce', common: 'Norway Spruce',      latin: 'Picea abies' },
+    { id: 'hemlock',       common: 'Eastern Hemlock',    latin: 'Tsuga canadensis', flag: 'HWA' },
+    { id: 'red-cedar',     common: 'Eastern Red Cedar',  latin: 'Juniperus virginiana' },
+  ]},
+  { id: 'oak', name: 'Oak', latin: 'Quercus', icon: 'oak', species: [
+    { id: 'red-oak',   common: 'Northern Red Oak', latin: 'Quercus rubra' },
+    { id: 'pin-oak',   common: 'Pin Oak',          latin: 'Quercus palustris' },
+    { id: 'white-oak', common: 'White Oak',        latin: 'Quercus alba' },
+    { id: 'bur-oak',   common: 'Bur Oak',          latin: 'Quercus macrocarpa' },
+  ]},
+  { id: 'hickory', name: 'Hickory', latin: 'Carya', icon: 'hickory', species: [
+    { id: 'shagbark-hickory',  common: 'Shagbark Hickory',  latin: 'Carya ovata' },
+    { id: 'bitternut-hickory', common: 'Bitternut Hickory', latin: 'Carya cordiformis' },
+    { id: 'pignut-hickory',    common: 'Pignut Hickory',    latin: 'Carya glabra' },
+  ]},
+  { id: 'birch', name: 'Birch', latin: 'Betula', icon: 'birch', species: [
+    { id: 'paper-birch',  common: 'Paper Birch',  latin: 'Betula papyrifera' },
+    { id: 'river-birch',  common: 'River Birch',  latin: 'Betula nigra' },
+    { id: 'yellow-birch', common: 'Yellow Birch', latin: 'Betula alleghaniensis' },
+    { id: 'gray-birch',   common: 'Gray Birch',   latin: 'Betula populifolia' },
+  ]},
+  { id: 'elm', name: 'Elm', latin: 'Ulmus', icon: 'elm', species: [
+    { id: 'american-elm', common: 'American Elm', latin: 'Ulmus americana', flag: 'DED' },
+    { id: 'slippery-elm', common: 'Slippery Elm', latin: 'Ulmus rubra' },
+    { id: 'siberian-elm', common: 'Siberian Elm', latin: 'Ulmus pumila',    flag: 'invasive' },
+  ]},
+  { id: 'cherry', name: 'Cherry', latin: 'Prunus', icon: 'cherry', species: [
+    { id: 'black-cherry',   common: 'Black Cherry',   latin: 'Prunus serotina' },
+    { id: 'pin-cherry',     common: 'Pin Cherry',     latin: 'Prunus pensylvanica' },
+    { id: 'kwanzan-cherry', common: 'Kwanzan Cherry', latin: "Prunus serrulata 'Kwanzan'" },
+  ]},
+  { id: 'locust', name: 'Locust', latin: 'Robinia / Gleditsia', icon: 'locust', species: [
+    { id: 'black-locust', common: 'Black Locust', latin: 'Robinia pseudoacacia' },
+    { id: 'honey-locust', common: 'Honey Locust', latin: 'Gleditsia triacanthos' },
+  ]},
+  { id: 'beech', name: 'Beech', latin: 'Fagus', icon: 'beech', species: [
+    { id: 'american-beech', common: 'American Beech', latin: 'Fagus grandifolia', flag: 'BBD' },
+  ]},
+  { id: 'tulip', name: 'Tulip Tree', latin: 'Liriodendron', icon: 'tulip', species: [
+    { id: 'tulip-tree', common: 'Tulip Tree', latin: 'Liriodendron tulipifera' },
+  ]},
+  { id: 'sycamore', name: 'Sycamore', latin: 'Platanus', icon: 'sycamore', species: [
+    { id: 'american-sycamore', common: 'American Sycamore', latin: 'Platanus occidentalis' },
+    { id: 'london-planetree',  common: 'London Planetree',  latin: 'Platanus × acerifolia' },
+  ]},
+  { id: 'walnut', name: 'Walnut', latin: 'Juglans', icon: 'walnut', species: [
+    { id: 'black-walnut', common: 'Black Walnut', latin: 'Juglans nigra' },
+    { id: 'butternut',    common: 'Butternut',    latin: 'Juglans cinerea', flag: 'TCB' },
+  ]},
+  { id: 'other', name: 'Other', latin: '—', icon: 'other', species: [
+    { id: 'unknown', common: 'Unknown / Other', latin: 'Describe in notes' },
+  ]},
+];
+
+/* ============================================================
+   State
+   ============================================================ */
+let currentFilter = 'all';
+let currentGenus = null;
+let searchTerm = '';
+
+/* ============================================================
+   Persistence — localStorage
+   Per memory: Recent / Frequent should derive from
+   customer-tree-entry timestamps in the production app.
+   In this mock, we simulate by tracking genus + species opens.
+   ============================================================ */
+const LS_FAV    = 'treeq.favorites';
+const LS_RECENT = 'treeq.recent';
+const LS_FREQ   = 'treeq.frequency';
+
+function getFavorites() { try { return JSON.parse(localStorage.getItem(LS_FAV)) || []; } catch (e) { return []; } }
+function setFavorites(arr) { localStorage.setItem(LS_FAV, JSON.stringify(arr)); updateFavCount(); }
+function toggleFavorite(id) {
+  const f = getFavorites();
+  const i = f.indexOf(id);
+  if (i === -1) f.push(id); else f.splice(i, 1);
+  setFavorites(f);
+  return f.includes(id);
+}
+function getRecent() { try { return JSON.parse(localStorage.getItem(LS_RECENT)) || []; } catch (e) { return []; } }
+function pushRecent(id) {
+  const r = getRecent().filter(x => x !== id);
+  r.unshift(id);
+  localStorage.setItem(LS_RECENT, JSON.stringify(r.slice(0, 10)));
+  const f = JSON.parse(localStorage.getItem(LS_FREQ) || '{}');
+  f[id] = (f[id] || 0) + 1;
+  localStorage.setItem(LS_FREQ, JSON.stringify(f));
+}
+function getFrequent() {
+  const f = JSON.parse(localStorage.getItem(LS_FREQ) || '{}');
+  return Object.entries(f).sort((a,b) => b[1]-a[1]).map(x => x[0]);
+}
+function updateFavCount() {
+  const c = getFavorites().length;
+  document.getElementById('fav-count').textContent = c ? '(' + c + ')' : '';
+}
+
+/* ============================================================
+   Render helpers
+   ============================================================ */
+function heartSVG() {
+  /* Two separate <svg> elements; CSS toggles which is visible
+     based on .heart-btn.active. Each preserves its own viewBox
+     so the source artwork renders at native proportions. */
+  return '<svg class="heart-empty" viewBox="0 0 512 512" aria-hidden="true">' +
+         '<path d="' + HEART_EMPTY_PATH + '" fill="currentColor"/>' +
+         '</svg>' +
+         '<svg class="heart-filled" viewBox="0 0 24 24" aria-hidden="true">' +
+         '<path d="' + HEART_FILLED_PATH + '" fill="currentColor"/>' +
+         '</svg>';
+}
+
+function leafSVG(iconKey, size) {
+  size = size || 56;
+  const inner = ICONS[iconKey] || ICONS.other;
+  return '<svg viewBox="0 0 64 64" width="' + size + '" height="' + size + '" fill="currentColor" aria-hidden="true">' + inner + '</svg>';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ============================================================
+   Genus grid render
+   ============================================================ */
+function renderGenusGrid() {
+  const grid = document.getElementById('grid');
+  const favorites = getFavorites();
+  const recent = getRecent();
+  const frequent = getFrequent();
+
+  let list = GENERA.slice();
+
+  if (currentFilter === 'favorites') {
+    list = list.filter(g => favorites.includes(g.id) || g.species.some(s => favorites.includes(s.id)));
+  } else if (currentFilter === 'recent') {
+    const recentSet = new Set(recent);
+    list = list
+      .filter(g => recentSet.has(g.id) || g.species.some(s => recentSet.has(s.id)))
+      .sort((a, b) => recent.indexOf(a.id) - recent.indexOf(b.id));
+  } else if (currentFilter === 'frequent') {
+    const freqIds = new Set(frequent.slice(0, 12));
+    list = list.filter(g => freqIds.has(g.id) || g.species.some(s => freqIds.has(s.id)));
+  }
+
+  if (searchTerm) {
+    const t = searchTerm.toLowerCase();
+    list = list.filter(g =>
+      g.name.toLowerCase().includes(t) ||
+      g.latin.toLowerCase().includes(t) ||
+      g.species.some(s => s.common.toLowerCase().includes(t) || s.latin.toLowerCase().includes(t))
+    );
+  }
+
+  if (list.length === 0) {
+    const msg = currentFilter === 'favorites'
+      ? 'Tap the heart on any genus or species to favorite it.'
+      : currentFilter === 'recent'
+      ? "You haven't selected any species yet."
+      : currentFilter === 'frequent'
+      ? "No frequency data yet — pick a few species to populate this."
+      : 'Try a different search term.';
+    grid.innerHTML =
+      '<div class="empty">' +
+      '<svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>' +
+      '</svg>' +
+      '<h3>No matches</h3>' +
+      '<p>' + msg + '</p>' +
+      '</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(g => {
+    const fav = favorites.includes(g.id);
+    return (
+      '<button class="tile" data-genus="' + g.id + '" type="button">' +
+      '<span class="heart-btn ' + (fav ? 'active' : '') + '" data-heart="' + g.id + '" role="button" aria-label="Favorite ' + g.name + '" tabindex="0">' + heartSVG() + '</span>' +
+      '<span class="tile-count" title="' + g.species.length + ' species in this genus">' + g.species.length + '</span>' +
+      '<span class="tile-leaf">' + leafSVG(g.icon) + '</span>' +
+      '<span class="tile-name">' + g.name + '</span>' +
+      '<span class="tile-latin">' + g.latin + '</span>' +
+      '</button>'
+    );
+  }).join('');
+
+  grid.querySelectorAll('.tile').forEach(tile => {
+    tile.addEventListener('click', e => {
+      if (e.target.closest('[data-heart]')) return;
+      openGenus(tile.dataset.genus);
+    });
+  });
+  grid.querySelectorAll('[data-heart]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.heart;
+      const isFav = toggleFavorite(id);
+      btn.classList.toggle('active', isFav);
+    });
+  });
+}
+
+/* ============================================================
+   Species drill-down
+   ============================================================ */
+function openGenus(id) {
+  const g = GENERA.find(x => x.id === id);
+  if (!g) return;
+  currentGenus = g;
+  pushRecent(g.id);
+  document.getElementById('genus-view').classList.add('hidden');
+  document.getElementById('species-view').classList.remove('hidden');
+  document.getElementById('species-title').textContent = g.name;
+  document.getElementById('species-subtitle').innerHTML = '<em>' + g.latin + '</em> · ' + g.species.length + ' species';
+  window.scrollTo(0, 0);
+
+  const list = document.getElementById('species-list');
+  const favorites = getFavorites();
+  list.innerHTML = g.species.map(s => {
+    const fav = favorites.includes(s.id);
+    const flagInfo = computeFlag(s);
+    const flag = flagInfo
+      ? ' <button type="button" class="species-flag"' +
+        ' data-token="' + flagInfo.token + '"' +
+        ' data-reason="' + flagInfo.reason.replace(/"/g, '&quot;') + '"' +
+        ' data-source="' + flagInfo.source + '">' +
+        flagInfo.token + '</button>'
+      : '';
+    return (
+      '<div class="species-row" data-species="' + s.id + '" data-name="' + s.common + '">' +
+      '<span class="row-leaf">' + leafSVG(g.icon, 36) + '</span>' +
+      '<div class="info">' +
+      '<div class="name">' + s.common + flag + '</div>' +
+      '<div class="latin">' + s.latin + '</div>' +
+      '</div>' +
+      '<button class="photo-btn" type="button" title="Preview leaf, bark, structure" aria-label="Preview photos">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<rect x="3" y="5" width="18" height="14" rx="2"/>' +
+      '<circle cx="9" cy="11" r="2"/>' +
+      '<path d="M21 17l-5-5-9 9"/>' +
+      '</svg>' +
+      '</button>' +
+      '<button class="heart-btn inline ' + (fav ? 'active' : '') + '" data-heart-species="' + s.id + '" type="button" aria-label="Favorite ' + s.common + '">' + heartSVG() + '</button>' +
+      '</div>'
+    );
+  }).join('');
+
+  list.querySelectorAll('[data-heart-species]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.heartSpecies;
+      const isFav = toggleFavorite(id);
+      btn.classList.toggle('active', isFav);
+    });
+  });
+  list.querySelectorAll('.photo-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      showToast('Photo preview (leaf · bark · structure) — placeholder');
+    });
+  });
+  list.querySelectorAll('.species-flag').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      showFlagModal(btn.dataset.token, btn.dataset.reason, btn.dataset.source);
+    });
+  });
+  list.querySelectorAll('.species-row').forEach(row => {
+    row.addEventListener('click', e => {
+      if (e.target.closest('button')) return;
+      pushRecent(row.dataset.species);
+      showToast('Selected: ' + row.dataset.name);
+    });
+  });
+}
+
+function closeGenus() {
+  currentGenus = null;
+  document.getElementById('species-view').classList.add('hidden');
+  document.getElementById('genus-view').classList.remove('hidden');
+  renderGenusGrid();
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
+   Wire up
+   ============================================================ */
+document.getElementById('back').addEventListener('click', closeGenus);
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  renderGenusGrid();
+});
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    currentFilter = p.dataset.filter;
+    /* If we're inside a genus drill-down, pop back to the genus grid
+       with the new filter applied. */
+    if (currentGenus) {
+      closeGenus();
+    } else {
+      renderGenusGrid();
+    }
+  });
+});
+
+/* Initial render */
+updateFavCount();
+renderGenusGrid();
+
+console.log('%cTreeQ picker mock loaded', 'color:#2d5a3d;font-weight:bold;');
+/* ============================================================
+   Flag explanation modal — tap any flag pill to open
+   ============================================================ */
+function showFlagModal(token, reason, source) {
+  document.getElementById('modal-token').textContent = token;
+  document.getElementById('modal-description').textContent =
+    FLAG_DESCRIPTIONS[token] || 'No detailed explanation available for this flag.';
+  document.getElementById('modal-source').textContent =
+    '"' + reason + '"  ·  source: ' + source;
+  document.getElementById('flag-modal').classList.remove('hidden');
+}
+function hideFlagModal() {
+  document.getElementById('flag-modal').classList.add('hidden');
+}
+document.getElementById('modal-close').addEventListener('click', hideFlagModal);
+document.getElementById('flag-modal').addEventListener('click', e => {
+  if (e.target.id === 'flag-modal') hideFlagModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') hideFlagModal();
+});
+
+console.log('Genera:', GENERA.length, '· Total species:', GENERA.reduce((n,g) => n + g.species.length, 0));
+</script>
+</body>
+</html>

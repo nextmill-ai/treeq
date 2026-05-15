@@ -1,0 +1,373 @@
+region,rank,common_name,scientific_name,count,pct_of_total,source_city,removal_flag
+New England Coastal & Piedmont,1,Honeylocust,Gleditsia triacanthos,6527,12.43,Source city: Boston,"Maybe - Canker, borers, large planting base"
+New England Coastal & Piedmont,2,"Linden, Littleleaf",Tilia cordata,3521,6.71,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,3,"Maple, Norway",Acer platanoides,3179,6.05,Source city: Boston,Yes - Invasive (NE/PNW); weak unions; storm-prone
+New England Coastal & Piedmont,4,"Maple, Red",Acer rubrum,2759,5.25,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,5,Empty Pit/Planting Site,Empty Pit/Planting Site,2423,4.61,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,6,"Oak, Pin",Quercus palustris,2284,4.35,Source city: Boston,Maybe - Mature removals
+New England Coastal & Piedmont,7,"Ash, Green",Fraxinus pennsylvanica,1860,3.54,Source city: Boston,Yes - EAB - active mortality in 36 states (USDA APHIS Jan 2026)
+New England Coastal & Piedmont,8,"Pear, Callery",Pyrus calleryana,1757,3.35,Source city: Boston,Yes - Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+New England Coastal & Piedmont,9,"Zelkova, Japanese",Zelkova serrata,1717,3.27,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,10,"Oak, Northern Red",Quercus rubra,1546,2.94,Source city: Boston,Maybe - Oak wilt risk in some regions; mature size
+New England Coastal & Piedmont,11,"Elm, Accolade",Ulmus carpinifolia 'accolade',1199,2.28,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,12,Ginkgo,Ginkgo biloba,1166,2.22,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,13,"Planetree, London",Platanus x acerifolia,1084,2.06,Source city: Boston,"Maybe - Anthracnose, large size"
+New England Coastal & Piedmont,14,"Oak, Swamp White",Quercus bicolor,987,1.88,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,15,"Honeylocust, Thornless",Gleditsia triacanthos inermis,939,1.79,Source city: Boston,"Maybe - Canker, borers, large planting base"
+New England Coastal & Piedmont,16,Apple/Crabapple,Malus species,845,1.61,Source city: Boston,"Maybe - Shorter lifespan, scab/disease"
+New England Coastal & Piedmont,17,"Lilac, Japanese Tree",Syringa reticulata,801,1.53,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,18,"Sweetgum, Common",Liquidambar styraciflua,751,1.43,Source city: Boston,"Maybe - Gumball nuisance, large size, surface roots"
+New England Coastal & Piedmont,19,"Maple, Hedge",Acer campestre,683,1.3,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,20,"Elm, American",Ulmus americana,592,1.13,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,21,"Hackberry, Northern",Celtis occidentalis,568,1.08,Source city: Boston,"Maybe - Storm failure, large size"
+New England Coastal & Piedmont,22,Crabapple spp.,Malus spp.,496,0.94,Source city: Boston,"Maybe - Shorter lifespan, scab/disease"
+New England Coastal & Piedmont,23,"Pagoda Tree, Japanese",Sophora japonica,484,0.92,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,24,"Linden, Silver",Tilia tomentosa,480,0.91,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Coastal & Piedmont,25,"Basswood, American",Tilia americana,470,0.9,Source city: Boston,No - Standing inventory; no current acute removal driver
+New England Interior Uplands,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Adirondack-North Country,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Lower Great Lakes-Hudson,1,MAPLE - NRWY,Acer platanoides,6479,10.04,Source city: Rochester NY,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Lower Great Lakes-Hudson,2,HONEYLOCUST,Gleditsia triacanthos,5917,9.17,Source city: Rochester NY,"Maybe - Canker, borers, large planting base"
+Lower Great Lakes-Hudson,3,LINDEN - LITTLE LEAF,Tilia cordata,2744,4.25,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,4,LONDON PLANETREE,Platanus acerifolia,2742,4.25,Source city: Rochester NY,"Maybe - Anthracnose, large mature size"
+Lower Great Lakes-Hudson,5,MAPLE - NRWY 'CRIMSON KING',Acer platanoides,2214,3.43,Source city: Rochester NY,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Lower Great Lakes-Hudson,6,ASH - GREEN,Fraxinus pennsylvanica,2210,3.43,Source city: Rochester NY,Yes - EAB - active mortality in 36 states
+Lower Great Lakes-Hudson,7,OAK - NORTHERN RED,Quercus rubra,2162,3.35,Source city: Rochester NY,Maybe - Oak wilt risk in IL/IA/MI/MN/WI
+Lower Great Lakes-Hudson,8,MAPLE - HEDGE,Acer campestre,1532,2.37,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,9,ZELKOVA - JAPANESE,Zelkova serrata,1303,2.02,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,10,MAPLE - RED,Acer rubrum,1198,1.86,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,11,MAPLE - NRWY 'SCHWEDLER',Acer platanoides,1141,1.77,Source city: Rochester NY,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Lower Great Lakes-Hudson,12,JAP TREE LILAC - 'IVSIL',Syringa reticulata,1103,1.71,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,13,MAPLE - SUGAR,Acer saccharum,1059,1.64,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,14,CHERRY - 'KWANZAN',Prunus serrulata,987,1.53,Source city: Rochester NY,"Maybe - Shorter lifespan, ornamental decline"
+Lower Great Lakes-Hudson,15,PEAR - 'CHANT OR CLEVE',Pyrus calleryana,950,1.47,Source city: Rochester NY,Yes - Banned OH/SC/PA/NJ; bounty programs
+Lower Great Lakes-Hudson,16,MAPLE - NRWY COLUMN,Acer platanoides,910,1.41,Source city: Rochester NY,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Lower Great Lakes-Hudson,17,MAPLE - SILVER,Acer saccharinum,905,1.4,Source city: Rochester NY,"Yes - Weak wood, storm-prone"
+Lower Great Lakes-Hudson,18,HACKBERRY,Celtis occidentalis,873,1.35,Source city: Rochester NY,"Maybe - Storm failure, large size"
+Lower Great Lakes-Hudson,19,JAP TREE LILAC,Syringa reticulata,864,1.34,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,20,SWEETGUM,Liquidambar styraciflua,760,1.18,Source city: Rochester NY,"Maybe - Gumball nuisance, large size, surface roots"
+Lower Great Lakes-Hudson,21,PEAR - CALLERY,Pyrus calleryana,649,1.01,Source city: Rochester NY,Yes - Banned OH/SC/PA/NJ; bounty programs
+Lower Great Lakes-Hudson,22,LINDEN - AMERICAN,Tilia americana,617,0.96,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,23,OAK - WHITE,Quercus alba,539,0.84,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,24,HAWTHORN - COCKSPUR,Crataegus crusgalli,504,0.78,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+Lower Great Lakes-Hudson,25,GINGKO,Gingko biloba,504,0.78,Source city: Rochester NY,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,1,London planetree,,87014,13.34,Source city: New York City,"Maybe - Anthracnose, large mature size"
+NYC-Long Island Coastal,2,honeylocust,,64263,9.85,Source city: New York City,"Maybe - Canker, borers, large planting base"
+NYC-Long Island Coastal,3,Callery pear,,58931,9.04,Source city: New York City,Yes - Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+NYC-Long Island Coastal,4,pin oak,,53185,8.16,Source city: New York City,Maybe - Mature removals; iron chlorosis in alkaline soils
+NYC-Long Island Coastal,5,Norway maple,,34189,5.24,Source city: New York City,Yes - Invasive (NE/PNW); weak unions; storm-prone
+NYC-Long Island Coastal,6,littleleaf linden,,29742,4.56,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,7,cherry,,29279,4.49,Source city: New York City,"Maybe - Shorter lifespan, borers, decline"
+NYC-Long Island Coastal,8,Japanese zelkova,,29258,4.49,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,9,ginkgo,,21024,3.22,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,10,Sophora,,19338,2.97,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,11,red maple,,17246,2.64,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,12,green ash,,16251,2.49,Source city: New York City,Yes - EAB - active mortality in 36 states
+NYC-Long Island Coastal,13,American linden,,13530,2.07,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,14,silver maple,,12277,1.88,Source city: New York City,"Yes - Weak wood, storm-prone, surface roots"
+NYC-Long Island Coastal,15,sweetgum,,10657,1.63,Source city: New York City,"Maybe - Gumball nuisance, large size, surface roots"
+NYC-Long Island Coastal,16,northern red oak,,8400,1.29,Source city: New York City,Maybe - Oak wilt risk TX/Upper Midwest; mature size elsewhere
+NYC-Long Island Coastal,17,silver linden,,7995,1.23,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,18,American elm,,7975,1.22,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,19,maple,,7080,1.09,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,20,purple-leaf plum,,6879,1.05,Source city: New York City,"Maybe - Shorter lifespan, ornamental decline"
+NYC-Long Island Coastal,21,swamp white oak,,6598,1.01,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,22,crimson king maple,,5923,0.91,Source city: New York City,Yes - Norway maple cultivar - same issues
+NYC-Long Island Coastal,23,Chinese elm,,5345,0.82,Source city: New York City,No - Standing inventory; no current acute removal driver
+NYC-Long Island Coastal,24,'Schubert' chokecherry,,4888,0.75,Source city: New York City,"Maybe - Shorter lifespan, borers, decline"
+NYC-Long Island Coastal,25,Japanese tree lilac,,4568,0.7,Source city: New York City,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,1,Red maple,Acer rubrum,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,2,Willow oak,Quercus phellos,0,0.0,Source city: Washington DC,Maybe - Mature size; common Mid-Atlantic/SE removal
+Mid-Atlantic Coastal Plain,3,Pin oak,Quercus palustris,0,0.0,Source city: Washington DC,Maybe - Mature removals; iron chlorosis in alkaline soils
+Mid-Atlantic Coastal Plain,4,American elm,Ulmus americana,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,5,Japanese zelkova,Zelkova serrata,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,6,London plane tree,Platanus x acerifolia,0,0.0,Source city: Washington DC,"Maybe - Anthracnose, large mature size"
+Mid-Atlantic Coastal Plain,7,Red oak,Quercus rubra,0,0.0,Source city: Washington DC,Maybe - Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Mid-Atlantic Coastal Plain,8,Other (See Notes),Other (See Notes),0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,9,Crape myrtle,Lagerstroemia indica,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,10,Eastern redbud,Cercis canadensis,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,11,Swamp white oak,Quercus bicolor,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,12,Sugar maple,Acer saccharum,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,13,Chinese elm,Ulmus parvifolia,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,14,Hackberry,Celtis occidentalis,0,0.0,Source city: Washington DC,"Maybe - Storm failure, large size"
+Mid-Atlantic Coastal Plain,15,Chinese pistache,Pistacia chinensis,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,16,Ginkgo (male),Ginkgo biloba (male),0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,17,Blackgum,Nyssa sylvatica,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,18,Scarlet oak,Quercus coccinea,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,19,Kwanzan cherry,Prunus serrulata 'Kwanzan',0,0.0,Source city: Washington DC,"Maybe - Shorter lifespan, ornamental decline"
+Mid-Atlantic Coastal Plain,20,Overcup oak,Quercus lyrata,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,21,Cherry,Prunus species,0,0.0,Source city: Washington DC,"Maybe - Shorter lifespan, borers, decline"
+Mid-Atlantic Coastal Plain,22,Kentucky coffeetree,Gymnocladus dioicus,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,23,Norway maple,Acer platanoides,0,0.0,Source city: Washington DC,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Mid-Atlantic Coastal Plain,24,Littleleaf linden,Tilia cordata,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Coastal Plain,25,Bald cypress,Taxodium distichum,0,0.0,Source city: Washington DC,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,1,PLATANUS X ACERIFOLIA - LONDON PLANETREE,,16335,10.77,Source city: Philadelphia,"Maybe - Anthracnose, large mature size"
+Mid-Atlantic Piedmont,2,ACER RUBRUM - RED MAPLE,,10288,6.78,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,3,PRUNUS SPECIES - OTHER CHERRY,,7545,4.97,Source city: Philadelphia,"Maybe - Shorter lifespan, borers, decline"
+Mid-Atlantic Piedmont,4,PYRUS CALLERYANA - CALLERY PEAR,,7252,4.78,Source city: Philadelphia,Yes - Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+Mid-Atlantic Piedmont,5,GLEDITSIA TRIACANTHOS - HONEYLOCUST,,5021,3.31,Source city: Philadelphia,"Maybe - Canker, borers, large planting base"
+Mid-Atlantic Piedmont,6,QUERCUS RUBRA - NORTHERN RED OAK,,4926,3.25,Source city: Philadelphia,Maybe - Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Mid-Atlantic Piedmont,7,ZELKOVA SERRATA - JAPANESE ZELKOVA,,4474,2.95,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,8,ACER PLATANOIDES - NORWAY MAPLE,,4324,2.85,Source city: Philadelphia,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Mid-Atlantic Piedmont,9,SYRINGA RETICULATA - JAPANESE TREE LILAC,,3740,2.47,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,10,GINKGO BILOBA - GINKGO,,3717,2.45,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,11,CERCIS CANADENSIS - EASTERN REDBUD,,2823,1.86,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,12,TILIA SPECIES - OTHER LINDEN,,2733,1.8,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,13,MALUS SPECIES - OTHER CRABAPPLE,,2528,1.67,Source city: Philadelphia,"Maybe - Shorter lifespan, scab/disease"
+Mid-Atlantic Piedmont,14,PRUNUS SERRULATA - KWANZAN CHERRY,,2528,1.67,Source city: Philadelphia,"Maybe - Shorter lifespan, ornamental decline"
+Mid-Atlantic Piedmont,15,ACER SACCHARUM - SUGAR MAPLE,,2507,1.65,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,16,ACER CAMPESTRE - HEDGE MAPLE,,2470,1.63,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,17,QUERCUS PALUSTRIS - PIN OAK,,2470,1.63,Source city: Philadelphia,Maybe - Mature removals; iron chlorosis in alkaline soils
+Mid-Atlantic Piedmont,18,CRATAEGUS SPECIES - OTHER HAWTHORN,,1848,1.22,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,19,SOPHORA JAPONICA - JAPANESE PAGODA TREE,,1839,1.21,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,20,TILIA CORDATA - LITTLE LEAF LINDEN,,1792,1.18,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,21,ACER SPECIES - OTHER MAPLE,,1744,1.15,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,22,AMELANCHIER SPECIES - OTHER SERVICEBERRY,,1724,1.14,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,23,ULMUS SPECIES - OTHER ELM,,1673,1.1,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,24,CLADRASTIS KENTUKEA - YELLOWWOOD,,1658,1.09,Source city: Philadelphia,No - Standing inventory; no current acute removal driver
+Mid-Atlantic Piedmont,25,LIQUIDAMBAR STYRACIFLUA - SWEETGUM,,1530,1.01,Source city: Philadelphia,"Maybe - Gumball nuisance, large size, surface roots"
+Central Appalachians,1,Maple: Norway,Acer platanoides,3717,8.13,Source city: Pittsburgh,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Central Appalachians,2,Maple: Red,Acer rubrum,3422,7.49,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,3,London planetree,Platanus x acerifolia,3238,7.08,Source city: Pittsburgh,"Maybe - Anthracnose, large mature size"
+Central Appalachians,4,Pear: Callery,Pyrus calleryana,2969,6.5,Source city: Pittsburgh,Yes - Banned OH/SC/PA/NJ; bounty programs
+Central Appalachians,5,Linden: Littleleaf,Tilia cordata,2413,5.28,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,6,Honeylocust: Thornless,Gleditsia triacanthos inermis,2019,4.42,Source city: Pittsburgh,"Maybe - Canker, borers, large planting base"
+Central Appalachians,7,Oak: Pin,Quercus palustris,1672,3.66,Source city: Pittsburgh,Maybe - Mature removals
+Central Appalachians,8,Crabapple: Flowering,Malus spp.,1310,2.87,Source city: Pittsburgh,"Maybe - Shorter lifespan, scab/disease"
+Central Appalachians,9,Ginkgo,Ginkgo biloba,1218,2.66,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,10,Oak: Northern Red,Quercus rubra,978,2.14,Source city: Pittsburgh,Maybe - Oak wilt risk in IL/IA/MI/MN/WI
+Central Appalachians,11,Sweetgum: American,Liquidambar styraciflua,892,1.95,Source city: Pittsburgh,"Maybe - Gumball nuisance, large size, surface roots"
+Central Appalachians,12,Elm: American,Ulmus americana,798,1.75,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,13,Maple: Freeman,Acer x freemanii,789,1.73,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,14,Maple: Sugar,Acer saccharum,716,1.57,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,15,Locust: Black,Robinia pseudoacacia,689,1.51,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,16,Zelkova: Japanese,Zelkova serrata,610,1.33,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,17,Lilac: Japanese Tree,Syringa reticulata,600,1.31,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,18,Cherry/Plum: spp.,Prunus spp.,579,1.27,Source city: Pittsburgh,"Maybe - Shorter lifespan, borers, decline"
+Central Appalachians,19,Maple: Hedge,Acer campestre,573,1.25,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,20,Spruce: Colorado,Picea pungens,472,1.03,Source city: Pittsburgh,Yes - Needle cast/decline
+Central Appalachians,21,Maple: Silver,Acer saccharinum,432,0.95,Source city: Pittsburgh,"Yes - Weak wood, storm-prone"
+Central Appalachians,22,Elm: spp.,Ulmus spp.,416,0.91,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,23,Hawthorn: spp.,Crataegus spp.,398,0.87,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Central Appalachians,24,Mulberry: White,Morus alba,385,0.84,Source city: Pittsburgh,"Maybe - Fruit nuisance, weak wood"
+Central Appalachians,25,Arborvitae: Eastern,Thuja occidentalis,324,0.71,Source city: Pittsburgh,No - Standing inventory; no current acute removal driver
+Great Lakes East,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Upper Great Lakes,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Corn Belt,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Great Plains North,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Great Plains South,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Gulf Coast Piney Woods,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Gulf Coast Coastal Urban,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Southeast Piedmont,1,Eastern redbud,Cercis canadensis,5104,4.21,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,2,White oak,Quercus alba,3676,3.03,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,3,Trident maple 'ABMTF',Acer buergerianum 'ABMTF',3075,2.53,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,4,American hornbeam,Carpinus caroliniana,3032,2.5,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,5,Serviceberry 'Autumn Brilliance',Amelanchier x grandiflora 'Autumn Brilliance',3023,2.49,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,6,Tuliptree,Liriodendron tulipifera,2592,2.14,Source city: Atlanta (Trees Atlanta),"Maybe - Large mature size, storm/conflict"
+Southeast Piedmont,7,Nuttall oak,Quercus texana,2449,2.02,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,8,Shumard oak,Quercus shumardii,2251,1.86,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,9,Sweetbay magnolia,Magnolia virginiana,1990,1.64,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,10,Overcup oak,Quercus lyrata,1983,1.63,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,11,Blackgum,Nyssa sylvatica,1937,1.6,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,12,Persian parrotia,Parrotia persica,1880,1.55,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,13,Bald cypress,Taxodium distichum,1859,1.53,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,14,Willow oak,Quercus phellos,1732,1.43,Source city: Atlanta (Trees Atlanta),Maybe - Mature size; common Mid-Atlantic/SE removal
+Southeast Piedmont,15,Blackgum 'Wildfire',Nyssa sylvatica 'Wildfire',1724,1.42,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,16,White fringetree,Chionanthus virginicus,1435,1.18,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,17,Red maple 'October Glory',Acer rubrum 'October Glory',1387,1.14,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,18,American elm 'Princeton',Ulmus americana 'Princeton',1375,1.13,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,19,Flowering dogwood,Cornus florida,1259,1.04,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,20,Crape myrtle 'Natchez',Lagerstroemia indica x fauriei 'Natchez',1239,1.02,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,21,American hophornbeam,Ostrya virginiana,1203,0.99,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,22,American beech,Fagus grandifolia,1072,0.88,Source city: Atlanta (Trees Atlanta),Yes - Beech leaf disease - 13 states + ON; 5yr sapling mortality
+Southeast Piedmont,23,Southern red oak,Quercus falcata,1064,0.88,Source city: Atlanta (Trees Atlanta),Maybe - Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Southeast Piedmont,24,Red maple,Acer rubrum,1062,0.88,Source city: Atlanta (Trees Atlanta),No - Standing inventory; no current acute removal driver
+Southeast Piedmont,25,American sycamore,Platanus occidentalis,1040,0.86,Source city: Atlanta (Trees Atlanta),"Maybe - Anthracnose, large mature size"
+Southeast Coastal Plain,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Florida Peninsula North/Central,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+South Florida Tropical Urban,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Texas East,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Texas Central / Hill Country,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Texas South,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Texas West,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Mountain West North,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Mountain West South,1,"Ash, Green",,24905,6.76,Source city: Denver,Yes - EAB - active mortality in 36 states (USDA APHIS Jan 2026)
+Mountain West South,2,Honey Locust,,18791,5.1,Source city: Denver,"Maybe - Canker, borers"
+Mountain West South,3,"Linden, Littleleaf",,13775,3.74,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,4,"Maple, Silver",,11766,3.19,Source city: Denver,"Yes - Weak wood, storm-prone"
+Mountain West South,5,"Elm, Siberian",,11402,3.09,Source city: Denver,Yes - Invasive Plains/Mtn West; brittle
+Mountain West South,6,"Hackberry, Common",,11242,3.05,Source city: Denver,"Maybe - Storm failure, large size"
+Mountain West South,7,"Ash, White",,10362,2.81,Source city: Denver,Yes - EAB - active mortality in 36 states
+Mountain West South,8,"Pear, Flowering",,9965,2.7,Source city: Denver,Yes - Often Bradford/Callery; bans expanding
+Mountain West South,9,"Crabapple, Flowering",,8911,2.42,Source city: Denver,"Maybe - Shorter lifespan, scab/disease"
+Mountain West South,10,"Pine, Austrian",,8418,2.28,Source city: Denver,Yes - Diplodia tip blight
+Mountain West South,11,"Spruce, Blue",,8393,2.28,Source city: Denver,Yes - Needle cast/decline
+Mountain West South,12,"Maple, Norway",,7621,2.07,Source city: Denver,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Mountain West South,13,"Pine, Ponderosa",,7457,2.02,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,14,"Maple, Freeman 'Autumn Blaze'",,7382,2.0,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,15,"Oak, Bur",,6253,1.7,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,16,"Oak, Swamp White",,6244,1.69,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,17,Honeylocust,,6079,1.65,Source city: Denver,"Maybe - Canker, borers, large planting base"
+Mountain West South,18,"Linden, American",,5567,1.51,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,19,"Oak, Northern Red",,5268,1.43,Source city: Denver,Maybe - Oak wilt risk in some regions; mature size
+Mountain West South,20,"Coffeetree, Kentucky",,5156,1.4,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,21,"Maple, freeman",,5113,1.39,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,22,"Catalpa, Western",,4860,1.32,Source city: Denver,"Maybe - Large size, messy seed pods"
+Mountain West South,23,"Juniper, Rocky Mountain",,4422,1.2,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,24,"Elm, American",,4253,1.15,Source city: Denver,No - Standing inventory; no current acute removal driver
+Mountain West South,25,"Cottonwood, Eastern",,3778,1.02,Source city: Denver,"Yes - Brittle, storm failure, aggressive roots"
+Desert Southwest Low Desert,1,Brush Box,,4447,9.02,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,2,London Plane,,3588,7.28,Source city: Tempe AZ (Phoenix proxy),"Maybe - Anthracnose, large mature size"
+Desert Southwest Low Desert,3,Broad Leaf Paperbark,,3475,7.05,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,4,Water Gum,,2269,4.6,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,5,Spotted Gum,,1611,3.27,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,6,Jacaranda,,1560,3.16,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,7,Sydney Red Gum,,1314,2.66,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,8,Golden Robinia,,1219,2.47,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,9,Tuckeroo,,1142,2.32,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,10,Weeping Bottlebrush,,1008,2.04,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,11,River She Oak,,1007,2.04,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,12,Blueberry Ash,,999,2.03,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,13,Crepe Myrtle,,931,1.89,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,14,Cabbage Tree Palm,,926,1.88,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,15,Port Jackson or Rusty Fig,,894,1.81,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,16,Tallow Wood,,819,1.66,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,17,Hills Fig,,805,1.63,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,18,Lemon Scented Gum,,724,1.47,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,19,Chinese Pistacia,,711,1.44,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,20,Swamp Mahogany,,616,1.25,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,21,Not Applicable,,598,1.21,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,22,Evergreen Ash,,580,1.18,Source city: Tempe AZ (Phoenix proxy),Yes - EAB - active mortality in 36 states
+Desert Southwest Low Desert,23,Sydney Blue Gum,,551,1.12,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,24,Weeping Lilly Pilly,,550,1.12,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest Low Desert,25,Crows Ash,,547,1.11,Source city: Tempe AZ (Phoenix proxy),No - Standing inventory; no current acute removal driver
+Desert Southwest High Desert,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Pacific Northwest Coastal,1,(Smooth) Japanese Maple,Acer palmatum,8407,3.15,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,2,Red Maple,Acer rubrum,7636,2.86,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,3,Apple/Crabapple,Malus sp.,7218,2.7,Source city: Seattle,"Maybe - Shorter lifespan, scab/disease"
+Pacific Northwest Coastal,4,Norway Maple,Acer platanoides,6574,2.46,Source city: Seattle,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Pacific Northwest Coastal,5,Purpleleaf Plum variety,Prunus cerasifera cv/hyb,6417,2.4,Source city: Seattle,"Maybe - Shorter lifespan, ornamental decline"
+Pacific Northwest Coastal,6,Double Chinese Cherry,Prunus serrulata,5356,2.01,Source city: Seattle,"Maybe - Shorter lifespan, borers, decline"
+Pacific Northwest Coastal,7,Thundercloud Purpleleaf Plum,Prunus cerasifera `Thunderclou,5081,1.9,Source city: Seattle,"Maybe - Shorter lifespan, ornamental decline"
+Pacific Northwest Coastal,8,Sweetgum,Liquidambar styraciflua,4989,1.87,Source city: Seattle,"Maybe - Gumball nuisance, large size, surface roots"
+Pacific Northwest Coastal,9,English Midland Hawthorn,Crataegus laevigata,4971,1.86,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,10,Cherry/Plum/Laurel,Prunus sp.,4872,1.82,Source city: Seattle,"Maybe - Shorter lifespan, borers, decline"
+Pacific Northwest Coastal,11,Kwanzan Flowering Cherry,Prunus  `Kwanzan` (Sato Zakura,4325,1.62,Source city: Seattle,"Maybe - Shorter lifespan, ornamental decline"
+Pacific Northwest Coastal,12,Blireiana Purpleleaf Plum,Prunus x blireiana,4250,1.59,Source city: Seattle,"Maybe - Shorter lifespan, ornamental decline"
+Pacific Northwest Coastal,13,Callery Pear,Pyrus calleryana,3929,1.47,Source city: Seattle,Yes - Banned OH/SC/PA/NJ; bounty programs NC/IN/VA
+Pacific Northwest Coastal,14,Kousa Dogwood,Cornus kousa,3685,1.38,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,15,Japanese Snowbell Tree,Styrax japonicus,3431,1.28,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,16,(European) White Birch,Betula pendula,3368,1.26,Source city: Seattle,Yes - Bronze birch borer
+Pacific Northwest Coastal,17,Paperbark Maple,Acer griseum,3355,1.26,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,18,Bigleaf Maple,Acer macrophyllum,3311,1.24,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,19,Red Oak,Quercus rubra,3019,1.13,Source city: Seattle,Maybe - Oak wilt risk TX/Upper Midwest; mature size elsewhere
+Pacific Northwest Coastal,20,Katsura Tree,Cercidiphyllum japonicum,2919,1.09,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,21,Littleleaf Linden,Tilia cordata,2862,1.07,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,22,Western Red Cedar,Thuja plicata,2780,1.04,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,23,Douglas Fir,Pseudotsuga menziesii,2720,1.02,Source city: Seattle,Yes - Hemlock woolly adelgid
+Pacific Northwest Coastal,24,London Plane (Tree),Platanus x acerifolia,2231,0.84,Source city: Seattle,"Maybe - Anthracnose, large mature size"
+Pacific Northwest Coastal,25,Norwegian Sunset Maple,Acer truncatum x A platanoides,2216,0.83,Source city: Seattle,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,1,Acer platanoides - Norway maple,,18150,7.2,Source city: Portland OR,Yes - Invasive (NE/PNW); weak unions; storm-prone
+Pacific Northwest Coastal,2,Prunus (cherry species and cultivars) - cherry,,9718,3.85,Source city: Portland OR,"Maybe - Shorter lifespan, borers, decline"
+Pacific Northwest Coastal,3,Acer x freemanii - red-silver maple hybrid,,9326,3.7,Source city: Portland OR,"Yes - Weak wood, storm-prone, surface roots"
+Pacific Northwest Coastal,4,Prunus cerasifera - flowering plum,,7472,2.96,Source city: Portland OR,"Maybe - Shorter lifespan, ornamental decline"
+Pacific Northwest Coastal,5,Pyrus calleryana - flowering pear,,6880,2.73,Source city: Portland OR,Yes - Banned OH/SC/PA/NJ; bounty programs
+Pacific Northwest Coastal,6,Malus spp. - ornamental crabapple,,6805,2.7,Source city: Portland OR,"Maybe - Shorter lifespan, scab/disease"
+Pacific Northwest Coastal,7,Acer palmatum - Japanese maple,,5705,2.26,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,8,Acer rubrum - red maple,,5647,2.24,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,9,Cornus spp. - dogwood,,5619,2.23,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,10,Styrax japonicus - Japanese snowbell,,5171,2.05,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,11,Fraxinus spp. - ash,,4988,1.98,Source city: Portland OR,Yes - EAB - active mortality in 36 states
+Pacific Northwest Coastal,12,Tilia spp. - linden or basswood,,4649,1.84,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,13,Parrotia persica - Persian ironwood,,4505,1.79,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,14,Acer griseum - paperbark maple,,4411,1.75,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,15,Pseudotsuga menziesii - Douglas-fir,,4404,1.75,Source city: Portland OR,Yes - Hemlock woolly adelgid
+Pacific Northwest Coastal,16,Pyrus spp. - pear,,4290,1.7,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,17,Zelkova serrata - Japanese zelkova,,4016,1.59,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,18,Ginkgo biloba - ginkgo,,3833,1.52,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,19,Nyssa sylvatica - black tupelo,,3653,1.45,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,20,Liquidambar styraciflua - sweetgum,,3396,1.35,Source city: Portland OR,"Maybe - Gumball nuisance, large size, surface roots"
+Pacific Northwest Coastal,21,Cornus florida - eastern dogwood,,3286,1.3,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,22,Carpinus spp. - hornbeam,,3226,1.28,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,23,Ulmus spp. - elm,,2979,1.18,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,24,Acer macrophyllum - bigleaf maple,,2884,1.14,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Coastal,25,Unknown,,2875,1.14,Source city: Portland OR,No - Standing inventory; no current acute removal driver
+Pacific Northwest Interior,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+California North Coast & Bay,1,Platanus x hispanica :: Sycamore: London Plane,,11859,6.07,Source city: San Francisco,"Maybe - Anthracnose, large mature size"
+California North Coast & Bay,2,Tree(s) ::,,10588,5.42,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,3,Lophostemon confertus :: Brisbane Box,,10206,5.22,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,4,Metrosideros excelsa :: New Zealand Xmas Tree,,8832,4.52,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,5,Tristaniopsis laurina :: Swamp Myrtle,,7506,3.84,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,6,Pittosporum undulatum :: Victorian Box,,7193,3.68,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,7,Prunus cerasifera :: Cherry Plum,,6657,3.41,Source city: San Francisco,"Maybe - Shorter lifespan, borers, decline"
+California North Coast & Bay,8,Magnolia grandiflora :: Southern Magnolia,,6524,3.34,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,9,Arbutus 'Marina' :: Hybrid Strawberry Tree,,5722,2.93,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,10,Ficus microcarpa nitida 'Green Gem' :: Indian Laurel Fig Tree 'Green Gem',,5519,2.83,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,11,Prunus serrulata 'Kwanzan' :: Kwanzan Flowering Cherry,,3972,2.03,Source city: San Francisco,"Maybe - Shorter lifespan, ornamental decline"
+California North Coast & Bay,12,Acacia melanoxylon :: Blackwood Acacia,,3936,2.01,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,13,Maytenus boaria :: Mayten,,3867,1.98,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,14,Olea europaea :: Olive Tree,,3739,1.91,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,15,Corymbia ficifolia :: Red Flowering Gum,,3550,1.82,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,16,Ginkgo biloba :: Maidenhair Tree,,3388,1.73,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,17,Callistemon citrinus :: Lemon Bottlebrush,,3295,1.69,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,18,Pyrus calleryana :: Ornamental Pear,,2972,1.52,Source city: San Francisco,Yes - Banned OH/SC/PA/NJ; bounty programs
+California North Coast & Bay,19,Prunus serrulata :: Ornamental Cherry,,2684,1.37,Source city: San Francisco,"Maybe - Shorter lifespan, borers, decline"
+California North Coast & Bay,20,Eriobotrya deflexa :: Bronze Loquat,,2496,1.28,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,21,Ulmus parvifolia :: Chinese Elm,,2381,1.22,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,22,Pinus radiata :: Monterey Pine,,2284,1.17,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,23,Ligustrum lucidum :: Glossy Privet,,2170,1.11,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,24,Pyrus kawakamii :: Evergreen Pear,,1976,1.01,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California North Coast & Bay,25,Cupressus macrocarpa :: Monterey Cypress,,1919,0.98,Source city: San Francisco,No - Standing inventory; no current acute removal driver
+California Central Valley,1,London plane tree,Platanus X acerifolia,13286,13.35,Source city: Sacramento,"Maybe - Anthracnose, large mature size"
+California Central Valley,2,"pistache, Chinese",Pistacia chinensis,5089,5.11,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,3,"oak, valley",Quercus lobata,4581,4.6,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,4,Japanese zelkova,Zelkova serrata,4415,4.44,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,5,crape myrtle,Lagerstroemia indica,4028,4.05,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,6,"pear, flowering ornamental",Pyrus calleryana spp,3278,3.29,Source city: Sacramento,Yes - Often Bradford/Callery; bans expanding
+California Central Valley,7,"redwood, coast",Sequoia sempervirens,2873,2.89,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,8,"maple, red",Acer rubrum,2248,2.26,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,9,"oak, red",Quercus rubra,2173,2.18,Source city: Sacramento,Maybe - Oak wilt risk in IL/IA/MI/MN/WI
+California Central Valley,10,"ash, Modesto",Fraxinus velutina modesto,1770,1.78,Source city: Sacramento,Yes - EAB - active mortality in 36 states
+California Central Valley,11,"sweetgum, American",Liquidambar styraciflua,1720,1.73,Source city: Sacramento,"Maybe - Gumball nuisance, large size, surface roots"
+California Central Valley,12,"oak, coast live",Quercus agrifolia,1448,1.46,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,13,horsetail tree,Casuarina equisetifolia,1441,1.45,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,14,"elm, Chinese",Ulmus parvifolia,1357,1.36,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,15,"palm, Mexican fan",Washingtonia robusta,1338,1.34,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,16,maidenhair tree,Ginkgo biloba,1249,1.26,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,17,"plum, purple-leaf",Prunus cerasifera spp,1237,1.24,Source city: Sacramento,"Maybe - Shorter lifespan, ornamental decline"
+California Central Valley,18,"hackberry, common",Celtis occidentalis,1198,1.2,Source city: Sacramento,"Maybe - Storm failure, large size"
+California Central Valley,19,tupelo / sour gum,Nyssa sylvatica,1173,1.18,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,20,"cypress, Italian",Cupressus sempervirens,1170,1.18,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,21,"magnolia, southern",Magnolia grandiflora,1155,1.16,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,22,"elm, English",Ulmus procera,1115,1.12,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,23,"oak, spp",Quercus spp,1047,1.05,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California Central Valley,24,"hackberry, Chinese",Celtis sinensis,1045,1.05,Source city: Sacramento,"Maybe - Storm failure, large size"
+California Central Valley,25,"maple, trident",Acer buergeranum,1044,1.05,Source city: Sacramento,No - Standing inventory; no current acute removal driver
+California South Coastal,1,Pine - Canary Island,Pinus canariensis,586,13.59,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,2,Pine - Aleppo,Pinus halepensis,204,4.73,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,3,Pine - Eldarica,Pinus eldarica,184,4.27,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,4,Elm - Chinese,Ulmus parvifolia,179,4.15,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,5,Palm - Mexican Fan,Washingtonia robusta,170,3.94,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,6,Sycamore - London Plane,Platanus acerifolia,151,3.5,Source city: Los Angeles County Parks (proxy; LA City API lacks species),"Maybe - Anthracnose, large mature size"
+California South Coastal,7,Jacaranda,Jacaranda mimosifolia,138,3.2,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,8,Ash - Shamel,Fraxinus uhdei,133,3.08,Source city: Los Angeles County Parks (proxy; LA City API lacks species),Yes - EAB - active mortality in 36 states
+California South Coastal,9,Pine - Stone,Pinus pinea,123,2.85,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,10,Sycamore - California,Platanus racemosa,114,2.64,Source city: Los Angeles County Parks (proxy; LA City API lacks species),"Maybe - Anthracnose, large mature size"
+California South Coastal,11,Liquidambar,Liquidambar styraciflua,109,2.53,Source city: Los Angeles County Parks (proxy; LA City API lacks species),"Maybe - Gumball nuisance, large size"
+California South Coastal,12,Mulberry - White,Morus alba,109,2.53,Source city: Los Angeles County Parks (proxy; LA City API lacks species),"Maybe - Fruit nuisance, weak wood"
+California South Coastal,13,Ficus - Nitida,Ficus microcarpa 'nitada',106,2.46,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,14,Tristania (Brisbane Box),Tristania conferta,90,2.09,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,15,Crape Myrtle,Lagerstroemia indica,82,1.9,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,16,Chinese Pistache,Pistacia chinensis,68,1.58,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,17,Tipu,Tipuana tipu,66,1.53,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,18,Eucalyptus - Red Ironbark,Eucalyptus sideroxylon,58,1.35,Source city: Los Angeles County Parks (proxy; LA City API lacks species),Yes - Wildfire risk + brittle limbs in CA
+California South Coastal,19,Elm - Siberian,Ulmus pumila,56,1.3,Source city: Los Angeles County Parks (proxy; LA City API lacks species),Yes - Invasive Plains/Mtn West
+California South Coastal,20,Melaleuca,Melaleuca quinquenervia,56,1.3,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,21,Plum - Purple-Leaf,Prunus cerasifera,52,1.21,Source city: Los Angeles County Parks (proxy; LA City API lacks species),"Maybe - Shorter lifespan, ornamental decline"
+California South Coastal,22,Bottlebrush - Lemon,Callistemon citrinus,51,1.18,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,23,Olive,Olea europaea,48,1.11,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,24,Palm - Queen,Syagrus romanzoffianum,43,1.0,Source city: Los Angeles County Parks (proxy; LA City API lacks species),No - Standing inventory; no current acute removal driver
+California South Coastal,25,Eucalyptus - Cladocalyx,Eucalyptus cladocalyx,42,0.97,Source city: Los Angeles County Parks (proxy; LA City API lacks species),Yes - Wildfire risk + brittle limbs in CA
+California South Inland,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Alaska Boreal Urban,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data
+Hawaii Tropical Urban,,GAP - NO CITY DATA EXTRACTED,,,,,Needs proxy data

@@ -1,0 +1,77 @@
+city,rank,species,removed_count,pct_of_city_removed,city_removed_total,source
+New York City,1,honeylocust,1,100.0,1,NYC Socrata status='Dead' OR 'Stump'
+Seattle,1,English Midland Hawthorn,2452,5.18,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,2,Blireiana Purpleleaf Plum,2372,5.01,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,3,Kwanzan Flowering Cherry,1643,3.47,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,4,Sweetgum,1520,3.21,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,5,Purpleleaf Plum variety,1445,3.05,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,6,Thundercloud Purpleleaf Plum,1375,2.9,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,7,Apple/Crabapple,1368,2.89,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,8,Red Maple,1368,2.89,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,9,Norway Maple,1311,2.77,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,10,(European) White Birch,1266,2.67,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,11,Double Chinese Cherry,1063,2.25,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,12,Stump,916,1.93,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,13,Common (Euro) Mountain Ash,759,1.6,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,14,Unknown,697,1.47,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,15,Bigleaf Maple,614,1.3,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,16,(Smooth) Japanese Maple,585,1.24,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,17,Sycamore Maple,548,1.16,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,18,Red Oak,547,1.16,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,19,Japanese Snowbell Tree,546,1.15,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,20,Common Hawthorn,544,1.15,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,21,Callery Pear,525,1.11,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,22,Autumn Flowering Cherry,462,0.98,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,23,Horse Chestnut,460,0.97,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,24,Flame Narrowleaf Ash,428,0.9,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Seattle,25,Honey Locust,426,0.9,47341,Seattle SDOT CURRENT_STATUS='REMOVED'
+Denver,1,"Elm, Siberian",780,13.96,5589,Denver Socrata condition='Dead'
+Denver,2,"Aspen, Quaking",208,3.72,5589,Denver Socrata condition='Dead'
+Denver,3,Honey Locust,203,3.63,5589,Denver Socrata condition='Dead'
+Denver,4,"Hackberry, Common",194,3.47,5589,Denver Socrata condition='Dead'
+Denver,5,"Ash, Green",127,2.27,5589,Denver Socrata condition='Dead'
+Denver,6,"Spruce, Blue",114,2.04,5589,Denver Socrata condition='Dead'
+Denver,7,"Coffeetree, Kentucky",113,2.02,5589,Denver Socrata condition='Dead'
+Denver,8,"Pear, Flowering",109,1.95,5589,Denver Socrata condition='Dead'
+Denver,9,"Linden, Littleleaf",107,1.91,5589,Denver Socrata condition='Dead'
+Denver,10,"Oak, Bur",94,1.68,5589,Denver Socrata condition='Dead'
+Denver,11,"Maple, Norway",94,1.68,5589,Denver Socrata condition='Dead'
+Denver,12,"Cottonwood, Eastern",90,1.61,5589,Denver Socrata condition='Dead'
+Denver,13,Honeylocust,88,1.57,5589,Denver Socrata condition='Dead'
+Denver,14,"Pine, Ponderosa",87,1.56,5589,Denver Socrata condition='Dead'
+Denver,15,"Ash, White",87,1.56,5589,Denver Socrata condition='Dead'
+Denver,16,"Maple, Freeman 'Autumn Blaze'",86,1.54,5589,Denver Socrata condition='Dead'
+Denver,17,"Plane, London",86,1.54,5589,Denver Socrata condition='Dead'
+Denver,18,"Crabapple, Flowering",75,1.34,5589,Denver Socrata condition='Dead'
+Denver,19,"Oak, Swamp White",74,1.32,5589,Denver Socrata condition='Dead'
+Denver,20,"Catalpa, Western",74,1.32,5589,Denver Socrata condition='Dead'
+Denver,21,"Oak, Northern Red",59,1.06,5589,Denver Socrata condition='Dead'
+Denver,22,"Pine, Austrian",59,1.06,5589,Denver Socrata condition='Dead'
+Denver,23,"Elm, Hybrid",58,1.04,5589,Denver Socrata condition='Dead'
+Denver,24,"Olive, Russian",57,1.02,5589,Denver Socrata condition='Dead'
+Denver,25,"Oak, English",56,1.0,5589,Denver Socrata condition='Dead'
+Atlanta (Trees Atlanta),1,Cercis canadensis,2117,12.82,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),2,Cornus florida,930,5.63,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),3,Nyssa sylvatica,636,3.85,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),4,Lagerstroemia indicaxfauriei,576,3.49,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),5,Acer buergerianum,483,2.92,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),6,Amelanchier xgrandiflora,478,2.89,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),7,Quercus alba,412,2.49,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),8,Acer rubrum,404,2.45,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),9,Carpinus caroliniana,379,2.29,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),10,Magnolia virginiana,373,2.26,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),11,Liriodendron tulipifera,342,2.07,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),12,Quercus texana,283,1.71,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),13,Ostrya virginiana,268,1.62,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),14,Parrotia persica,243,1.47,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),15,Ulmus americana,241,1.46,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),16,Quercus shumardii,236,1.43,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),17,Quercus lyrata,212,1.28,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),18,Chionanthus retusus,207,1.25,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),19,Taxodium distichum,204,1.24,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),20,Chionanthus virginicus,181,1.1,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),21,Quercus phellos,180,1.09,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),22,Ginkgo biloba,178,1.08,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),23,Juniperus virginiana,173,1.05,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),24,Tilia americana,163,0.99,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"
+Atlanta (Trees Atlanta),25,Cornus kousa,155,0.94,16518,"Atlanta Status IN ('Dead','Vandalized Dead')"

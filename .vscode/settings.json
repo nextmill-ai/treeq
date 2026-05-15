@@ -1,0 +1,51 @@
+﻿{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.rulers": [100],
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.inlineSuggest.enabled": true,
+
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    "*.mdc": "markdown",
+    "netlify/functions/_prompts/*.md": "markdown"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.netlify": true,
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.netlify": true,
+    "**/dist": true,
+    "**/build": true,
+    "species_data/city_inventories.json": true,
+    "**/package-lock.json": true
+  },
+
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]":       { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]":      { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]":   { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.wordWrap": "on" },
+  "[sql]":        { "editor.defaultFormatter": "mtxr.sqltools" },
+
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+
+  "git.autofetch": true,
+  "git.confirmSync": false,
+
+  "cursor.cpp.disabledLanguages": ["plaintext"],
+  "cursor.general.enableShadowWorkspace": true,
+  "cursor.chat.alwaysSearchWeb": false
+}
