@@ -46,9 +46,11 @@ Environment variables**) or via Wrangler secrets / vars as appropriate:
 
 | Variable | Purpose |
 |----------|---------|
-| `SUPABASE_URL` | Supabase project URL (e.g. `https://xxxx.supabase.co`). Used as the JWT `iss` prefix when verifying user tokens. |
-| `SUPABASE_JWT_SECRET` | Supabase **JWT secret** (Settings → API → JWT Settings). Used with HS256 to verify `Authorization: Bearer` tokens on protected `/api/*` routes. |
-| `SUPABASE_ANON_KEY` | Supabase **anon** public key. Required for future client-side Supabase usage (documented here so it is provisioned alongside auth). |
+| `SUPABASE_URL` | Supabase project URL (e.g. `https://xxxx.supabase.co`). |
+| `SUPABASE_ANON_KEY` | Supabase **anon** public key. Required for the browser client **and** for server-side token checks: `functions/lib/auth.js` calls `GET /auth/v1/user` with `Authorization: Bearer <user_jwt>` and `apikey: <anon>`, so verification works with **any** Supabase signing algorithm (no local JWT secret). |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only). Use for privileged Supabase operations in Pages Functions (e.g. future saved-trees); never expose to the client. |
+
+Do **not** set `SUPABASE_JWT_SECRET` for Cloudflare auth — HS256 local verify is obsolete once the project uses asymmetric JWT signing.
 
 The thin client can set `window.__TREEQ_API_BASE__` before scripts run if the API
 is hosted on a different origin than the static HTML.

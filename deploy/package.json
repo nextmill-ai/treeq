@@ -7,9 +7,7 @@
     "dev": "wrangler pages dev public",
     "deploy": "wrangler pages deploy public --project-name=treeqapp"
   },
-  "dependencies": {
-    "jose": "^5.9.6"
-  },
+  "dependencies": {},
   "devDependencies": {
     "wrangler": "^3.80.0"
   }

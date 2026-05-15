@@ -1,5 +1,3 @@
-import { jwtVerify } from 'jose';
-
 /**
  * @param {Request} request
  * @returns {string | null} raw JWT or null
@@ -12,20 +10,28 @@ export function parseBearer(request) {
 }
 
 /**
+ * Verify a Supabase JWT by calling the Supabase auth API directly.
+ * Works regardless of signing algorithm (HS256 or ECC/P-256).
+ *
  * @param {string} token
  * @param {Record<string, string | undefined>} env
+ * @returns {Promise<object>} Supabase user object
  */
 export async function verifySupabaseUserJwt(token, env) {
-  const secret = env.SUPABASE_JWT_SECRET;
   const base = env.SUPABASE_URL;
-  if (!secret || !base) {
-    throw new Error('Missing SUPABASE_JWT_SECRET or SUPABASE_URL');
+  const anonKey = env.SUPABASE_ANON_KEY;
+  if (!base || !anonKey) {
+    throw new Error('Missing SUPABASE_URL or SUPABASE_ANON_KEY');
   }
-  const key = new TextEncoder().encode(secret);
-  const issuer = `${String(base).replace(/\/$/, '')}/auth/v1`;
-  return jwtVerify(token, key, {
-    algorithms: ['HS256'],
-    issuer,
-    audience: 'authenticated',
+  const url = `${String(base).replace(/\/$/, '')}/auth/v1/user`;
+  const resp = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apikey: anonKey,
+    },
   });
+  if (!resp.ok) {
+    throw new Error(`Token verification failed: ${resp.status}`);
+  }
+  return resp.json();
 }
