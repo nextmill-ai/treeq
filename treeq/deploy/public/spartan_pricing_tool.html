@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Spartan Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+:root {
+  --forest:      #2d5a3d;
+  --forest-deep: #1f3f2a;
+  --gold-bright: #e9c466;
+  --bg:          #f4f8f1;
+  --surface:     #ffffff;
+  --surface-2:   #f0f4ec;
+  --line:        #e3ead8;
+  --ink:         #14241b;
+  --ink-2:       #314a3a;
+  --ink-3:       #6a7e72;
+  --ink-faint:   #98a89d;
+  /* Aliases for backwards-compat with inline styles in JS templates */
+  --muted:       #6a7e72;
+  --green:       #2d5a3d;
+  /* Stump card accents */
+  --green-pale:   #dcefdc;
+  --green-border: #8ab59a;
+  /* Status */
+  --amber: #d97706;
+  --red:   #dc2626;
+  /* Layout tokens */
+  --r-sm:  8px;
+  --r-md:  12px;
+  --r-lg:  16px;
+  --r-pill: 999px;
+  --tap:   48px;
+  --pad:   16px;
+  --bar:   64px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+html,body{
+  background:#ddd;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:var(--ink-2);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+input,select,button{font:inherit;}
+input[type=number]{-moz-appearance:textfield;}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;}
+
+/* PHONE FRAME */
+.app{
+  max-width:480px;
+  min-height:100vh;
+  margin:0 auto;
+  background:var(--bg);
+  box-shadow:0 0 32px rgba(0,0,0,0.08);
+  padding-bottom:calc(var(--bar) + env(safe-area-inset-bottom) + 16px);
+}
+
+/* TOPBAR */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--pad);
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:10;
+  gap:10px;
+}
+.brand-block{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
+.brand-mark{
+  width:36px;height:36px;
+  background:var(--forest);border-radius:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--gold-bright);flex-shrink:0;
+}
+.brand-mark svg{width:22px;height:22px;}
+.brand-name{font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--ink);line-height:1.1;}
+.brand-sub{font-size:11px;font-weight:600;letter-spacing:0.08em;color:var(--ink-3);text-transform:uppercase;margin-top:2px;}
+.back-btn{
+  font-size:11px;font-weight:700;letter-spacing:0.06em;
+  color:var(--forest);text-transform:uppercase;text-decoration:none;
+  padding:6px 10px;
+  border:1px solid var(--line);border-radius:var(--r-pill);
+  white-space:nowrap;flex-shrink:0;
+}
+.back-btn:active{background:var(--surface-2);}
+
+/* MAIN */
+main{padding:0;}
+
+/* SECTION LABEL */
+.sec-title{
+  font-size:12px;font-weight:700;letter-spacing:0.1em;
+  color:var(--ink-3);text-transform:uppercase;
+  padding:22px var(--pad) 10px;
+}
+
+/* FIELD */
+.f{display:flex;flex-direction:column;gap:5px;}
+.f label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--ink-3);}
+.f input,.f select{
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  font-size:16px;font-weight:600;
+  background:var(--surface);color:var(--ink);
+  height:52px;
+}
+.f input:focus,.f select:focus{outline:none;border-color:var(--forest);box-shadow:0 0 0 3px rgba(45,90,61,0.15);}
+.f .hint{font-size:11px;color:var(--ink-faint);}
+
+/* JOB ROW */
+.job-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px var(--pad) 8px;}
+
+/* SERVICE GRID */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px var(--pad) 8px;}
+.svc-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;
+  gap:5px;padding:14px 8px;
+  border-radius:var(--r-md);
+  border:1.5px solid var(--line);background:var(--surface);
+  cursor:pointer;text-align:center;min-height:72px;transition:all .12s;
+}
+.svc-btn .icon{font-size:22px;}
+.svc-btn .name{font-size:12px;font-weight:700;color:var(--ink);}
+/* In cart but not open — green border + checkmark badge */
+.svc-btn.in-cart{border-color:var(--forest);}
+.svc-btn.in-cart .name{color:var(--forest);}
+.svc-btn.in-cart::after{
+  content:'✓';position:absolute;top:5px;right:7px;
+  font-size:10px;font-weight:800;color:var(--forest);line-height:1;
+}
+/* Open/active — solid green fill */
+.svc-btn.active{border-color:var(--forest);background:var(--forest);}
+.svc-btn.active .name{color:#fff;}
+.svc-btn.active::after{color:var(--gold-bright);}
+
+/* SECTIONS */
+.section{display:none;}
+.section.show{display:block;}
+
+/* SECTION HEADER (cart item row) */
+.sec-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--pad);gap:10px;
+  background:var(--surface);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  cursor:pointer;user-select:none;
+}
+.sec-header-left{display:flex;align-items:center;gap:9px;flex:1;min-width:0;}
+.sec-header-emoji{font-size:20px;line-height:1;flex-shrink:0;}
+.sec-header-name{font-size:14px;font-weight:700;color:var(--ink);}
+.sec-header-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sec-price{font-size:14px;font-weight:800;color:var(--forest);white-space:nowrap;}
+.sec-chev{font-size:18px;color:var(--ink-3);display:inline-block;transition:transform .2s;line-height:1;}
+.section.open .sec-chev{transform:rotate(90deg);}
+.sec-rm{
+  background:none;border:none;color:var(--ink-faint);
+  font-size:20px;cursor:pointer;padding:2px 4px;line-height:1;border-radius:4px;
+}
+.sec-rm:active{color:var(--red);background:#fef2f2;}
+
+/* SECTION BODY (hidden when collapsed) */
+.sec-body{display:none;}
+.section.open .sec-body{display:block;}
+
+/* CARD — edge-to-edge like TreeQ */
+.card{
+  background:var(--surface);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:14px var(--pad);
+}
+.card+.card{border-top:0;}
+
+/* STUMP RAIL */
+.stump-rail{
+  display:flex;gap:10px;overflow-x:auto;
+  padding:2px 0 14px;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+}
+.stump-rail::-webkit-scrollbar{display:none;}
+.stump-card{
+  flex:0 0 108px;height:108px;border-radius:12px;border:2px solid;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;cursor:pointer;scroll-snap-align:start;transition:all .15s;
+  user-select:none;position:relative;
+}
+.stump-card.add-card{border-color:var(--green-border);background:var(--green-pale);color:var(--forest);}
+.stump-card.add-card .s-icon{font-size:26px;opacity:.55;}
+.stump-card.add-card .s-lbl{font-size:12px;font-weight:700;opacity:.75;}
+.stump-card.empty-card{border-color:var(--green-border);background:var(--green-pale);}
+.stump-card.filled-card{border-color:var(--forest);background:var(--forest);color:#fff;}
+.stump-card.drum-active{box-shadow:0 0 0 3px rgba(45,90,61,0.3);}
+.s-role{font-size:10px;font-weight:700;opacity:.75;}
+.s-dia{font-size:24px;font-weight:800;line-height:1;}
+.s-price{font-size:12px;font-weight:700;}
+.s-rm{
+  position:absolute;top:5px;right:7px;
+  background:none;border:none;font-size:17px;
+  color:inherit;opacity:.55;cursor:pointer;padding:2px;
+}
+.s-rm:active{opacity:1;}
+
+/* DRUM PICKER */
+.drum-wrap{display:none;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:10px;background:var(--surface);}
+.drum-wrap.open{display:block;}
+.drum-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid var(--line);
+}
+.drum-head-lbl{font-size:12px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;}
+.drum-done{padding:6px 16px;background:var(--forest);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.drum-outer{position:relative;margin:0 14px;}
+.drum-fade-top,.drum-fade-bot{
+  position:absolute;left:0;right:0;height:56px;pointer-events:none;z-index:2;
+}
+.drum-fade-top{top:0;background:linear-gradient(to bottom,var(--surface),transparent);}
+.drum-fade-bot{bottom:0;background:linear-gradient(to top,var(--surface),transparent);}
+.drum-line{
+  position:absolute;left:0;right:0;top:50%;
+  height:40px;transform:translateY(-50%);
+  background:var(--surface-2);border:1.5px solid var(--line);
+  border-radius:8px;pointer-events:none;z-index:1;
+}
+.drum-picker{
+  height:160px;overflow-y:scroll;
+  scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;
+  position:relative;z-index:0;
+}
+.drum-picker::-webkit-scrollbar{display:none;}
+.drum-spacer{height:60px;}
+.drum-item{
+  height:40px;scroll-snap-align:center;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;color:var(--ink-faint);font-weight:500;transition:all .08s;
+}
+.drum-item.sel{color:var(--forest);font-size:24px;font-weight:800;}
+.drum-hint{text-align:center;font-size:11px;color:var(--ink-faint);padding:8px 0 12px;}
+
+/* CHECKBOXES */
+.ck-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.ck-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--surface-2);border-radius:var(--r-md);
+  border:1px solid var(--line);cursor:pointer;
+}
+.ck-row input[type=checkbox]{width:22px;height:22px;flex-shrink:0;cursor:pointer;accent-color:var(--forest);}
+.ck-lbl{font-size:14px;font-weight:600;color:var(--ink);}
+.ck-sub{font-size:12px;color:var(--ink-3);}
+
+/* SEGMENT */
+.seg{display:flex;border:1.5px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:8px;}
+.seg-btn{
+  flex:1;padding:10px 4px;border:none;background:var(--surface-2);
+  font-size:12px;font-weight:700;cursor:pointer;text-align:center;
+  border-right:1px solid var(--line);color:var(--ink-3);transition:all .1s;
+}
+.seg-btn:last-child{border-right:none;}
+.seg-btn.on{background:var(--forest);color:#fff;}
+
+/* FIELD GRID */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg.full{grid-template-columns:1fr;}
+
+/* ADD TREE */
+.add-tree{
+  width:100%;padding:14px;border-radius:var(--r-md);
+  border:2px dashed var(--line);background:var(--surface-2);
+  color:var(--forest);font-size:14px;font-weight:700;cursor:pointer;
+}
+.add-tree:active{background:var(--line);}
+
+/* TREE ITEM */
+.tree-item{
+  background:var(--surface);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.tree-item+.tree-item{border-top:0;}
+.tree-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px var(--pad);background:var(--surface-2);border-bottom:1px solid var(--line);
+}
+.tree-title{font-size:14px;font-weight:700;flex:1;min-width:0;color:var(--ink);}
+.tree-price{font-size:17px;font-weight:800;color:var(--forest);white-space:nowrap;padding:0 8px;}
+.rm-btn{background:none;border:none;color:var(--ink-3);font-size:22px;cursor:pointer;padding:2px 6px;line-height:1;}
+.rm-btn:active{color:var(--red);}
+.tree-body{padding:14px var(--pad);}
+.tree-detail{font-size:11px;color:var(--ink-faint);margin-top:8px;line-height:1.6;border-top:1px solid var(--line);padding-top:8px;}
+
+/* STEPPER */
+.stepper{display:grid;grid-template-columns:56px 1fr 56px;gap:8px;align-items:stretch;}
+.step-btn{
+  height:52px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  font-size:24px;font-weight:700;cursor:pointer;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step-btn:active{background:var(--forest);color:#fff;border-color:var(--forest);}
+.stepper input{
+  height:52px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  text-align:center;font-size:18px;font-weight:700;color:var(--ink);min-width:0;
+}
+.stepper input:focus{outline:none;border-color:var(--forest);box-shadow:0 0 0 3px rgba(45,90,61,0.15);}
+
+/* DETAILS */
+details{border:1px solid var(--line);border-radius:var(--r-md);margin-top:10px;overflow:hidden;}
+details summary{
+  padding:12px 14px;font-size:13px;font-weight:700;color:var(--ink-3);
+  cursor:pointer;background:var(--surface-2);list-style:none;display:flex;align-items:center;gap:6px;
+}
+details summary::-webkit-details-marker{display:none;}
+details summary::before{content:'+';font-size:16px;}
+details[open] summary::before{content:'−';}
+details .di{padding:14px;}
+
+/* HAZARD PILLS */
+.pill-row{display:flex;flex-direction:column;gap:8px;}
+.pill{
+  padding:13px 16px;border-radius:var(--r-md);border:2px solid var(--line);
+  font-size:14px;font-weight:500;cursor:pointer;background:var(--surface);
+  transition:all .12s;text-align:left;
+}
+.pill.p-none.active{border-color:var(--forest);background:var(--surface-2);color:var(--forest);}
+.pill.p-obs.active,.pill.p-house.active{border-color:var(--amber);background:#fffbeb;color:var(--amber);}
+.pill.p-high.active{border-color:var(--red);background:#fef2f2;color:var(--red);}
+
+/* BOTTOM BAR */
+#bottom-bar{
+  position:fixed;bottom:0;
+  left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  z-index:200;
+  padding-bottom:env(safe-area-inset-bottom);
+  background:var(--forest);color:#fff;
+}
+#total-tap{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:var(--bar);cursor:pointer;
+}
+#total-tap .lbl{font-size:13px;font-weight:600;opacity:.8;}
+#total-tap .amt{font-size:26px;font-weight:800;}
+#total-tap .chev{font-size:16px;transition:transform .2s;}
+#total-tap .chev.up{transform:rotate(180deg);}
+
+/* BOTTOM SHEET */
+#sh-ov{display:none;position:fixed;inset:0;z-index:300;background:rgba(20,36,27,.55);}
+#sh-ov.show{display:block;}
+#sh{
+  position:fixed;bottom:0;
+  left:50%;transform:translateX(-50%) translateY(100%);
+  width:100%;max-width:480px;
+  z-index:400;
+  background:var(--surface);border-radius:20px 20px 0 0;
+  max-height:80vh;overflow-y:auto;
+  transition:transform .28s ease;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+#sh.open{transform:translateX(-50%) translateY(0);}
+.sh-handle{width:40px;height:4px;background:var(--line);border-radius:2px;margin:12px auto;}
+.sh-inner{padding:0 18px 20px;}
+.sh-title{font-size:16px;font-weight:800;margin-bottom:14px;color:var(--ink);}
+.q-ln{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:14px;}
+.q-ln.ind{padding-left:14px;font-size:12px;color:var(--ink-3);}
+.q-ln.sep{border-top:1px solid var(--line);padding-top:8px;margin-top:4px;font-weight:700;}
+.q-ln.tot{border-top:2px solid var(--ink);margin-top:8px;padding-top:10px;font-size:20px;font-weight:800;}
+.q-v{font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:10px;}
+.sh-acts{display:flex;gap:10px;margin-top:18px;}
+.btn-sol{flex:1;padding:13px;border-radius:var(--r-md);border:none;background:var(--forest);color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-out{flex:1;padding:13px;border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:15px;font-weight:700;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="topbar">
+  <div class="brand-block">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5h6"/><path d="M5 22V11l7-4 7 4v11"/><path d="M9 22v-6h6v6"/></svg>
+    </div>
+    <div>
+      <div class="brand-name">Spartan</div>
+      <div class="brand-sub">Pricing Tool</div>
+    </div>
+  </div>
+  <a href="/" class="back-btn">← TreeQ</a>
+</header>
+
+<main>
+
+  <!-- Job Info -->
+  <div class="job-row">
+    <div class="f"><label>Quote #</label><input type="text" id="jobName" placeholder="e.g. 2025-047" oninput="recalc()"></div>
+    <div class="f"><label>Address</label><input type="text" id="jobAddr" placeholder="General area (approx.)" oninput="recalc()"></div>
+  </div>
+
+  <!-- Service Grid -->
+  <div class="svc-grid">
+    <button class="svc-btn" data-svc="stump" onclick="toggleSvc(this)"><span class="icon">🪵</span><span class="name">Stump Grinding</span></button>
+    <button class="svc-btn" data-svc="removal" onclick="toggleSvc(this)"><span class="icon">🌲</span><span class="name">Tree Removal</span></button>
+    <button class="svc-btn" data-svc="trim" onclick="toggleSvc(this)"><span class="icon">✂️</span><span class="name">Tree Trimming</span></button>
+    <button class="svc-btn" data-svc="takedown" onclick="toggleSvc(this)"><span class="icon">🪓</span><span class="name">Takedown</span></button>
+    <button class="svc-btn" data-svc="clearing" onclick="toggleSvc(this)"><span class="icon">🌿</span><span class="name">Land Clearing</span></button>
+    <button class="svc-btn" data-svc="landscape" onclick="toggleSvc(this)"><span class="icon">🌱</span><span class="name">Landscaping</span></button>
+    <button class="svc-btn" data-svc="hauling" onclick="toggleSvc(this)"><span class="icon">🚛</span><span class="name">Hauling / Logs</span></button>
+    <button class="svc-btn" data-svc="labor" onclick="toggleSvc(this)"><span class="icon">⚙️</span><span class="name">Labor &amp; Equipment</span></button>
+  </div>
+
+  <!-- STUMP GRINDING -->
+  <div class="section" id="sec-stump">
+    <div class="sec-header" onclick="focusSvc('stump')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🪵</span><span class="sec-header-name">Stump Grinding</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-stump"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('stump')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div class="card">
+      <div class="stump-rail" id="stumpRail">
+        <div class="stump-card add-card" onclick="addStump()">
+          <span class="s-icon">＋</span>
+          <span class="s-lbl">Add Stump</span>
+        </div>
+      </div>
+      <!-- Drum Picker -->
+      <div class="drum-wrap" id="drumWrap">
+        <div class="drum-head">
+          <span class="drum-head-lbl">Diameter at Root Flare</span>
+          <button class="drum-done" onclick="closeDrum()">Done</button>
+        </div>
+        <div class="drum-outer">
+          <div class="drum-line"></div>
+          <div class="drum-fade-top"></div>
+          <div class="drum-fade-bot"></div>
+          <div class="drum-picker" id="drumPicker"></div>
+        </div>
+        <div class="drum-hint">Scroll to select inches</div>
+      </div>
+      <!-- Options -->
+      <div class="ck-list">
+        <div class="ck-row" onclick="toggleCheck('haulGrindings')">
+          <input type="checkbox" id="haulGrindings" onclick="event.stopPropagation()" onchange="onHaulChange()">
+          <div><div class="ck-lbl">Haul grindings off-site</div><div class="ck-sub">Billed at grinding total</div></div>
+        </div>
+        <div class="ck-row" id="noAccessWrap" style="display:none" onclick="toggleCheck('noTruckAccess')">
+          <input type="checkbox" id="noTruckAccess" onclick="event.stopPropagation()" onchange="recalc()">
+          <div><div class="ck-lbl">No truck access (2×)</div></div>
+        </div>
+        <div class="ck-row" onclick="toggleCheck('topsoilEnabled')">
+          <input type="checkbox" id="topsoilEnabled" onclick="event.stopPropagation()" onchange="onTopsoilToggle()">
+          <div><div class="ck-lbl">Topsoil &amp; seed backfill</div><div class="ck-sub">Delivered by load · $150 job min</div></div>
+        </div>
+        <div id="topsoilModeWrap" style="display:none;padding:0 4px;">
+          <div class="seg">
+            <button class="seg-btn on" id="seg-cap" onclick="setTopsoilMode('cap',this)">3″ Cap</button>
+            <button class="seg-btn" id="seg-full" onclick="setTopsoilMode('full',this)">Full 6″ Backfill</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- TREE REMOVAL -->
+  <div class="section" id="sec-removal">
+    <div class="sec-header" onclick="focusSvc('removal')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🌲</span><span class="sec-header-name">Tree Removal</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-removal"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('removal')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div id="removalList"></div>
+    <div style="padding:0 var(--pad) 14px;"><button class="add-tree" onclick="addTree('removal')">+ Add Tree</button></div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- TREE TRIMMING -->
+  <div class="section" id="sec-trim">
+    <div class="sec-header" onclick="focusSvc('trim')">
+      <div class="sec-header-left"><span class="sec-header-emoji">✂️</span><span class="sec-header-name">Tree Trimming</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-trim"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('trim')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div id="trimList"></div>
+    <div style="padding:0 var(--pad) 14px;"><button class="add-tree" onclick="addTree('trim')">+ Add Trim</button></div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- TAKEDOWN -->
+  <div class="section" id="sec-takedown">
+    <div class="sec-header" onclick="focusSvc('takedown')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🪓</span><span class="sec-header-name">Takedown (cut &amp; leave)</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-takedown"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('takedown')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div id="takedownList"></div>
+    <div style="padding:0 var(--pad) 14px;"><button class="add-tree" onclick="addTree('takedown')">+ Add Takedown</button></div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- LAND CLEARING -->
+  <div class="section" id="sec-clearing">
+    <div class="sec-header" onclick="focusSvc('clearing')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🌿</span><span class="sec-header-name">Land Clearing</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-clearing"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('clearing')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div class="card">
+      <div class="fg">
+        <div class="f"><label>Light Ground Cover (sqft)</label><input type="number" id="lcLG" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">$1/sqft · 250 min</span></div>
+        <div class="f"><label>Dense Ground Cover (sqft)</label><input type="number" id="lcDG" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">$2/sqft · 250 min</span></div>
+        <div class="f"><label>Light Brush (sqft)</label><input type="number" id="lcLB" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">$3/sqft · 250 min</span></div>
+        <div class="f"><label>Dense Brush (sqft)</label><input type="number" id="lcDB" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">$4/sqft · 250 min</span></div>
+        <div class="f" style="grid-column:span 2"><label>Forestry Mulching (hrs)</label><input type="number" id="forestry" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$500/hr · 8 hr min</span></div>
+      </div>
+    </div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- LANDSCAPING -->
+  <div class="section" id="sec-landscape">
+    <div class="sec-header" onclick="focusSvc('landscape')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🌱</span><span class="sec-header-name">Landscaping</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-landscape"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('landscape')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div class="card">
+      <div class="fg">
+        <div class="f"><label>Mulching (yards)</label><input type="number" id="mulch" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$160/yd · 3 yd min</span></div>
+        <div class="f"><label>Edging &amp; Prep (yards)</label><input type="number" id="edging" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$90/yd · 3 yd min</span></div>
+        <div class="f"><label>Stone Install (yards)</label><input type="number" id="stone" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$160/yd · 3 yd min</span></div>
+        <div class="f"><label>Topsoil Delivered (yards)</label><input type="number" id="topsoilD" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$150/yd · $500 delivery min</span></div>
+        <div class="f"><label>Topsoil &amp; Seed (yards)</label><input type="number" id="topsoilS" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$180/yd · $500 delivery min</span></div>
+        <div class="f"><label>Yard Cleanup (hrs)</label><input type="number" id="yardCleanup" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$95/hr · 2 hr min</span></div>
+        <div class="f"><label>Planting — cost ($)</label><input type="number" id="plantCost" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">3× &lt;$1k · 2.5× $1–2k · 2× &gt;$2k</span></div>
+        <div class="f"><label>Powerwashing (sqft)</label><input type="number" id="pw" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">$1/sqft · 200 min</span></div>
+        <div class="f"><label>Polymeric Sand (sqft)</label><input type="number" id="poly" value="0" min="0" step="10" inputmode="numeric" oninput="recalc()"><span class="hint">$6/sqft · 30 min</span></div>
+        <div class="f"><label>PHC Cabling (units)</label><input type="number" id="phcCable" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$300/unit · 2-unit min</span></div>
+        <div class="f"><label>PHC COBRA (units)</label><input type="number" id="phcCobra" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$400/unit · 2-unit min</span></div>
+      </div>
+    </div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- HAULING / LOGS -->
+  <div class="section" id="sec-hauling">
+    <div class="sec-header" onclick="focusSvc('hauling')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🚛</span><span class="sec-header-name">Hauling / Logs</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-hauling"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('hauling')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div class="card">
+      <div class="fg">
+        <div class="f"><label>Log loads (dump trailer)</label><input type="number" id="logLoads" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$250/load</span></div>
+        <div class="f"><label>Log truck (60 yd)</label><input type="number" id="logTruckLoads" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$500/load</span></div>
+      </div>
+    </div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- LABOR & EQUIPMENT -->
+  <div class="section" id="sec-labor">
+    <div class="sec-header" onclick="focusSvc('labor')">
+      <div class="sec-header-left"><span class="sec-header-emoji">⚙️</span><span class="sec-header-name">Labor &amp; Equipment</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-labor"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('labor')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
+    <div class="card">
+      <p style="font-size:12px;color:var(--ink-3);margin-bottom:12px;">Hours not already entered per-tree above.</p>
+      <div class="fg">
+        <div class="f"><label>Bucket Truck w/ Op (hrs)</label><input type="number" id="hBucket" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$250/hr · 2 hr min</span></div>
+        <div class="f"><label>Climber (hrs)</label><input type="number" id="hClimber" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$250/hr</span></div>
+        <div class="f"><label>Ground Worker (hrs)</label><input type="number" id="hGround" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$125/hr</span></div>
+        <div class="f"><label># Ground Workers</label><input type="number" id="nGround" value="1" min="1" step="1" inputmode="numeric" oninput="recalc()"></div>
+        <div class="f"><label>Chip Truck w/ Op (hrs)</label><input type="number" id="hChip" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$250/hr</span></div>
+        <div class="f"><label>Equipment w/ Op (hrs)</label><input type="number" id="hEquip" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$250/hr</span></div>
+        <div class="f"><label>45-Ton Crane (hrs)</label><input type="number" id="hCrane" value="0" min="0" step="0.25" inputmode="decimal" oninput="recalc()"><span class="hint">$500/hr · 4 hr min</span></div>
+        <div class="f"><label>Spider Lift (rentals)</label><input type="number" id="hSpider" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$750 each</span></div>
+        <div class="f"><label>Grapple Saw (days)</label><input type="number" id="hGrapple" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$2,500/day</span></div>
+        <div class="f"><label>Ground Mats (units)</label><input type="number" id="mats" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$12.50 · 8-mat min</span></div>
+      </div>
+    </div>
+    </div><!-- /.sec-body -->
+  </div>
+
+  <!-- MODIFIERS -->
+  <div id="modifiers-block" style="display:none;">
+    <div class="sec-title" style="margin-top:4px;">Hazard Modifier <span style="font-weight:500;text-transform:none;letter-spacing:0;font-size:10px;">— tree removal &amp; trimming only</span></div>
+    <div class="card">
+      <p style="font-size:12px;color:var(--ink-3);margin-bottom:12px;">Applies to tree removal &amp; trimming only. Take highest — never stack.</p>
+      <div class="pill-row" id="hazardPills">
+        <button class="pill p-none active" data-haz="none" onclick="pickHazard(this)">None (1×)</button>
+        <button class="pill p-obs" data-haz="obstacle" onclick="pickHazard(this)">Over Obstacle (2×)</button>
+        <button class="pill p-house" data-haz="house" onclick="pickHazard(this)">House / Power Lines (2×)</button>
+        <button class="pill p-high" data-haz="high" onclick="pickHazard(this)">High Power Lines (3×)</button>
+      </div>
+    </div>
+    <div class="sec-title" style="margin-top:14px;">Job Multipliers <span style="font-weight:500;text-transform:none;letter-spacing:0;font-size:10px;">— tree removal &amp; trimming only</span></div>
+    <div class="card">
+      <div class="f" style="margin-bottom:14px;">
+        <label>Leave-All Discount — <strong id="leaveAllPctLabel">0%</strong></label>
+        <input type="range" min="0" max="75" step="5" value="0" id="leaveAll" oninput="recalc()" style="margin-top:6px;accent-color:var(--forest);width:100%;">
+        <span class="hint">25–75% off when customer keeps material</span>
+      </div>
+      <div class="fg" style="margin-bottom:14px;">
+        <div class="f"><label>Half-loads left</label><input type="number" id="halfLoads" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">−$150 each</span></div>
+        <div class="f"><label>Full-loads left</label><input type="number" id="fullLoads" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">−$300 each</span></div>
+      </div>
+      <div class="ck-list">
+        <div class="ck-row" onclick="toggleCheck('poisonIvy')">
+          <input type="checkbox" id="poisonIvy" onclick="event.stopPropagation()" onchange="recalc()">
+          <div><div class="ck-lbl">Poison Ivy (+50%)</div></div>
+        </div>
+        <div class="ck-row" onclick="toggleCheck('noSmallCleanup')">
+          <input type="checkbox" id="noSmallCleanup" onclick="event.stopPropagation()" onchange="recalc()">
+          <div><div class="ck-lbl">No Small Cleanup (−10%)</div><div class="ck-sub">We skip removing anything &lt;1" diameter</div></div>
+        </div>
+        <div class="ck-row" onclick="toggleCheck('priority')">
+          <input type="checkbox" id="priority" onclick="event.stopPropagation()" onchange="recalc()">
+          <div><div class="ck-lbl">Priority Scheduling (+25%)</div><div class="ck-sub">Applied last</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- BOTTOM BAR -->
+<div id="bottom-bar">
+  <div id="total-tap" onclick="toggleSheet()">
+    <span class="lbl">Quote Total</span>
+    <span class="amt" id="totalDisplay">$0</span>
+    <span class="chev" id="chevron">▲</span>
+  </div>
+</div>
+
+</div><!-- /.app -->
+
+<!-- SHEET OVERLAY -->
+<div id="sh-ov" onclick="closeSheet()"></div>
+<div id="sh">
+  <div class="sh-handle"></div>
+  <div class="sh-inner">
+    <div class="sh-title" id="shJobLabel">Quote</div>
+    <div id="shBody"><p style="color:var(--ink-3);text-align:center;padding:20px 0;">Select a service and fill in details.</p></div>
+    <div class="sh-acts">
+      <button class="btn-sol" onclick="copyQuote()">Copy</button>
+      <button class="btn-out" onclick="window.print()">Print</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const V = {
+  primaryStumpMin:100, freeDia:12, ratePerInch:11,
+  addonMin:25, addonRate:5,
+  rootFlare:12, backfillCap:3, backfillFull:6, cuFtPerBag:.75, cuFtPerCuYd:27,
+  noTruckMult:2,
+  removalFloorPerFt:10, rigFloorMod:20, rigFloorComplex:30,
+  dbhFloor:50, dbhFloorMod:100, dbhFloorComplex:137.5,
+  codominantMin:2, codominantMax:3,
+  loaderMin:750, oneLoadMin:1000, perLoadMin:2000, logTruckDisp:500,
+  limbThreshold:8,
+  tdNoRope:100, tdWedge:150, tdRope:200, tdPulley:300, tdOver24:400,
+  poisonMult:1.5, noSmallDisc:.10, leaveHalf:150, leaveFull:300, priorityRate:.25,
+  hazObs:2, hazHouse:2, hazHigh:3,
+  trim1:100, trim2:150, trimRig:200, trimHi1:200, trimHiN:300, trim30:300, trim40:400,
+  rateBucket:250, rateClimber:250, rateGround:125, rateChip:250,
+  rateEquip:250, rateCrane:500, rateSpider:750, rateGrapple:2500,
+  rateLogs:250, rateLogTruck:500, rateMats:12.5,
+  rateTopsoilD:150, rateTopsoilS:180, topsoilMinDollar:500, topsoilStumpMin:150,
+  rateMulch:160, rateEdge:90, rateStone:160, rateYard:95, rateForestry:500,
+  rateLCLG:1, rateLCDG:2, rateLCLB:3, rateLCDB:4,
+  ratePW:1, ratePoly:6, ratePHCCable:300, ratePHCCobra:400,
+};
+
+const state = { svcActive: new Set(), openSvc: null, stumps: [], trees: [], hazard: 'none' };
+let seq = 0;
+let topsoilMode = 'none';
+let activeDrumId = null;
+let drumTimer = null;
+let sheetOpen = false;
+
+const $ = id => document.getElementById(id);
+const n = id => Number($(id)?.value) || 0;
+const ck = id => $(id)?.checked || false;
+const fmt = v => '$' + Math.round(v).toLocaleString();
+
+// ── Toggle checkbox from row tap ──
+function toggleCheck(id) {
+  const el = $(id);
+  if (!el) return;
+  el.checked = !el.checked;
+  el.dispatchEvent(new Event('change'));
+}
+
+// ── Service Toggle (grid button) — adds to cart and opens it ──
+function toggleSvc(btn) {
+  const svc = btn.dataset.svc;
+  if (!state.svcActive.has(svc)) state.svcActive.add(svc);
+  state.openSvc = svc;
+  updateSections();
+  updateSvcButtons();
+  updateModifiers();
+  recalc();
+  setTimeout(() => $('sec-' + svc)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+}
+
+// ── Section header click — toggle open/close ──
+function focusSvc(svc) {
+  state.openSvc = state.openSvc === svc ? null : svc;
+  updateSections();
+  updateSvcButtons();
+}
+
+// ── Remove service from cart ──
+function removeSvc(svc) {
+  state.svcActive.delete(svc);
+  if (state.openSvc === svc) state.openSvc = null;
+  if (svc === 'stump') {
+    state.stumps = [];
+    closeDrum();
+    ['haulGrindings','noTruckAccess','topsoilEnabled'].forEach(id => { const el = $(id); if (el) el.checked = false; });
+    $('noAccessWrap').style.display = 'none';
+    $('topsoilModeWrap').style.display = 'none';
+    topsoilMode = 'none';
+    renderStumps();
+  }
+  if (svc === 'removal' || svc === 'trim' || svc === 'takedown') {
+    state.trees = state.trees.filter(t => t.type !== svc);
+    renderTrees();
+  }
+  const clearFields = (...ids) => ids.forEach(id => { const el = $(id); if (el) el.value = '0'; });
+  if (svc === 'clearing') clearFields('lcLG','lcDG','lcLB','lcDB','forestry');
+  if (svc === 'landscape') clearFields('mulch','edging','stone','topsoilD','topsoilS','yardCleanup','plantCost','pw','poly','phcCable','phcCobra');
+  if (svc === 'hauling') clearFields('logLoads','logTruckLoads');
+  if (svc === 'labor') { clearFields('hBucket','hClimber','hGround','hChip','hEquip','hCrane','hSpider','hGrapple','mats'); $('nGround').value = '1'; }
+  updateSections();
+  updateSvcButtons();
+  updateModifiers();
+  recalc();
+}
+
+// ── Update section visibility ──
+function updateSections() {
+  ['stump','removal','trim','takedown','clearing','landscape','hauling','labor'].forEach(s => {
+    const el = $('sec-' + s);
+    if (!el) return;
+    el.classList.toggle('show', state.svcActive.has(s));
+    el.classList.toggle('open', state.openSvc === s && state.svcActive.has(s));
+  });
+  updateSectionPrices();
+}
+
+// ── Update service button states ──
+function updateSvcButtons() {
+  document.querySelectorAll('.svc-btn').forEach(btn => {
+    const svc = btn.dataset.svc;
+    const inCart = state.svcActive.has(svc);
+    const isOpen = state.openSvc === svc && inCart;
+    btn.classList.toggle('in-cart', inCart);
+    btn.classList.toggle('active', isOpen);
+  });
+}
+
+// ── Update modifiers visibility ──
+function updateModifiers() {
+  const hasTreeSvc = state.svcActive.has('removal') || state.svcActive.has('trim') || state.svcActive.has('takedown');
+  $('modifiers-block').style.display = hasTreeSvc ? '' : 'none';
+}
+
+// ── Per-section subtotals for collapsed headers ──
+function rawSvcTotal(svc) {
+  if (svc === 'stump') {
+    const g = stumpTotal();
+    if (!g) return 0;
+    const haul = ck('haulGrindings') ? g * (ck('noTruckAccess') ? V.noTruckMult : 1) : 0;
+    return g + haul;
+  }
+  if (svc === 'removal' || svc === 'trim' || svc === 'takedown')
+    return state.trees.filter(t=>t.type===svc).reduce((s,t)=>s+priceTreeWork(t).work,0);
+  if (svc === 'clearing') {
+    let t = 0;
+    ['lcLG','lcDG','lcLB','lcDB'].forEach((id,i)=>{ const v=n(id); if(v) t+=Math.max(v,250)*[V.rateLCLG,V.rateLCDG,V.rateLCLB,V.rateLCDB][i]; });
+    const f=n('forestry'); if(f) t+=Math.max(f,8)*V.rateForestry;
+    return t;
+  }
+  if (svc === 'landscape') {
+    let t = 0;
+    const m=n('mulch'); if(m) t+=Math.max(m,3)*V.rateMulch;
+    const e=n('edging'); if(e) t+=Math.max(e,3)*V.rateEdge;
+    const st=n('stone'); if(st) t+=Math.max(st,3)*V.rateStone;
+    const td=n('topsoilD'); if(td) t+=Math.max(V.topsoilMinDollar,td*V.rateTopsoilD);
+    const ts=n('topsoilS'); if(ts) t+=Math.max(V.topsoilMinDollar,ts*V.rateTopsoilS);
+    const yc=n('yardCleanup'); if(yc) t+=Math.max(yc,2)*V.rateYard;
+    const pc=n('plantCost'); if(pc){ const mx=pc>2000?2:pc>=1000?2.5:3; t+=pc*mx; }
+    const pw=n('pw'); if(pw) t+=Math.max(pw,200)*V.ratePW;
+    const po=n('poly'); if(po) t+=Math.max(po,30)*V.ratePoly;
+    const cc=n('phcCable'); if(cc) t+=Math.max(cc,2)*V.ratePHCCable;
+    const co=n('phcCobra'); if(co) t+=Math.max(co,2)*V.ratePHCCobra;
+    return t;
+  }
+  if (svc === 'hauling') {
+    return n('logLoads')*V.rateLogs + n('logTruckLoads')*V.rateLogTruck;
+  }
+  if (svc === 'labor') {
+    let t = 0;
+    const hb=n('hBucket'); if(hb) t+=Math.max(hb,2)*V.rateBucket;
+    const hcl=n('hClimber'); if(hcl) t+=hcl*V.rateClimber;
+    const gh=n('hGround')*Math.max(1,n('nGround')); if(gh) t+=gh*V.rateGround;
+    const hch=n('hChip'); if(hch) t+=hch*V.rateChip;
+    const he=n('hEquip'); if(he) t+=he*V.rateEquip;
+    const hcr=n('hCrane'); if(hcr) t+=Math.max(hcr,4)*V.rateCrane;
+    const hs=n('hSpider'); if(hs) t+=hs*V.rateSpider;
+    const hg=n('hGrapple'); if(hg) t+=hg*V.rateGrapple;
+    const mt=n('mats'); if(mt) t+=Math.max(mt,8)*V.rateMats;
+    return t;
+  }
+  return 0;
+}
+function updateSectionPrices() {
+  ['stump','removal','trim','takedown','clearing','landscape','hauling','labor'].forEach(svc => {
+    const el = $('sec-price-' + svc);
+    if (!el) return;
+    const amt = rawSvcTotal(svc);
+    el.textContent = amt > 0 ? fmt(amt) : '';
+  });
+}
+
+// ── Hazard ──
+function pickHazard(btn) {
+  document.querySelectorAll('#hazardPills .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  state.hazard = btn.dataset.haz;
+  recalc();
+}
+const hazMult = () => ({ none:1, obstacle:V.hazObs, house:V.hazHouse, high:V.hazHigh }[state.hazard]);
+
+// ── Haul checkbox ──
+function onHaulChange() {
+  $('noAccessWrap').style.display = ck('haulGrindings') ? '' : 'none';
+  recalc();
+}
+
+// ── Topsoil checkboxes ──
+function onTopsoilToggle() {
+  const on = ck('topsoilEnabled');
+  $('topsoilModeWrap').style.display = on ? '' : 'none';
+  topsoilMode = on ? 'cap' : 'none';
+  recalc();
+}
+function setTopsoilMode(mode, btn) {
+  topsoilMode = mode;
+  document.querySelectorAll('#topsoilModeWrap .seg-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  recalc();
+}
+
+// ══════════════════════════════════════
+// STUMP GRINDING
+// ══════════════════════════════════════
+function addStump() {
+  const s = { id: ++seq, dia: 0 };
+  state.stumps.push(s);
+  renderStumps();
+  initDrum(s.id);
+}
+function removeStump(id) {
+  state.stumps = state.stumps.filter(s => s.id !== id);
+  if (activeDrumId === id) closeDrum();
+  renderStumps();
+  recalc();
+}
+function setStumpDia(id, val) {
+  const s = state.stumps.find(s => s.id === id);
+  if (s) { s.dia = Math.max(0, Number(val) || 0); }
+  renderStumps();
+  recalc();
+}
+function stumpPrice(dia, isPrimary) {
+  if (!dia) return 0;
+  return isPrimary
+    ? Math.max(V.primaryStumpMin, V.primaryStumpMin + V.ratePerInch * (dia - V.freeDia))
+    : Math.max(V.addonMin, V.addonRate * dia);
+}
+function stumpTotal() {
+  if (!state.stumps.length) return 0;
+  const maxDia = Math.max(...state.stumps.map(s => s.dia));
+  return state.stumps.reduce((sum, s) => sum + stumpPrice(s.dia, s.dia === maxDia && s.dia > 0), 0);
+}
+
+function renderStumps() {
+  const maxDia = state.stumps.length ? Math.max(...state.stumps.map(s => s.dia)) : 0;
+  const rail = $('stumpRail');
+
+  let html = `<div class="stump-card add-card" onclick="addStump()"><span class="s-icon">＋</span><span class="s-lbl">Add Stump</span></div>`;
+
+  state.stumps.forEach(s => {
+    const isPrimary = s.dia > 0 && s.dia === maxDia;
+    const price = stumpPrice(s.dia, isPrimary);
+    const filled = s.dia > 0;
+    const cls = filled ? 'filled-card' : 'empty-card';
+    const active = activeDrumId === s.id ? ' drum-active' : '';
+    if (filled) {
+      html += `<div class="stump-card ${cls}${active}" onclick="activateDrum(${s.id})">
+        <button class="s-rm" onclick="event.stopPropagation();removeStump(${s.id})">×</button>
+        <span class="s-role">${isPrimary ? 'PRIMARY' : 'add-on'}</span>
+        <span class="s-dia">${s.dia}"</span>
+        <span class="s-price">${fmt(price)}</span>
+      </div>`;
+    } else {
+      html += `<div class="stump-card ${cls}${active}" onclick="activateDrum(${s.id})" style="color:var(--forest)">
+        <button class="s-rm" onclick="event.stopPropagation();removeStump(${s.id})">×</button>
+        <span style="font-size:13px;font-weight:700;opacity:.6;">tap to set</span>
+        <span style="font-size:13px;opacity:.5;">diameter</span>
+      </div>`;
+    }
+  });
+
+  rail.innerHTML = html;
+}
+
+// ── Drum Picker ──
+function initDrum(stumpId) {
+  activeDrumId = stumpId;
+  const stump = state.stumps.find(s => s.id === stumpId);
+  if (!stump) return;
+
+  const picker = $('drumPicker');
+  let html = '<div class="drum-spacer"></div>';
+  for (let i = 1; i <= 120; i++) {
+    html += `<div class="drum-item">${i}"</div>`;
+  }
+  html += '<div class="drum-spacer"></div>';
+  picker.innerHTML = html;
+
+  const dia = stump.dia > 0 ? stump.dia : 12;
+  setTimeout(() => {
+    picker.scrollTop = (dia - 1) * 40;
+    updateDrumVisual(picker, dia - 1);
+  }, 30);
+
+  $('drumWrap').classList.add('open');
+  renderStumps();
+
+  picker.onscroll = null;
+  picker.addEventListener('scroll', onDrumScroll);
+}
+
+function activateDrum(stumpId) {
+  if (activeDrumId === stumpId) { closeDrum(); return; }
+  const stump = state.stumps.find(s => s.id === stumpId);
+  if (!stump) return;
+  initDrum(stumpId);
+}
+
+function onDrumScroll() {
+  const picker = $('drumPicker');
+  const idx = Math.round(picker.scrollTop / 40);
+  updateDrumVisual(picker, idx);
+  clearTimeout(drumTimer);
+  drumTimer = setTimeout(() => {
+    picker.scrollTo({ top: idx * 40, behavior: 'smooth' });
+    const val = Math.max(1, Math.min(120, idx + 1));
+    setStumpDia(activeDrumId, val);
+  }, 150);
+}
+
+function updateDrumVisual(picker, idx) {
+  picker.querySelectorAll('.drum-item').forEach((el, i) => {
+    el.classList.toggle('sel', i === idx);
+  });
+}
+
+function closeDrum() {
+  activeDrumId = null;
+  $('drumWrap').classList.remove('open');
+  renderStumps();
+  recalc();
+}
+
+// ══════════════════════════════════════
+// TREE WORK
+// ══════════════════════════════════════
+function addTree(type) {
+  const base = { id: ++seq, type, label: '' };
+  if (type === 'removal') Object.assign(base, { height:30, dbh:12, rigging:'none', codominant:1, loaderRequired:false, logLoadsFloor:0, hBucket:0, hClimber:0, hGround:0, nGround:1, hChip:0 });
+  if (type === 'trim') Object.assign(base, { numCuts:1, rigging:'none', workHeight:20, leadUnion:0, leadLength:0, hBucket:0, hClimber:0, hGround:0, nGround:1, hChip:0 });
+  if (type === 'takedown') Object.assign(base, { method:'noRope', dbh:12 });
+  state.trees.push(base);
+  renderTrees();
+}
+function removeTree(id) {
+  state.trees = state.trees.filter(t => t.id !== id);
+  renderTrees();
+}
+function setTree(id, key, val) {
+  const t = state.trees.find(t => t.id === id);
+  if (!t) return;
+  if (key === 'loaderRequired') t[key] = !!val;
+  else t[key] = isNaN(Number(val)) ? val : (Number(val) || 0);
+  renderTrees();
+}
+function stepTree(id, key, delta, minVal) {
+  const t = state.trees.find(t => t.id === id);
+  if (!t) return;
+  t[key] = Math.max(minVal || 0, (Number(t[key]) || 0) + delta);
+  renderTrees();
+}
+function setTreeStr(id, key, val) {
+  const t = state.trees.find(t => t.id === id);
+  if (t) { t[key] = val; renderTrees(); }
+}
+
+function priceTreeWork(t) {
+  if (t.type === 'takedown') return priceTakedown(t);
+  if (t.type === 'removal') return priceRemoval(t);
+  if (t.type === 'trim') return priceTrim(t);
+  return { work:0, detail:'' };
+}
+
+function priceTakedown(t) {
+  const tiers = { noRope:V.tdNoRope, wedge:V.tdWedge, rope:V.tdRope, pulley:V.tdPulley };
+  const tier = tiers[t.method] || V.tdNoRope;
+  const over24 = t.dbh > 24;
+  const price = over24 ? Math.max(tier, V.tdOver24) : tier;
+  const detail = over24 && price === V.tdOver24 ? `Method ${fmt(tier)} vs. >24" DBH floor ${fmt(V.tdOver24)}` : `Method tier`;
+  return { work: price, detail };
+}
+
+function priceRemoval(t) {
+  const hourly = t.hBucket*V.rateBucket + t.hClimber*V.rateClimber + (t.hGround*t.nGround)*V.rateGround + t.hChip*V.rateChip;
+  const floors = [];
+  if (t.rigging==='none') floors.push({ name:'Height (no rig)', v: V.removalFloorPerFt*t.height });
+  else if (t.rigging==='moderate') floors.push({ name:'Height (mod rig)', v: V.rigFloorMod*t.height });
+  else floors.push({ name:'Height (complex)', v: V.rigFloorComplex*t.height });
+  if (t.dbh > 16) {
+    if (t.rigging==='none') floors.push({ name:'DBH (no rig)', v: V.dbhFloor*t.dbh });
+    else if (t.rigging==='moderate') floors.push({ name:'DBH (mod)', v: V.dbhFloorMod*t.dbh });
+    else floors.push({ name:'DBH (complex)', v: V.dbhFloorComplex*t.dbh });
+  }
+  if (t.loaderRequired) floors.push({ name:'Loader min', v: V.loaderMin });
+  if (t.logLoadsFloor === 1) floors.push({ name:'1 log load min', v: V.oneLoadMin });
+  else if (t.logLoadsFloor >= 2) floors.push({ name:`${t.logLoadsFloor} log loads`, v: V.perLoadMin*t.logLoadsFloor });
+  const highestFloor = floors.length ? Math.max(...floors.map(f => f.v)) : 0;
+  const base = Math.max(hourly, highestFloor);
+  const coMult = t.codominant >= 3 ? V.codominantMax : (t.codominant === 2 ? V.codominantMin : 1);
+  const work = base * coMult;
+  const winner = hourly >= highestFloor ? 'hourly' : 'floor';
+  const floorStr = floors.map(f => `${f.name} ${fmt(f.v)}`).join(' · ');
+  const detail = [hourly > 0 ? `Hourly ${fmt(hourly)}` : null, floorStr || null, `→ ${fmt(base)} (${winner})`, coMult > 1 ? `×${coMult} codominant = ${fmt(work)}` : null].filter(Boolean).join(' · ');
+  return { work, detail };
+}
+
+function priceTrim(t) {
+  const hourly = t.hBucket*V.rateBucket + t.hClimber*V.rateClimber + (t.hGround*t.nGround)*V.rateGround + t.hChip*V.rateChip;
+  const floors = [];
+  if (t.numCuts === 1) floors.push({ name:'1 cut', v: V.trim1 });
+  else if (t.numCuts === 2) floors.push({ name:'2 cuts', v: V.trim2 });
+  if (t.rigging === 'some') floors.push({ name:'rigging', v: V.trimRig });
+  else if (t.rigging === 'lifeline') floors.push({ name: t.numCuts>1?'multi-hi lifeline':'single-hi lifeline', v: t.numCuts>1?V.trimHiN:V.trimHi1 });
+  if (t.workHeight >= 40) floors.push({ name:'40ft', v: V.trim40 });
+  else if (t.workHeight >= 30) floors.push({ name:'30ft', v: V.trim30 });
+  const highestFloor = floors.length ? Math.max(...floors.map(f=>f.v)) : 0;
+  const base = Math.max(hourly, highestFloor);
+  let limbCharge = 0;
+  if (t.leadUnion >= V.limbThreshold && t.leadLength > 0) {
+    const hFloor = V.removalFloorPerFt * t.leadLength;
+    const dFloor = t.leadUnion > 16 ? V.dbhFloor * t.leadUnion : 0;
+    limbCharge = Math.max(hFloor, dFloor);
+  }
+  const work = base + limbCharge;
+  const floorStr = floors.map(f=>`${f.name} ${fmt(f.v)}`).join(' · ');
+  const detail = [hourly > 0 ? `Hourly ${fmt(hourly)}` : null, floorStr || null, `→ ${fmt(base)}`, limbCharge > 0 ? `+ limb-as-tree ${fmt(limbCharge)} = ${fmt(work)}` : null].filter(Boolean).join(' · ');
+  return { work, detail };
+}
+
+function treeItemTitle(t) {
+  if (t.type === 'removal') return `${t.height}ft tree, ${t.dbh}" DBH${t.label ? ' — '+t.label : ''}`;
+  if (t.type === 'trim') return `${t.numCuts} cut${t.numCuts!==1?'s':''} @ ${t.workHeight}ft${t.label ? ' — '+t.label : ''}`;
+  if (t.type === 'takedown') return `Takedown — ${({noRope:'No rope',wedge:'Wedge',rope:'Pull rope',pulley:'Pulley'}[t.method])}, ${t.dbh}" DBH${t.label ? ' — '+t.label : ''}`;
+  return '';
+}
+
+function renderTrees() {
+  const groups = { removal:[], trim:[], takedown:[] };
+  state.trees.forEach(t => (groups[t.type] || groups.removal).push(t));
+
+  const listIds = { removal:'removalList', trim:'trimList', takedown:'takedownList' };
+  ['removal','trim','takedown'].forEach(type => {
+    const el = $(listIds[type]);
+    if (!el) return;
+    el.innerHTML = groups[type].map(t => {
+      const r = priceTreeWork(t);
+      return `<div class="tree-item">${renderTreeHead(t,r)}${renderTreeBody(t,r)}</div>`;
+    }).join('');
+  });
+  recalc();
+}
+
+function renderTreeHead(t, r) {
+  return `<div class="tree-head">
+    <div class="tree-title">${treeItemTitle(t)}</div>
+    <span class="tree-price">${fmt(r.work)}</span>
+    <button class="rm-btn" onclick="removeTree(${t.id})">×</button>
+  </div>`;
+}
+
+function renderTreeBody(t, r) {
+  if (t.type === 'takedown') return renderTakedownBody(t);
+  if (t.type === 'removal') return renderRemovalBody(t, r);
+  return renderTrimBody(t, r);
+}
+
+function renderTakedownBody(t) {
+  return `<div class="tree-body">
+    <div class="f" style="margin-bottom:10px;"><label>Label (optional)</label>
+      <input type="text" value="${t.label}" oninput="setTreeStr(${t.id},'label',this.value)">
+    </div>
+    <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">Cutting Method</label>
+    <div class="seg">
+      <button class="seg-btn${t.method==='noRope'?' on':''}" onclick="setTreeStr(${t.id},'method','noRope')">No Rope<br><span style="font-size:10px;opacity:.7;">$100</span></button>
+      <button class="seg-btn${t.method==='wedge'?' on':''}" onclick="setTreeStr(${t.id},'method','wedge')">Wedge<br><span style="font-size:10px;opacity:.7;">$150</span></button>
+      <button class="seg-btn${t.method==='rope'?' on':''}" onclick="setTreeStr(${t.id},'method','rope')">Pull Rope<br><span style="font-size:10px;opacity:.7;">$200</span></button>
+      <button class="seg-btn${t.method==='pulley'?' on':''}" onclick="setTreeStr(${t.id},'method','pulley')">Pulley<br><span style="font-size:10px;opacity:.7;">$300</span></button>
+    </div>
+    <div style="margin-top:12px;">
+      <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">DBH (inches)</label>
+      <div class="stepper">
+        <button class="step-btn" onclick="stepTree(${t.id},'dbh',-1,1)">−</button>
+        <input type="number" value="${t.dbh}" min="1" step="0.5" inputmode="decimal" oninput="setTree(${t.id},'dbh',this.value)" onchange="setTree(${t.id},'dbh',this.value)">
+        <button class="step-btn" onclick="stepTree(${t.id},'dbh',1,1)">+</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderRemovalBody(t, r) {
+  return `<div class="tree-body">
+    <div class="f" style="margin-bottom:10px;"><label>Label (optional)</label>
+      <input type="text" value="${t.label}" oninput="setTreeStr(${t.id},'label',this.value)">
+    </div>
+    <div class="fg" style="margin-bottom:12px;">
+      <div>
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">Height (ft)</label>
+        <div class="stepper">
+          <button class="step-btn" onclick="stepTree(${t.id},'height',-5,5)">−</button>
+          <input type="number" value="${t.height}" min="1" step="1" inputmode="numeric" oninput="setTree(${t.id},'height',this.value)" onchange="setTree(${t.id},'height',this.value)">
+          <button class="step-btn" onclick="stepTree(${t.id},'height',5,5)">+</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">DBH (in)</label>
+        <div class="stepper">
+          <button class="step-btn" onclick="stepTree(${t.id},'dbh',-1,1)">−</button>
+          <input type="number" value="${t.dbh}" min="1" step="0.5" inputmode="decimal" oninput="setTree(${t.id},'dbh',this.value)" onchange="setTree(${t.id},'dbh',this.value)">
+          <button class="step-btn" onclick="stepTree(${t.id},'dbh',1,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">Rigging</label>
+    <div class="seg" style="margin-bottom:12px;">
+      <button class="seg-btn${t.rigging==='none'?' on':''}" onclick="setTreeStr(${t.id},'rigging','none')">None</button>
+      <button class="seg-btn${t.rigging==='moderate'?' on':''}" onclick="setTreeStr(${t.id},'rigging','moderate')">Moderate</button>
+      <button class="seg-btn${t.rigging==='complex'?' on':''}" onclick="setTreeStr(${t.id},'rigging','complex')">Complex</button>
+    </div>
+    <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">Codominant Leads</label>
+    <div class="seg" style="margin-bottom:12px;">
+      <button class="seg-btn${t.codominant===1?' on':''}" onclick="setTree(${t.id},'codominant',1)">1 (single)</button>
+      <button class="seg-btn${t.codominant===2?' on':''}" onclick="setTree(${t.id},'codominant',2)">2 (×2.0)</button>
+      <button class="seg-btn${t.codominant===3?' on':''}" onclick="setTree(${t.id},'codominant',3)">3+ (×3.0)</button>
+    </div>
+    <div class="fg" style="margin-bottom:12px;">
+      <div class="f"><label>Log loads (floor)</label>
+        <input type="number" value="${t.logLoadsFloor}" min="0" step="1" inputmode="numeric" oninput="setTree(${t.id},'logLoadsFloor',this.value)">
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:2px;">
+        <div class="ck-row" style="flex:1" onclick="setTree(${t.id},'loaderRequired',!${t.loaderRequired})">
+          <input type="checkbox" ${t.loaderRequired?'checked':''} onclick="event.stopPropagation()" onchange="setTree(${t.id},'loaderRequired',this.checked)">
+          <div><div class="ck-lbl" style="font-size:13px;">Loader</div></div>
+        </div>
+      </div>
+    </div>
+    <details>
+      <summary>Hourly buildup for this tree</summary>
+      <div class="di">
+        <div class="fg">
+          <div class="f"><label>Bucket w/ Op (hrs)</label><input type="number" value="${t.hBucket}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hBucket',this.value)"></div>
+          <div class="f"><label>Climber (hrs)</label><input type="number" value="${t.hClimber}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hClimber',this.value)"></div>
+          <div class="f"><label>Ground (hrs)</label><input type="number" value="${t.hGround}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hGround',this.value)"></div>
+          <div class="f"><label># Ground</label><input type="number" value="${t.nGround}" min="1" step="1" inputmode="numeric" oninput="setTree(${t.id},'nGround',this.value)"></div>
+          <div class="f" style="grid-column:span 2"><label>Chip w/ Op (hrs)</label><input type="number" value="${t.hChip}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hChip',this.value)"></div>
+        </div>
+      </div>
+    </details>
+    ${r.detail ? `<div class="tree-detail">${r.detail}</div>` : ''}
+  </div>`;
+}
+
+function renderTrimBody(t, r) {
+  const atThreshold = t.leadUnion >= V.limbThreshold && t.leadLength > 0;
+  return `<div class="tree-body">
+    <div class="f" style="margin-bottom:10px;"><label>Label (optional)</label>
+      <input type="text" value="${t.label}" oninput="setTreeStr(${t.id},'label',this.value)">
+    </div>
+    <div class="fg" style="margin-bottom:12px;">
+      <div>
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;"># of Cuts</label>
+        <div class="stepper">
+          <button class="step-btn" onclick="stepTree(${t.id},'numCuts',-1,1)">−</button>
+          <input type="number" value="${t.numCuts}" min="1" step="1" inputmode="numeric" oninput="setTree(${t.id},'numCuts',this.value)" onchange="setTree(${t.id},'numCuts',this.value)">
+          <button class="step-btn" onclick="stepTree(${t.id},'numCuts',1,1)">+</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">Work Height (ft)</label>
+        <div class="stepper">
+          <button class="step-btn" onclick="stepTree(${t.id},'workHeight',-5,5)">−</button>
+          <input type="number" value="${t.workHeight}" min="1" step="1" inputmode="numeric" oninput="setTree(${t.id},'workHeight',this.value)" onchange="setTree(${t.id},'workHeight',this.value)">
+          <button class="step-btn" onclick="stepTree(${t.id},'workHeight',5,5)">+</button>
+        </div>
+      </div>
+    </div>
+    <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:6px;display:block;">Rigging</label>
+    <div class="seg" style="margin-bottom:12px;">
+      <button class="seg-btn${t.rigging==='none'?' on':''}" onclick="setTreeStr(${t.id},'rigging','none')">None</button>
+      <button class="seg-btn${t.rigging==='some'?' on':''}" onclick="setTreeStr(${t.id},'rigging','some')">Some Rigging</button>
+      <button class="seg-btn${t.rigging==='lifeline'?' on':''}" onclick="setTreeStr(${t.id},'rigging','lifeline')">High Lifeline</button>
+    </div>
+    <div class="fg" style="margin-bottom:12px;">
+      <div class="f"><label>Lead union dia (in) ${atThreshold ? '✓ limb-as-tree' : ''}</label>
+        <input type="number" value="${t.leadUnion}" min="0" step="0.5" inputmode="decimal" oninput="setTree(${t.id},'leadUnion',this.value)">
+        <span class="hint">&ge;8" triggers limb-as-tree</span>
+      </div>
+      <div class="f"><label>Lead length (ft)</label>
+        <input type="number" value="${t.leadLength}" min="0" step="1" inputmode="numeric" oninput="setTree(${t.id},'leadLength',this.value)">
+      </div>
+    </div>
+    <details>
+      <summary>Hourly buildup for this trim</summary>
+      <div class="di">
+        <div class="fg">
+          <div class="f"><label>Bucket (hrs)</label><input type="number" value="${t.hBucket}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hBucket',this.value)"></div>
+          <div class="f"><label>Climber (hrs)</label><input type="number" value="${t.hClimber}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hClimber',this.value)"></div>
+          <div class="f"><label>Ground (hrs)</label><input type="number" value="${t.hGround}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hGround',this.value)"></div>
+          <div class="f"><label># Ground</label><input type="number" value="${t.nGround}" min="1" step="1" inputmode="numeric" oninput="setTree(${t.id},'nGround',this.value)"></div>
+          <div class="f" style="grid-column:span 2"><label>Chip (hrs)</label><input type="number" value="${t.hChip}" min="0" step="0.25" inputmode="decimal" oninput="setTree(${t.id},'hChip',this.value)"></div>
+        </div>
+      </div>
+    </details>
+    ${r.detail ? `<div class="tree-detail">${r.detail}</div>` : ''}
+  </div>`;
+}
+
+// ══════════════════════════════════════
+// QUOTE ENGINE
+// ══════════════════════════════════════
+function computeQuote() {
+  const lines = [];
+
+  // ── Tree removal / trim / takedown (hazard + multipliers apply) ──
+  state.trees.forEach(t => {
+    const r = priceTreeWork(t);
+    if (r.work) lines.push({ label: treeItemTitle(t), amount: r.work, isTreeWork: true, detail: r.detail });
+  });
+
+  // ── Other job-wide labor & clearing (flat, no multipliers) ──
+  const addFlat = (label, qty, rate, min) => {
+    if (!qty) return;
+    const charged = Math.max(qty, min);
+    lines.push({ label, amount: charged*rate, isFlat: true, detail: `${qty} x ${fmt(rate)}${charged>qty?' ('+min+' min)':''}` });
+  };
+  addFlat('Bucket Truck w/ Operator', n('hBucket'), V.rateBucket, 2);
+  addFlat('Climber', n('hClimber'), V.rateClimber, 1);
+  const gHrs = n('hGround') * Math.max(1, n('nGround'));
+  if (gHrs) lines.push({ label:`Ground Worker x${Math.max(1,n('nGround'))}`, amount: gHrs*V.rateGround, isFlat:true, detail:`${gHrs} hrs x ${fmt(V.rateGround)}` });
+  addFlat('Chip Truck w/ Operator', n('hChip'), V.rateChip, 1);
+  addFlat('Equipment w/ Op', n('hEquip'), V.rateEquip, 1);
+  addFlat('45-Ton Crane', n('hCrane'), V.rateCrane, 4);
+  addFlat('Spider Lift', n('hSpider'), V.rateSpider, 1);
+  addFlat('Grapple Saw', n('hGrapple'), V.rateGrapple, 1);
+  addFlat('Forestry Mulching', n('forestry'), V.rateForestry, 8);
+  addFlat('Land Clearing - Light Ground', n('lcLG'), V.rateLCLG, 250);
+  addFlat('Land Clearing - Dense Ground', n('lcDG'), V.rateLCDG, 250);
+  addFlat('Land Clearing - Light Brush', n('lcLB'), V.rateLCLB, 250);
+  addFlat('Land Clearing - Dense Brush', n('lcDB'), V.rateLCDB, 250);
+
+  // ── Materials / non-work (flat, no multipliers) ──
+  const addNon = (label, qty, rate, min) => {
+    if (!qty) return;
+    const charged = Math.max(qty, min);
+    lines.push({ label, amount: charged*rate, isFlat: true, detail: `${qty} x ${fmt(rate)}${charged>qty?' ('+min+' min)':''}` });
+  };
+
+  const sGrind = stumpTotal();
+  if (sGrind) {
+    const maxDia = Math.max(...state.stumps.map(s=>s.dia));
+    const detail = state.stumps.filter(s=>s.dia).map(s=>`${s.dia}" ${s.dia===maxDia?'(primary)':'(add-on)'} ${fmt(stumpPrice(s.dia,s.dia===maxDia))}`).join(', ');
+    lines.push({ label:`Stump Grinding (${state.stumps.filter(s=>s.dia).length})`, amount:sGrind, isFlat:true, detail });
+    if (ck('haulGrindings')) {
+      const mult = ck('noTruckAccess') ? V.noTruckMult : 1;
+      lines.push({ label:`Grinding Removal${mult>1?' (no truck access, 2x)':''}`, amount:sGrind*mult, isFlat:true, detail:`= grinding total x ${mult}` });
+    }
+  }
+
+  if (topsoilMode !== 'none' && state.stumps.some(s=>s.dia)) {
+    let cuFt = 0;
+    state.stumps.forEach(s => {
+      if (!s.dia) return;
+      const holeDia = s.dia + V.rootFlare;
+      const area = Math.PI * Math.pow(holeDia/24, 2);
+      const depth = topsoilMode === 'cap' ? V.backfillCap : V.backfillFull;
+      cuFt += area * (depth/12);
+    });
+    const rawCuYd = cuFt / V.cuFtPerCuYd;
+    const tsAmt = Math.max(V.topsoilStumpMin, rawCuYd * V.rateTopsoilS);
+    const minNote = tsAmt === V.topsoilStumpMin ? ` ($${V.topsoilStumpMin} job min)` : '';
+    lines.push({ label:`Topsoil & Seed (${topsoilMode==='cap'?'3" cap':'full backfill'})`, amount:tsAmt, isFlat:true, detail:`${rawCuYd.toFixed(2)} cu yd x ${fmt(V.rateTopsoilS)}/yd delivered${minNote}` });
+  }
+
+  addNon('Logs (Haul-Away)', n('logLoads'), V.rateLogs, 1);
+  addNon('Log Truck Disposal', n('logTruckLoads'), V.rateLogTruck, 1);
+  if (n('mats')) lines.push({ label:'Ground Protection Mats', amount:Math.max(n('mats'),8)*V.rateMats, isFlat:true, detail:`${n('mats')} mats (8 min) x ${fmt(V.rateMats)}` });
+  if (n('topsoilD')) { const a=Math.max(V.topsoilMinDollar,n('topsoilD')*V.rateTopsoilD); lines.push({label:'Topsoil Delivered',amount:a,isFlat:true,detail:`${n('topsoilD')} yd x ${fmt(V.rateTopsoilD)}/yd${a===V.topsoilMinDollar?' ($500 min)':''}`}); }
+  if (n('topsoilS')) { const a=Math.max(V.topsoilMinDollar,n('topsoilS')*V.rateTopsoilS); lines.push({label:'Topsoil & Seed (delivered)',amount:a,isFlat:true,detail:`${n('topsoilS')} yd x ${fmt(V.rateTopsoilS)}/yd${a===V.topsoilMinDollar?' ($500 min)':''}`}); }
+  addNon('Mulching', n('mulch'), V.rateMulch, 3);
+  addNon('Edging & Prep', n('edging'), V.rateEdge, 3);
+  addNon('Stone Install', n('stone'), V.rateStone, 3);
+  addNon('Yard Cleanup', n('yardCleanup'), V.rateYard, 2);
+  addNon('Powerwashing', n('pw'), V.ratePW, 200);
+  addNon('Polymeric Sand', n('poly'), V.ratePoly, 30);
+  addNon('PHC Cabling', n('phcCable'), V.ratePHCCable, 2);
+  addNon('PHC COBRA', n('phcCobra'), V.ratePHCCobra, 2);
+  const plantCost = n('plantCost');
+  if (plantCost) {
+    const mult = plantCost > 2000 ? 2 : plantCost >= 1000 ? 2.5 : 3;
+    lines.push({ label:`Planting (x${mult})`, amount:plantCost*mult, isFlat:true, detail:`${fmt(plantCost)} plant cost x ${mult}` });
+  }
+
+  // ── Totals ──
+  const treeRaw = lines.filter(l=>l.isTreeWork).reduce((s,l)=>s+l.amount,0);
+  const flatTotal = lines.filter(l=>l.isFlat).reduce((s,l)=>s+l.amount,0);
+
+  const hm = hazMult();
+  const treeAfterHaz = treeRaw * hm;
+  const hazAdded = treeAfterHaz - treeRaw;
+
+  const piMult = ck('poisonIvy') ? V.poisonMult : 1;
+  const laDisc = n('leaveAll') / 100;
+  const nsMult = ck('noSmallCleanup') ? (1 - V.noSmallDisc) : 1;
+  const treeAfterPct = treeAfterHaz * piMult * (1 - laDisc) * nsMult;
+
+  const logDisc = n('halfLoads')*V.leaveHalf + n('fullLoads')*V.leaveFull;
+  const treeAfterDisc = Math.max(0, treeAfterPct - logDisc);
+
+  const prePriority = treeAfterDisc + flatTotal;
+  const priorityAmt = ck('priority') ? prePriority * V.priorityRate : 0;
+  const grand = prePriority + priorityAmt;
+
+  return { lines, treeRaw, flatTotal, hm, hazAdded, treeAfterHaz, piMult, laDisc, nsMult, treeAfterPct, logDisc, treeAfterDisc, prePriority, priorityAmt, grand };
+}
+
+function recalc() {
+  $('leaveAllPctLabel').textContent = n('leaveAll') + '%';
+  updateSectionPrices();
+  const q = computeQuote();
+  $('totalDisplay').textContent = fmt(q.grand);
+
+  const job = $('jobName')?.value || '';
+  const addr = $('jobAddr')?.value || '';
+  $('shJobLabel').textContent = [job, addr].filter(Boolean).join(' — ') || 'Quote';
+
+  if (q.lines.length === 0) {
+    $('shBody').innerHTML = '<p style="color:var(--ink-3);text-align:center;padding:20px 0;">Add a service and fill in details.</p>';
+    return;
+  }
+
+  let html = '';
+  q.lines.forEach(l => {
+    html += `<div class="q-ln"><span>${l.label}</span><span class="q-v">${fmt(l.amount)}</span></div>`;
+    if (l.detail) html += `<div class="q-ln ind"><span>${l.detail}</span></div>`;
+  });
+
+  if (q.treeRaw > 0) {
+    html += `<div class="q-ln sep"><span>Tree work subtotal</span><span class="q-v">${fmt(q.treeRaw)}</span></div>`;
+    if (q.hm > 1) {
+      const hLabel = {obstacle:'Obstacle',house:'House Power',high:'High Power'}[state.hazard];
+      html += `<div class="q-ln"><span>${hLabel} x${q.hm}</span><span class="q-v">+${fmt(q.hazAdded)}</span></div>`;
+    }
+    if (q.piMult > 1) html += `<div class="q-ln"><span>Poison ivy x1.5</span><span class="q-v">+${fmt(q.treeAfterHaz*(q.piMult-1))}</span></div>`;
+    if (q.laDisc > 0) html += `<div class="q-ln"><span>Leave-all -${(q.laDisc*100).toFixed(0)}%</span></div>`;
+    if (q.nsMult < 1) html += `<div class="q-ln"><span>No small cleanup -10%</span></div>`;
+    if (q.logDisc > 0) html += `<div class="q-ln"><span>Log discounts</span><span class="q-v">-${fmt(q.logDisc)}</span></div>`;
+    if (q.hm > 1 || q.piMult > 1 || q.laDisc > 0 || q.nsMult < 1 || q.logDisc > 0) {
+      html += `<div class="q-ln sep"><span>Tree work after adjustments</span><span class="q-v">${fmt(q.treeAfterDisc)}</span></div>`;
+    }
+  }
+  if (q.flatTotal > 0 && q.treeRaw > 0) {
+    html += `<div class="q-ln"><span>Other services</span><span class="q-v">${fmt(q.flatTotal)}</span></div>`;
+  }
+  if (q.priorityAmt > 0) html += `<div class="q-ln"><span>Priority +25%</span><span class="q-v">+${fmt(q.priorityAmt)}</span></div>`;
+  html += `<div class="q-ln tot"><span>Total</span><span class="q-v">${fmt(q.grand)}</span></div>`;
+  $('shBody').innerHTML = html;
+}
+
+// ── Bottom Sheet ──
+function toggleSheet() {
+  sheetOpen ? closeSheet() : openSheet();
+}
+function openSheet() {
+  sheetOpen = true;
+  $('sh-ov').classList.add('show');
+  $('sh').classList.add('open');
+  $('chevron').classList.add('up');
+}
+function closeSheet() {
+  sheetOpen = false;
+  $('sh-ov').classList.remove('show');
+  $('sh').classList.remove('open');
+  $('chevron').classList.remove('up');
+}
+
+function copyQuote() {
+  const q = computeQuote();
+  const job = $('jobName')?.value || 'Quote';
+  const addr = $('jobAddr')?.value || '';
+  const rows = ['Spartan Tree & Landscape', 'Quote #' + job + (addr ? '  |  ' + addr : ''), ''];
+  q.lines.forEach(l => rows.push('  ' + l.label.padEnd(38) + fmt(l.amount).padStart(10)));
+  if (q.treeRaw > 0) {
+    rows.push('', '  Tree work subtotal'.padEnd(40) + fmt(q.treeRaw).padStart(10));
+    if (q.hm > 1) rows.push('  Hazard x' + q.hm);
+    if (q.piMult > 1) rows.push('  Poison ivy x1.5');
+    if (q.laDisc > 0) rows.push('  Leave-all -' + (q.laDisc*100).toFixed(0) + '%');
+    if (q.logDisc > 0) rows.push('  Log discounts'.padEnd(40) + ('-'+fmt(q.logDisc)).padStart(10));
+  }
+  if (q.priorityAmt > 0) rows.push('  Priority +25%'.padEnd(40) + ('+'+fmt(q.priorityAmt)).padStart(10));
+  rows.push('', 'TOTAL'.padEnd(42) + fmt(q.grand).padStart(10));
+  navigator.clipboard.writeText(rows.join('\n')).then(() => alert('Copied!'), () => prompt('Copy:', rows.join('\n')));
+}
+
+recalc();
+</script>
+</body>
+</html>

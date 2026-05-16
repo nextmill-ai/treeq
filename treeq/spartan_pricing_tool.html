@@ -122,6 +122,7 @@ main{padding:0;}
 .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px var(--pad) 8px;}
 .svc-btn{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;
   gap:5px;padding:14px 8px;
   border-radius:var(--r-md);
   border:1.5px solid var(--line);background:var(--surface);
@@ -129,12 +130,47 @@ main{padding:0;}
 }
 .svc-btn .icon{font-size:22px;}
 .svc-btn .name{font-size:12px;font-weight:700;color:var(--ink);}
-.svc-btn.active{border-color:var(--forest);background:var(--surface-2);}
-.svc-btn.active .name{color:var(--forest);}
+/* In cart but not open — green border + checkmark badge */
+.svc-btn.in-cart{border-color:var(--forest);}
+.svc-btn.in-cart .name{color:var(--forest);}
+.svc-btn.in-cart::after{
+  content:'✓';position:absolute;top:5px;right:7px;
+  font-size:10px;font-weight:800;color:var(--forest);line-height:1;
+}
+/* Open/active — solid green fill */
+.svc-btn.active{border-color:var(--forest);background:var(--forest);}
+.svc-btn.active .name{color:#fff;}
+.svc-btn.active::after{color:var(--gold-bright);}
 
 /* SECTIONS */
 .section{display:none;}
 .section.show{display:block;}
+
+/* SECTION HEADER (cart item row) */
+.sec-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--pad);gap:10px;
+  background:var(--surface);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  cursor:pointer;user-select:none;
+}
+.sec-header-left{display:flex;align-items:center;gap:9px;flex:1;min-width:0;}
+.sec-header-emoji{font-size:20px;line-height:1;flex-shrink:0;}
+.sec-header-name{font-size:14px;font-weight:700;color:var(--ink);}
+.sec-header-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sec-price{font-size:14px;font-weight:800;color:var(--forest);white-space:nowrap;}
+.sec-chev{font-size:18px;color:var(--ink-3);display:inline-block;transition:transform .2s;line-height:1;}
+.section.open .sec-chev{transform:rotate(90deg);}
+.sec-rm{
+  background:none;border:none;color:var(--ink-faint);
+  font-size:20px;cursor:pointer;padding:2px 4px;line-height:1;border-radius:4px;
+}
+.sec-rm:active{color:var(--red);background:#fef2f2;}
+
+/* SECTION BODY (hidden when collapsed) */
+.sec-body{display:none;}
+.section.open .sec-body{display:block;}
 
 /* CARD — edge-to-edge like TreeQ */
 .card{
@@ -382,7 +418,15 @@ details .di{padding:14px;}
 
   <!-- STUMP GRINDING -->
   <div class="section" id="sec-stump">
-    <div class="sec-title">Stump Grinding</div>
+    <div class="sec-header" onclick="focusSvc('stump')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🪵</span><span class="sec-header-name">Stump Grinding</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-stump"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('stump')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div class="card">
       <div class="stump-rail" id="stumpRail">
         <div class="stump-card add-card" onclick="addStump()">
@@ -426,32 +470,68 @@ details .di{padding:14px;}
         </div>
       </div>
     </div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- TREE REMOVAL -->
   <div class="section" id="sec-removal">
-    <div class="sec-title">Tree Removal</div>
+    <div class="sec-header" onclick="focusSvc('removal')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🌲</span><span class="sec-header-name">Tree Removal</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-removal"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('removal')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div id="removalList"></div>
     <div style="padding:0 var(--pad) 14px;"><button class="add-tree" onclick="addTree('removal')">+ Add Tree</button></div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- TREE TRIMMING -->
   <div class="section" id="sec-trim">
-    <div class="sec-title">Tree Trimming</div>
+    <div class="sec-header" onclick="focusSvc('trim')">
+      <div class="sec-header-left"><span class="sec-header-emoji">✂️</span><span class="sec-header-name">Tree Trimming</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-trim"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('trim')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div id="trimList"></div>
     <div style="padding:0 var(--pad) 14px;"><button class="add-tree" onclick="addTree('trim')">+ Add Trim</button></div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- TAKEDOWN -->
   <div class="section" id="sec-takedown">
-    <div class="sec-title">Takedown (cut &amp; leave)</div>
+    <div class="sec-header" onclick="focusSvc('takedown')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🪓</span><span class="sec-header-name">Takedown (cut &amp; leave)</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-takedown"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('takedown')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div id="takedownList"></div>
     <div style="padding:0 var(--pad) 14px;"><button class="add-tree" onclick="addTree('takedown')">+ Add Takedown</button></div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- LAND CLEARING -->
   <div class="section" id="sec-clearing">
-    <div class="sec-title">Land Clearing</div>
+    <div class="sec-header" onclick="focusSvc('clearing')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🌿</span><span class="sec-header-name">Land Clearing</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-clearing"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('clearing')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div class="card">
       <div class="fg">
         <div class="f"><label>Light Ground Cover (sqft)</label><input type="number" id="lcLG" value="0" min="0" step="50" inputmode="numeric" oninput="recalc()"><span class="hint">$1/sqft · 250 min</span></div>
@@ -461,11 +541,20 @@ details .di{padding:14px;}
         <div class="f" style="grid-column:span 2"><label>Forestry Mulching (hrs)</label><input type="number" id="forestry" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$500/hr · 8 hr min</span></div>
       </div>
     </div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- LANDSCAPING -->
   <div class="section" id="sec-landscape">
-    <div class="sec-title">Landscaping</div>
+    <div class="sec-header" onclick="focusSvc('landscape')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🌱</span><span class="sec-header-name">Landscaping</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-landscape"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('landscape')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div class="card">
       <div class="fg">
         <div class="f"><label>Mulching (yards)</label><input type="number" id="mulch" value="0" min="0" step="0.5" inputmode="decimal" oninput="recalc()"><span class="hint">$160/yd · 3 yd min</span></div>
@@ -481,22 +570,40 @@ details .di{padding:14px;}
         <div class="f"><label>PHC COBRA (units)</label><input type="number" id="phcCobra" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$400/unit · 2-unit min</span></div>
       </div>
     </div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- HAULING / LOGS -->
   <div class="section" id="sec-hauling">
-    <div class="sec-title">Hauling / Logs</div>
+    <div class="sec-header" onclick="focusSvc('hauling')">
+      <div class="sec-header-left"><span class="sec-header-emoji">🚛</span><span class="sec-header-name">Hauling / Logs</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-hauling"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('hauling')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div class="card">
       <div class="fg">
         <div class="f"><label>Log loads (dump trailer)</label><input type="number" id="logLoads" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$250/load</span></div>
         <div class="f"><label>Log truck (60 yd)</label><input type="number" id="logTruckLoads" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$500/load</span></div>
       </div>
     </div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- LABOR & EQUIPMENT -->
   <div class="section" id="sec-labor">
-    <div class="sec-title">Labor &amp; Equipment</div>
+    <div class="sec-header" onclick="focusSvc('labor')">
+      <div class="sec-header-left"><span class="sec-header-emoji">⚙️</span><span class="sec-header-name">Labor &amp; Equipment</span></div>
+      <div class="sec-header-right">
+        <span class="sec-price" id="sec-price-labor"></span>
+        <span class="sec-chev">›</span>
+        <button class="sec-rm" onclick="event.stopPropagation();removeSvc('labor')" title="Remove">×</button>
+      </div>
+    </div>
+    <div class="sec-body">
     <div class="card">
       <p style="font-size:12px;color:var(--ink-3);margin-bottom:12px;">Hours not already entered per-tree above.</p>
       <div class="fg">
@@ -512,6 +619,7 @@ details .di{padding:14px;}
         <div class="f"><label>Ground Mats (units)</label><input type="number" id="mats" value="0" min="0" step="1" inputmode="numeric" oninput="recalc()"><span class="hint">$12.50 · 8-mat min</span></div>
       </div>
     </div>
+    </div><!-- /.sec-body -->
   </div>
 
   <!-- MODIFIERS -->
@@ -607,7 +715,7 @@ const V = {
   ratePW:1, ratePoly:6, ratePHCCable:300, ratePHCCobra:400,
 };
 
-const state = { svcActive: new Set(), stumps: [], trees: [], hazard: 'none' };
+const state = { svcActive: new Set(), openSvc: null, stumps: [], trees: [], hazard: 'none' };
 let seq = 0;
 let topsoilMode = 'none';
 let activeDrumId = null;
@@ -627,18 +735,137 @@ function toggleCheck(id) {
   el.dispatchEvent(new Event('change'));
 }
 
-// ── Service Toggle ──
+// ── Service Toggle (grid button) — adds to cart and opens it ──
 function toggleSvc(btn) {
   const svc = btn.dataset.svc;
-  if (state.svcActive.has(svc)) { state.svcActive.delete(svc); btn.classList.remove('active'); }
-  else { state.svcActive.add(svc); btn.classList.add('active'); }
+  if (!state.svcActive.has(svc)) state.svcActive.add(svc);
+  state.openSvc = svc;
+  updateSections();
+  updateSvcButtons();
+  updateModifiers();
+  recalc();
+  setTimeout(() => $('sec-' + svc)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+}
+
+// ── Section header click — toggle open/close ──
+function focusSvc(svc) {
+  state.openSvc = state.openSvc === svc ? null : svc;
+  updateSections();
+  updateSvcButtons();
+}
+
+// ── Remove service from cart ──
+function removeSvc(svc) {
+  state.svcActive.delete(svc);
+  if (state.openSvc === svc) state.openSvc = null;
+  if (svc === 'stump') {
+    state.stumps = [];
+    closeDrum();
+    ['haulGrindings','noTruckAccess','topsoilEnabled'].forEach(id => { const el = $(id); if (el) el.checked = false; });
+    $('noAccessWrap').style.display = 'none';
+    $('topsoilModeWrap').style.display = 'none';
+    topsoilMode = 'none';
+    renderStumps();
+  }
+  if (svc === 'removal' || svc === 'trim' || svc === 'takedown') {
+    state.trees = state.trees.filter(t => t.type !== svc);
+    renderTrees();
+  }
+  const clearFields = (...ids) => ids.forEach(id => { const el = $(id); if (el) el.value = '0'; });
+  if (svc === 'clearing') clearFields('lcLG','lcDG','lcLB','lcDB','forestry');
+  if (svc === 'landscape') clearFields('mulch','edging','stone','topsoilD','topsoilS','yardCleanup','plantCost','pw','poly','phcCable','phcCobra');
+  if (svc === 'hauling') clearFields('logLoads','logTruckLoads');
+  if (svc === 'labor') { clearFields('hBucket','hClimber','hGround','hChip','hEquip','hCrane','hSpider','hGrapple','mats'); $('nGround').value = '1'; }
+  updateSections();
+  updateSvcButtons();
+  updateModifiers();
+  recalc();
+}
+
+// ── Update section visibility ──
+function updateSections() {
   ['stump','removal','trim','takedown','clearing','landscape','hauling','labor'].forEach(s => {
     const el = $('sec-' + s);
-    if (el) el.classList.toggle('show', state.svcActive.has(s));
+    if (!el) return;
+    el.classList.toggle('show', state.svcActive.has(s));
+    el.classList.toggle('open', state.openSvc === s && state.svcActive.has(s));
   });
+  updateSectionPrices();
+}
+
+// ── Update service button states ──
+function updateSvcButtons() {
+  document.querySelectorAll('.svc-btn').forEach(btn => {
+    const svc = btn.dataset.svc;
+    const inCart = state.svcActive.has(svc);
+    const isOpen = state.openSvc === svc && inCart;
+    btn.classList.toggle('in-cart', inCart);
+    btn.classList.toggle('active', isOpen);
+  });
+}
+
+// ── Update modifiers visibility ──
+function updateModifiers() {
   const hasTreeSvc = state.svcActive.has('removal') || state.svcActive.has('trim') || state.svcActive.has('takedown');
   $('modifiers-block').style.display = hasTreeSvc ? '' : 'none';
-  recalc();
+}
+
+// ── Per-section subtotals for collapsed headers ──
+function rawSvcTotal(svc) {
+  if (svc === 'stump') {
+    const g = stumpTotal();
+    if (!g) return 0;
+    const haul = ck('haulGrindings') ? g * (ck('noTruckAccess') ? V.noTruckMult : 1) : 0;
+    return g + haul;
+  }
+  if (svc === 'removal' || svc === 'trim' || svc === 'takedown')
+    return state.trees.filter(t=>t.type===svc).reduce((s,t)=>s+priceTreeWork(t).work,0);
+  if (svc === 'clearing') {
+    let t = 0;
+    ['lcLG','lcDG','lcLB','lcDB'].forEach((id,i)=>{ const v=n(id); if(v) t+=Math.max(v,250)*[V.rateLCLG,V.rateLCDG,V.rateLCLB,V.rateLCDB][i]; });
+    const f=n('forestry'); if(f) t+=Math.max(f,8)*V.rateForestry;
+    return t;
+  }
+  if (svc === 'landscape') {
+    let t = 0;
+    const m=n('mulch'); if(m) t+=Math.max(m,3)*V.rateMulch;
+    const e=n('edging'); if(e) t+=Math.max(e,3)*V.rateEdge;
+    const st=n('stone'); if(st) t+=Math.max(st,3)*V.rateStone;
+    const td=n('topsoilD'); if(td) t+=Math.max(V.topsoilMinDollar,td*V.rateTopsoilD);
+    const ts=n('topsoilS'); if(ts) t+=Math.max(V.topsoilMinDollar,ts*V.rateTopsoilS);
+    const yc=n('yardCleanup'); if(yc) t+=Math.max(yc,2)*V.rateYard;
+    const pc=n('plantCost'); if(pc){ const mx=pc>2000?2:pc>=1000?2.5:3; t+=pc*mx; }
+    const pw=n('pw'); if(pw) t+=Math.max(pw,200)*V.ratePW;
+    const po=n('poly'); if(po) t+=Math.max(po,30)*V.ratePoly;
+    const cc=n('phcCable'); if(cc) t+=Math.max(cc,2)*V.ratePHCCable;
+    const co=n('phcCobra'); if(co) t+=Math.max(co,2)*V.ratePHCCobra;
+    return t;
+  }
+  if (svc === 'hauling') {
+    return n('logLoads')*V.rateLogs + n('logTruckLoads')*V.rateLogTruck;
+  }
+  if (svc === 'labor') {
+    let t = 0;
+    const hb=n('hBucket'); if(hb) t+=Math.max(hb,2)*V.rateBucket;
+    const hcl=n('hClimber'); if(hcl) t+=hcl*V.rateClimber;
+    const gh=n('hGround')*Math.max(1,n('nGround')); if(gh) t+=gh*V.rateGround;
+    const hch=n('hChip'); if(hch) t+=hch*V.rateChip;
+    const he=n('hEquip'); if(he) t+=he*V.rateEquip;
+    const hcr=n('hCrane'); if(hcr) t+=Math.max(hcr,4)*V.rateCrane;
+    const hs=n('hSpider'); if(hs) t+=hs*V.rateSpider;
+    const hg=n('hGrapple'); if(hg) t+=hg*V.rateGrapple;
+    const mt=n('mats'); if(mt) t+=Math.max(mt,8)*V.rateMats;
+    return t;
+  }
+  return 0;
+}
+function updateSectionPrices() {
+  ['stump','removal','trim','takedown','clearing','landscape','hauling','labor'].forEach(svc => {
+    const el = $('sec-price-' + svc);
+    if (!el) return;
+    const amt = rawSvcTotal(svc);
+    el.textContent = amt > 0 ? fmt(amt) : '';
+  });
 }
 
 // ── Hazard ──
@@ -1176,6 +1403,7 @@ function computeQuote() {
 
 function recalc() {
   $('leaveAllPctLabel').textContent = n('leaveAll') + '%';
+  updateSectionPrices();
   const q = computeQuote();
   $('totalDisplay').textContent = fmt(q.grand);
 
@@ -1183,8 +1411,8 @@ function recalc() {
   const addr = $('jobAddr')?.value || '';
   $('shJobLabel').textContent = [job, addr].filter(Boolean).join(' — ') || 'Quote';
 
-  if (state.svcActive.size === 0 || q.lines.length === 0) {
-    $('shBody').innerHTML = '<p style="color:var(--ink-3);text-align:center;padding:20px 0;">Select a service and fill in details.</p>';
+  if (q.lines.length === 0) {
+    $('shBody').innerHTML = '<p style="color:var(--ink-3);text-align:center;padding:20px 0;">Add a service and fill in details.</p>';
     return;
   }
 

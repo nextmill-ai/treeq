@@ -11,7 +11,7 @@
     {
       "name": "Wrangler Pages Dev",
       "runtimeExecutable": "powershell",
-      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ\\deploy'; npm run dev"],
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ\\treeq\\deploy'; npm run dev"],
       "port": 8788,
       "autoPort": true
     }

@@ -28,7 +28,12 @@
 # kept for optional CDN experiments; methodology changes must land here first.
 
 [build]
+  base    = "treeq"
   publish = "."
+  # Copies shared/ from the monorepo root into this app before Netlify publishes.
+  # On Netlify, the working dir during build is the base directory (treeq/),
+  # so ../shared resolves to the repo-root shared/ folder.
+  command = "cp -r ../shared ./shared"
   functions = "netlify/functions"
 
 [functions]

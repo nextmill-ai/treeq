@@ -5,3 +5,7 @@ node_modules/
 tests/node_modules/
 .env.local
 deploy/.wrangler/
+
+# Generated — canonical source is /shared at repo root
+treeq/shared/
+skilltree/shared/

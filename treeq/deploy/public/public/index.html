@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>TreeQ — v2.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
+<style>
+  /* =========================================================
+     SPARTAN / NEXT MILLION — Mobile Cut Estimator v2.3
+     Light theme, forest-on-cream, Jobber-style layout grammar.
+     ========================================================= */
+  :root {
+    /* Brand */
+    --forest:        #2d5a3d;
+    --forest-deep:   #1f3f2a;
+    --forest-tint:   #3d7050;
+    --gold:          #c9a23c;
+    --gold-bright:   #e9c466;
+
+    /* Surfaces */
+    --bg:            #f4f8f1;
+    --surface:       #ffffff;
+    --surface-2:     #f0f4ec;
+    --line:          #e3ead8;
+
+    /* Ink */
+    --ink:           #14241b;
+    --ink-2:         #314a3a;
+    --ink-3:         #6a7e72;
+    --ink-faint:     #98a89d;
+
+    /* Status */
+    --ok-bg:         #dcefdc;
+    --ok-fg:         #2c6738;
+    --warn-bg:       #fff4d6;
+    --warn-fg:       #8a6a14;
+
+    /* Time-bar segments (cool→warm by class size) */
+    --seg-brush:     #4a8158;
+    --seg-log12:     #c9a23c;
+    --seg-log18:     #b08838;
+    --seg-log24:     #8a6a2a;
+
+    /* Type scale */
+    --t-display:  28px;
+    --t-h1:       22px;
+    --t-h2:       18px;
+    --t-body:     16px;
+    --t-meta:     14px;
+    --t-tiny:     12px;
+
+    /* Radii / spacing */
+    --r-sm:  8px;
+    --r-md:  12px;
+    --r-lg:  16px;
+    --r-pill: 999px;
+    --tap:   48px;
+    --pad:   16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: #ddd;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--ink-2);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* Phone frame for desktop preview; full-width on actual phone */
+  .app {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 32px rgba(0,0,0,0.08);
+    padding-bottom: 40px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px var(--pad);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .brand-block { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 36px; height: 36px;
+    background: var(--forest);
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--gold-bright);
+  }
+  .brand-mark svg { width: 22px; height: 22px; }
+  .brand-name {
+    font-size: 15px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .topbar-version {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    color: var(--ink-faint); text-transform: uppercase;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    flex-shrink: 0;
+  }
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 1;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+  .auth-hidden { display: none !important; }
+  .auth-email-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .auth-email {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-3);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #btn-google-sign-in {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+  #btn-sign-out {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--surface);
+    padding: 22px var(--pad) 18px;
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .hero--hidden { display: none; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 26px; padding: 0 10px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-tiny); font-weight: 600; letter-spacing: 0.02em;
+  }
+  .pill.ok    { background: var(--ok-bg);   color: var(--ok-fg); }
+  .pill.warn  { background: var(--warn-bg); color: var(--warn-fg); }
+  .pill .dot  { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.85; }
+
+  .hero-title {
+    font-size: var(--t-display); font-weight: 800; letter-spacing: -0.01em;
+    color: var(--ink); line-height: 1.15;
+    margin: 10px 0 4px;
+  }
+  .hero-sub {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.05em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .stat {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .stat-val {
+    font-size: 26px; font-weight: 800; color: var(--ink);
+    line-height: 1; letter-spacing: -0.02em;
+  }
+  .stat-unit {
+    font-size: 13px; font-weight: 700; color: var(--ink-3);
+    margin-left: 2px;
+  }
+  .stat-lbl {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .stat.hero-stat {
+    background: var(--forest);
+    border-color: var(--forest);
+  }
+  .stat.hero-stat .stat-val { color: var(--gold-bright); }
+  .stat.hero-stat .stat-unit { color: rgba(255,255,255,0.7); }
+  .stat.hero-stat .stat-lbl { color: rgba(255,255,255,0.75); }
+  .stat-note {
+    font-size: 9px; color: var(--ink-faint); margin-top: 2px;
+    font-weight: 500;
+  }
+  .stat.hero-stat .stat-note { color: rgba(255,255,255,0.6); }
+
+  .time-strip { margin-top: 16px; }
+  .time-strip-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .time-bar {
+    display: flex; height: 28px;
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+  }
+  .time-bar > div {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: white;
+    transition: width 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .seg-brush { background: var(--seg-brush); }
+  .seg-log12 { background: var(--seg-log12); }
+  .seg-log18 { background: var(--seg-log18); }
+  .seg-log24 { background: var(--seg-log24); }
+
+  /* ---------- Section labels ---------- */
+  .section-label {
+    font-size: var(--t-tiny); font-weight: 700; letter-spacing: 0.1em;
+    color: var(--ink-3); text-transform: uppercase;
+    padding: 22px var(--pad) 10px;
+  }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .card + .card { border-top: 0; }
+  .card-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px var(--pad) 6px;
+    min-height: var(--tap);
+  }
+  .card-row .row-label {
+    font-size: var(--t-meta); font-weight: 700; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .card-row .row-value {
+    font-size: var(--t-meta); font-weight: 700; color: var(--ink);
+  }
+  .card-row .row-value-big {
+    font-size: 22px; font-weight: 800; color: var(--forest);
+    letter-spacing: -0.01em;
+  }
+  .card-content {
+    padding: 6px var(--pad) 14px;
+  }
+
+  /* ---------- Buttons ---------- */
+  .text-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--forest);
+    font-family: inherit;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    padding: 6px 10px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .text-btn:active { background: var(--surface-2); }
+  .icon-btn {
+    width: var(--tap); height: var(--tap);
+    display: inline-flex; align-items: center; justify-content: center;
+    background: transparent; border: 0;
+    color: var(--forest); cursor: pointer;
+    border-radius: var(--r-md);
+  }
+  .icon-btn:active { background: var(--surface-2); }
+  .icon-btn svg { width: 22px; height: 22px; }
+
+  /* ---------- Form fields ---------- */
+  select, input[type=number] {
+    font-family: inherit;
+  }
+  .select-wrap select {
+    width: 100%;
+    height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 0 14px;
+    font-size: var(--t-body); font-weight: 600;
+    color: var(--ink);
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232d5a3d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+  }
+  .select-wrap select:focus {
+    outline: none;
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
+  }
+  .species-cascade {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  /* Mirrors old picker “trigger” clarity: full common + Latin always visible (native selects truncate when closed). */
+  .species-choice-banner {
+    margin-top: 4px;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+  }
+  .species-choice-banner[hidden] { display: none !important; }
+  .species-choice-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    font-size: var(--t-body);
+    line-height: 1.35;
+  }
+  .species-choice-common { font-weight: 700; color: var(--ink); }
+  .species-choice-latin {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--ink-3);
+  }
+  .select-tier-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 2px 0 0 2px;
+  }
+  .location-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+
+  optgroup { color: var(--forest); font-weight: 700; }
+  optgroup option { color: var(--ink); font-weight: 400; }
+
+  /* ---------- DBH slider ---------- */
+  .slider-wrap { padding-top: 4px; }
+  .slider-wrap input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; border-radius: 999px;
+    background: var(--line);
+    outline: none;
+    margin: 8px 0 6px;
+  }
+  .slider-wrap input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px; border-radius: 999px;
+  }
+  .slider-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--forest);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    margin-top: -11px;
+  }
+  .slider-wrap input[type="range"]::-moz-range-thumb {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--forest);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+  .slider-meta {
+    display: flex; justify-content: space-between;
+    font-size: 11px; font-weight: 600; color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  /* ---------- Stepper ---------- */
+  .stepper {
+    display: grid; grid-template-columns: 56px 1fr 56px;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .stepper button {
+    height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    font-size: 24px; font-weight: 700;
+    color: var(--ink); cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .stepper button:active {
+    background: var(--forest);
+    color: white;
+    border-color: var(--forest);
+  }
+  .stepper input {
+    height: 52px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    text-align: center;
+    font-size: 18px; font-weight: 700;
+    color: var(--ink);
+    font-family: inherit;
+  }
+  .stepper input:focus {
+    outline: none;
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
+  }
+  .auto-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--ink-faint); text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .auto-tag.modified { color: var(--gold); }
+
+
+  /* ---------- DBH oversize toggle (small grayed-out checkbox) ---------- */
+  .oversize-toggle {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 10px;
+    font-size: 12px; font-weight: 500;
+    color: var(--ink-faint);
+    cursor: pointer;
+    user-select: none;
+  }
+  .oversize-toggle input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--ink-3);
+    cursor: pointer;
+    margin: 0;
+  }
+  .oversize-toggle:hover { color: var(--ink-3); }
+
+  /* ---------- Row description (small helper text under the row label) ---------- */
+  .row-desc {
+    font-size: 11px; font-weight: 500;
+    color: var(--ink-faint);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+  .card-row .row-stack { display: flex; flex-direction: column; }
+
+  /* ---------- Calculate button ---------- */
+  .calc-wrap {
+    padding: 18px var(--pad) 4px;
+  }
+  .calc-button {
+    width: 100%;
+    min-height: 52px;
+    background: var(--forest);
+    color: var(--bg);
+    border: 0;
+    border-radius: var(--r-md);
+    font-family: inherit;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .calc-button:active { background: var(--forest-deep); }
+
+  /* ---------- Trim segmented control ---------- */
+  .seg-row {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .seg-row button {
+    height: 44px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+  }
+  .seg-row button:active { background: var(--surface-2); }
+  .seg-row button.active {
+    background: var(--forest);
+    color: white;
+    border-color: var(--forest);
+  }
+
+  /* ---------- Key-value rows (tree profile, cut rules) ---------- */
+  .kv-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px var(--pad);
+    border-bottom: 1px solid var(--surface-2);
+    font-size: var(--t-meta);
+  }
+  .kv-row:last-child { border-bottom: 0; }
+  .kv-row .k { color: var(--ink-3); font-weight: 500; }
+  .kv-row .v { color: var(--ink); font-weight: 700; }
+  .kv-row .v-accent { color: var(--forest); }
+
+  /* ---------- Cut breakdown table ---------- */
+  .cuts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .cuts-table th, .cuts-table td {
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--surface-2);
+  }
+  .cuts-table th {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .cuts-table th:first-child, .cuts-table td:first-child { padding-left: var(--pad); }
+  .cuts-table th:last-child, .cuts-table td:last-child { padding-right: var(--pad); }
+  .cuts-table td { color: var(--ink); font-weight: 500; }
+  .cuts-table td.dim { color: var(--ink-3); font-weight: 400; }
+  .cuts-table td.num { text-align: right; font-weight: 700; color: var(--ink); }
+  .cuts-table tr.total {
+    background: var(--surface-2);
+  }
+  .cuts-table tr.total td {
+    border-bottom: 0;
+    font-weight: 800;
+    color: var(--forest);
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 24px var(--pad);
+    text-align: center;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--ink-faint); text-transform: uppercase;
+  }
+
+  /* ---------- Species card — PictureThis shortcut (header, top-right) ---------- */
+  .species-id-help-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 7px 12px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--forest);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.14s, border-color 0.14s, transform 0.08s;
+  }
+  .species-id-help-btn:hover {
+    border-color: var(--forest-tint);
+    background: var(--surface);
+  }
+  .species-id-help-btn:active {
+    transform: scale(0.97);
+    background: var(--line);
+  }
+  .species-id-help-btn svg { flex-shrink: 0; width: 16px; height: 16px; }
+
+  /* ---------- Modal (PictureThis helper — desktop fallback) ---------- */
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(20, 36, 27, 0.60);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    width: 100%;
+    max-width: 448px;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: var(--r-lg);
+    padding: 20px var(--pad) 28px;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(20,36,27,0.28);
+  }
+  .modal::before { display: none; }
+  .modal-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 36px; height: 36px;
+    background: var(--surface-2);
+    border: 0; color: var(--ink-2);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px; font-weight: 600; line-height: 1;
+    font-family: inherit;
+  }
+  .modal-close:active { background: var(--line); }
+
+  a.help-id-store {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-radius: var(--r-md);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.14s, transform 0.1s;
+  }
+  a.help-id-store:active { transform: scale(0.98); }
+  a.help-id-store-ios {
+    background: var(--forest);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 10px rgba(45,90,61,0.28);
+  }
+  a.help-id-store-ios:active { background: var(--forest-deep); }
+  a.help-id-store-android {
+    background: var(--surface);
+    color: var(--forest-deep);
+    border: 2px solid var(--forest);
+  }
+
+  .modal h2 {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--ink); margin-bottom: 6px;
+    padding-right: 40px;
+  }
+  .modal p {
+    font-size: var(--t-meta); color: var(--ink-3);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5h6"/><path d="M5 22V11l7-4 7 4v11"/><path d="M9 22v-6h6v6"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">TreeQ</div>
+        <div class="brand-sub">Next Million</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <a href="/spartan_pricing_tool.html" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--forest);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">💲 Spartan Pricing</a>
+      <div class="topbar-version">v2.3</div>
+    </div>
+  </header>
+
+  <div class="scroll-zone">
+
+  <!-- ============ HERO / LIVE SUMMARY ============ -->
+  <section class="hero hero--hidden" id="hero">
+    <span class="pill ok"><span class="dot"></span>Live Estimate</span>
+    <h1 class="hero-title" id="heroTitle">Aerial cut estimate</h1>
+    <div class="hero-sub" id="heroSub">Open-field · 10/10 operator</div>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-val"><span id="brushCuts">—</span></div>
+        <div class="stat-lbl">Brush</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val"><span id="logCuts">—</span></div>
+        <div class="stat-lbl">Logs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val"><span id="totalCuts">—</span></div>
+        <div class="stat-lbl">Total cuts</div>
+      </div>
+      <div class="stat hero-stat">
+        <div class="stat-val"><span id="totalTime">—</span><span class="stat-unit">m</span></div>
+        <div class="stat-lbl">Aerial time</div>
+        <div class="stat-note" id="totalSec">— sec</div>
+      </div>
+    </div>
+
+    <div class="time-strip">
+      <div class="time-strip-label">Time composition</div>
+      <div class="time-bar" id="timeBar"></div>
+    </div>
+  </section>
+
+  <!-- ============ INPUTS ============ -->
+  <div class="section-label">Inputs</div>
+
+  <!-- Location -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Location</span>
+    </div>
+    <div class="card-content select-wrap">
+      <div class="location-pair">
+        <select id="state">
+          <option value="NY">New York</option>
+          <option value="" disabled>(more coming)</option>
+        </select>
+        <select id="city">
+          <option value="rochester">Rochester</option>
+          <option value="" disabled>(more coming)</option>
+        </select>
+      </div>
+      <div class="auto-tag">Drives species list + zone defaults</div>
+    </div>
+  </div>
+
+  <!-- Species -->
+  <div class="card" id="species-card">
+    <div class="card-row">
+      <span class="row-label">Species</span>
+      <button type="button" class="species-id-help-btn" id="btnPictureThis" aria-label="Not sure of the species? Open PictureThis to identify from a photo, then choose the match below.">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.25"/><path d="M16.5 7.5h.01M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12H4z"/></svg>
+        <span>Not sure?</span>
+      </button>
+    </div>
+    <div class="card-content select-wrap species-cascade">
+      <div>
+        <div class="select-tier-label">Category</div>
+        <select id="speciesCategory" aria-label="Species category"></select>
+      </div>
+      <div>
+        <div class="select-tier-label">Species</div>
+        <select id="species" aria-label="Species"></select>
+      </div>
+      <div class="species-choice-banner" id="speciesChoiceBanner" hidden aria-live="polite">
+        <div class="species-choice-line">
+          <span class="species-choice-common" id="speciesChoiceCommon"></span>
+          <span class="species-choice-latin" id="speciesChoiceLatin"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DBH -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">DBH (Diameter at Breast Height)</span>
+      <span class="row-value-big"><span id="dbhVal">24</span>″</span>
+    </div>
+    <div class="card-content slider-wrap">
+      <input type="range" id="dbh" min="6" max="48" step="1" value="24" />
+      <div class="slider-meta" id="sliderMeta"><span>6″</span><span>48″</span></div>
+      <label class="oversize-toggle">
+        <input type="checkbox" id="dbhOversize" />
+        <span>Tree over 48″ (extends slider to 90″)</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Height -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Height (ft)</span>
+      <button class="text-btn" id="resetHeight">Auto</button>
+    </div>
+    <div class="card-content">
+      <div class="stepper">
+        <button id="heightDown" aria-label="Decrease height">−</button>
+        <input type="number" id="heightInput" step="1" inputmode="numeric" />
+        <button id="heightUp" aria-label="Increase height">+</button>
+      </div>
+      <div class="auto-tag" id="heightTag">Auto from species + DBH</div>
+    </div>
+  </div>
+
+  <!-- Crown radius -->
+  <div class="card">
+    <div class="card-row">
+      <div class="row-stack">
+        <span class="row-label">Crown radius (ft)</span>
+        <span class="row-desc">Trunk to farthest branch tip, measured from ground</span>
+      </div>
+      <button class="text-btn" id="resetCrown">Auto</button>
+    </div>
+    <div class="card-content">
+      <div class="stepper">
+        <button id="crownDown" aria-label="Decrease crown">−</button>
+        <input type="number" id="crownInput" step="1" inputmode="numeric" />
+        <button id="crownUp" aria-label="Increase crown">+</button>
+      </div>
+      <div class="auto-tag" id="crownTag">Auto from species + DBH</div>
+    </div>
+  </div>
+
+  <!-- Pre-existing trim -->
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Pre-existing trim</span>
+    </div>
+    <div class="card-content">
+      <div class="seg-row" id="trimSeg">
+        <button data-v="5" class="active">0–10%</button>
+        <button data-v="15">10–20%</button>
+        <button data-v="25">20–30%</button>
+        <button data-v="35">30–40%</button>
+        <button data-v="45">40–50%</button>
+      </div>
+      <div class="auto-tag">Reduces brush AND log mass proportionally</div>
+    </div>
+  </div>
+
+  <!-- Calculate button (reveals hero on first press) -->
+  <div class="calc-wrap">
+    <button type="button" class="calc-button" id="calcBtn">Calculate</button>
+  </div>
+
+  </div><!-- /.scroll-zone -->
+
+  <!-- ============ TREE PROFILE ============ -->
+  <div class="section-label">Tree profile</div>
+  <div class="card">
+    <div class="kv-row"><span class="k">Height (used)</span><span class="v"><span id="height">—</span> ft</span></div>
+    <div class="kv-row"><span class="k">Crown radius</span><span class="v"><span id="crown">—</span> ft</span></div>
+    <div class="kv-row"><span class="k">Crown diameter</span><span class="v"><span id="crownDiam">—</span> ft</span></div>
+    <div class="kv-row"><span class="k">Green weight</span><span class="v"><span id="weightTotal">—</span> lbs</span></div>
+    <div class="kv-row"><span class="k">Green weight (tons)</span><span class="v"><span id="weightTons">—</span> T</span></div>
+    <div class="kv-row"><span class="k">Brush mass (effective)</span><span class="v"><span id="brushMass">—</span> lbs</span></div>
+    <div class="kv-row"><span class="k">Log mass (&gt;12″)</span><span class="v"><span id="logMass">—</span> lbs</span></div>
+    <div class="kv-row"><span class="k">Handling profile</span><span class="v v-accent" id="profile">—</span></div>
+  </div>
+
+  <!-- ============ CUT BREAKDOWN ============ -->
+  <div class="section-label">Cut breakdown</div>
+  <div class="card">
+    <table class="cuts-table">
+      <thead>
+        <tr>
+          <th>Class</th><th>Diameter</th><th>Cut length</th>
+          <th>Cuts</th><th>Sec/cut</th><th class="num">Time</th>
+        </tr>
+      </thead>
+      <tbody id="cutTable"></tbody>
+    </table>
+  </div>
+
+  <!-- ============ CUT RULES ============ -->
+  <div class="section-label">Cut rules</div>
+  <div class="card">
+    <div class="kv-row"><span class="k">Brush &lt;4″ (15 ft sections)</span><span class="v v-accent">20 sec/cut</span></div>
+    <div class="kv-row"><span class="k">Brush 4–8″ (15 ft sections)</span><span class="v v-accent">30 sec/cut</span></div>
+    <div class="kv-row"><span class="k">Brush 8–12″ (15 ft sections)</span><span class="v v-accent">60 sec/cut</span></div>
+    <div class="kv-row"><span class="k">Log 12–18″</span><span class="v">8 ft @ 2 min</span></div>
+    <div class="kv-row"><span class="k">Log 18–24″</span><span class="v">8 ft @ 3 min</span></div>
+    <div class="kv-row"><span class="k">Log 24″+</span><span class="v">8 ft @ 4 min</span></div>
+  </div>
+
+  <footer>
+    TreeQ · Spartan Tree &amp; Landscape · Next Million · v2.3 · Calibration values are server-side
+  </footer>
+</div>
+
+<!-- PictureThis helper — desktop / unknown device: choose app store -->
+<div class="modal-bg" id="identifyModal">
+  <div class="modal">
+    <button type="button" class="modal-close" id="identifyModalClose" aria-label="Close">×</button>
+    <h2>Identify with PictureThis</h2>
+    <p>Open the PictureThis app on your phone, take a photo of the tree, note the suggested species name, then return here and pick the closest match from the Species menus.</p>
+    <p style="margin-bottom:12px;"><strong>No automatic hand-off:</strong> PictureThis does not publish a partner API that sends identified species back into other apps. Integration today is manual (identify there → choose here).</p>
+    <p style="margin-bottom:16px;font-size:14px;color:var(--ink-3);">If we ever want <strong>photo → suggestions inside TreeQ</strong>, we’d wire a plant-identification API (e.g. third-party vision services such as Plant.id) through our own backend — separate licensing and accuracy review.</p>
+    <p style="margin-bottom:16px;"><strong>Note:</strong> TreeQ isn’t affiliated with PictureThis.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a class="help-id-store help-id-store-ios" href="https://apps.apple.com/app/id1252497129" target="_blank" rel="noopener noreferrer">App Store — iPhone &amp; iPad</a>
+      <a class="help-id-store help-id-store-android" href="https://play.google.com/store/apps/details?id=cn.danatech.xingseus" target="_blank" rel="noopener noreferrer">Google Play — Android</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const sbClient = (function () {
+  try {
+    if (!window.supabase || !window.supabase.createClient) return null;
+    return window.supabase.createClient(
+      window.__SUPABASE_URL__ ?? '',
+      window.__SUPABASE_ANON_KEY__ ?? ''
+    );
+  } catch (e) {
+    return null;
+  }
+})();
+
+/* ============================================================
+   SPARTAN CUT ESTIMATOR — Frontend v2.0 (thin client)
+
+   Canonical copy for Netlify (repo root). Mirror to deploy/public/index.html
+   when publishing the Cloudflare bundle.
+   The species database, biomass coefficients, brush-handling
+   profiles, and math engine are NOT in this file. They live on
+   the server at /api/* and never touch the browser. View Source shows
+   only the UI shell (calibration stays server-side).
+   ============================================================ */
+
+/** Payload from GET /api/species (categories → groups → rows) */
+let SPECIES_PICKER = { categories: [], groupOrderByCategory: {}, species: [] };
+
+/** Tray-one categories: single alphabetical list, no optgroup subdivisions. */
+const PICKER_FLAT_CATEGORIES = new Set(['Broadleaf · more kinds']);
+
+const API_BASE = (window.__TREEQ_API_BASE__ ?? '').replace(/\/$/, '');
+
+/* =================== UI ELEMENTS =================== */
+const speciesCatSel = document.getElementById('speciesCategory');
+const speciesSel = document.getElementById('species');
+const dbhSlider  = document.getElementById('dbh');
+const dbhVal     = document.getElementById('dbhVal');
+const heightInput = document.getElementById('heightInput');
+const crownInput  = document.getElementById('crownInput');
+const heightTag   = document.getElementById('heightTag');
+const crownTag    = document.getElementById('crownTag');
+
+let heightOverride = null;
+let crownOverride = null;
+let trimPct = 5;
+
+let lastAuto = { height: null, crown: null };  // populated from API
+let inflightAbort = null;                      // current in-flight estimate request
+
+function fmt(n, dec = 0) {
+  if (!isFinite(n)) return '—';
+  return n.toLocaleString('en-US', { maximumFractionDigits: dec, minimumFractionDigits: dec });
+}
+function formatTime(sec) {
+  if (sec < 60) return `${Math.round(sec)}s`;
+  const m = Math.floor(sec / 60);
+  const s = Math.round(sec % 60);
+  return s === 0 ? `${m}m` : `${m}m ${s}s`;
+}
+
+/** Common + Latin for picker rows (values stay `key`; label is for display only). */
+function speciesPickerLabel(spec) {
+  const lat = (spec.scientificName || '').trim();
+  return lat ? `${spec.name} (${lat})` : spec.name;
+}
+
+/** Shows selected species + Latin outside the dropdown (mobile browsers often clip option text). */
+function syncSpeciesChoiceBanner() {
+  const banner = document.getElementById('speciesChoiceBanner');
+  const commonEl = document.getElementById('speciesChoiceCommon');
+  const latinEl = document.getElementById('speciesChoiceLatin');
+  if (!banner || !commonEl || !latinEl) return;
+  const key = speciesSel.value;
+  const row = SPECIES_PICKER.species.find((s) => s.key === key);
+  if (!row) {
+    banner.hidden = true;
+    speciesSel.removeAttribute('title');
+    return;
+  }
+  banner.hidden = false;
+  commonEl.textContent = row.name;
+  const lat = (row.scientificName || '').trim();
+  latinEl.textContent = lat ? `(${lat})` : '';
+  latinEl.hidden = !lat;
+  speciesSel.title = speciesPickerLabel(row);
+}
+
+/* =================== INITIAL LOAD =================== */
+function refillSpeciesRows(preserveKey) {
+  const cat = speciesCatSel.value;
+  const inCat = SPECIES_PICKER.species.filter((s) => s.category === cat);
+  speciesSel.innerHTML = '';
+
+  let firstKey = null;
+
+  if (PICKER_FLAT_CATEGORIES.has(cat)) {
+    const sorted = [...inCat].sort((a, b) => a.name.localeCompare(b.name));
+    for (const spec of sorted) {
+      if (firstKey === null) firstKey = spec.key;
+      const opt = document.createElement('option');
+      opt.value = spec.key;
+      opt.textContent = speciesPickerLabel(spec);
+      speciesSel.appendChild(opt);
+    }
+    const want =
+      preserveKey && inCat.some((s) => s.key === preserveKey) ? preserveKey : firstKey;
+    if (want) speciesSel.value = want;
+    syncSpeciesChoiceBanner();
+    return;
+  }
+
+  const grpOrder = SPECIES_PICKER.groupOrderByCategory[cat] || [];
+  const byGrp = {};
+  inCat.forEach((s) => {
+    if (!byGrp[s.group]) byGrp[s.group] = [];
+    byGrp[s.group].push(s);
+  });
+
+  const seen = new Set(grpOrder);
+  const extraGroups = Object.keys(byGrp)
+    .filter((g) => !seen.has(g))
+    .sort();
+  const fullOrder = [...grpOrder, ...extraGroups];
+  for (const g of fullOrder) {
+    if (!byGrp[g]?.length) continue;
+    const og = document.createElement('optgroup');
+    og.label = g;
+    for (const spec of byGrp[g]) {
+      if (firstKey === null) firstKey = spec.key;
+      const opt = document.createElement('option');
+      opt.value = spec.key;
+      opt.textContent = speciesPickerLabel(spec);
+      og.appendChild(opt);
+    }
+    speciesSel.appendChild(og);
+  }
+  const want =
+    preserveKey && inCat.some((s) => s.key === preserveKey) ? preserveKey : firstKey;
+  if (want) speciesSel.value = want;
+  syncSpeciesChoiceBanner();
+}
+
+async function loadSpecies() {
+  const resp = await fetch(API_BASE + '/api/species');
+  if (!resp.ok) throw new Error('Failed to load species list');
+  const data = await resp.json();
+  SPECIES_PICKER = {
+    categories: data.categories || [],
+    groupOrderByCategory: data.groupOrderByCategory || {},
+    species: data.species || [],
+  };
+
+  speciesCatSel.innerHTML = '';
+  for (const c of SPECIES_PICKER.categories) {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    speciesCatSel.appendChild(opt);
+  }
+
+  const preferredKey = 'silver_maple';
+  const prefRow = SPECIES_PICKER.species.find((s) => s.key === preferredKey);
+  if (prefRow) speciesCatSel.value = prefRow.category;
+  else if (SPECIES_PICKER.species[0]) speciesCatSel.value = SPECIES_PICKER.species[0].category;
+  refillSpeciesRows(prefRow ? preferredKey : null);
+}
+
+/* =================== ESTIMATE FETCH =================== */
+async function fetchEstimate() {
+  // Cancel any in-flight request before issuing a new one
+  if (inflightAbort) inflightAbort.abort();
+  const ac = new AbortController();
+  inflightAbort = ac;
+
+  const speciesKey = speciesSel.value;
+  const dbh = parseFloat(dbhSlider.value);
+  const url = `${API_BASE}/api/estimate?species=${encodeURIComponent(speciesKey)}&dbh=${dbh}&trim=${trimPct}`;
+
+  try {
+    const resp = await fetch(url, { signal: ac.signal });
+    if (!resp.ok) {
+      const errBody = await resp.json().catch(() => ({}));
+      throw new Error(errBody.error || `estimate failed: ${resp.status}`);
+    }
+    return await resp.json();
+  } catch (err) {
+    if (err.name === 'AbortError') return null;
+    console.error('Estimate error:', err);
+    return null;
+  } finally {
+    if (inflightAbort === ac) inflightAbort = null;
+  }
+}
+
+/* =================== RENDER =================== */
+function syncHeightCrownInputs() {
+  // Reflect override state in input values + tag
+  if (heightOverride === null) {
+    if (lastAuto.height !== null) heightInput.value = lastAuto.height;
+    heightTag.textContent = 'Auto from species + DBH';
+    heightTag.classList.remove('modified');
+  } else {
+    heightInput.value = heightOverride;
+    heightTag.textContent = 'User override';
+    heightTag.classList.add('modified');
+  }
+  if (crownOverride === null) {
+    if (lastAuto.crown !== null) crownInput.value = lastAuto.crown;
+    crownTag.textContent = 'Auto from species + DBH';
+    crownTag.classList.remove('modified');
+  } else {
+    crownInput.value = crownOverride;
+    crownTag.textContent = 'User override';
+    crownTag.classList.add('modified');
+  }
+}
+
+async function render() {
+  const dbh = parseFloat(dbhSlider.value);
+  dbhVal.textContent = dbh;
+
+  const r = await fetchEstimate();
+  if (!r) return;  // aborted or errored — leave previous render
+
+  // Track auto values from server so override toggling stays correct
+  lastAuto.height = r.autoHeight;
+  lastAuto.crown = r.autoCrown;
+  syncHeightCrownInputs();
+
+  const heightUsed = (heightOverride !== null) ? heightOverride : r.autoHeight;
+  const crownUsed  = (crownOverride !== null) ? crownOverride : r.autoCrown;
+
+  // Hero
+  const latHero = (r.speciesScientificName || '').trim();
+  document.getElementById('heroTitle').textContent = latHero
+    ? `${dbh}″ ${r.speciesName} (${latHero})`
+    : `${dbh}″ ${r.speciesName}`;
+  document.getElementById('heroSub').textContent = `${r.speciesGroup} · Open-field · 10/10 operator`;
+
+  // Tree profile
+  document.getElementById('height').textContent = heightUsed;
+  document.getElementById('crown').textContent = crownUsed;
+  document.getElementById('crownDiam').textContent = crownUsed * 2;
+  document.getElementById('weightTotal').textContent = fmt(r.totalGreen, 0);
+  document.getElementById('weightTons').textContent = fmt(r.totalGreen / 2000, 2);
+  document.getElementById('brushMass').textContent = fmt(r.brushMass, 0);
+  document.getElementById('logMass').textContent = fmt(r.logMass, 0);
+  document.getElementById('profile').textContent = r.handlingProfile.toUpperCase();
+
+  // Cut breakdown table
+  const tbody = document.getElementById('cutTable');
+  tbody.innerHTML = '';
+  [...r.brushBreakdown, ...r.logBreakdown].forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.label}</td>
+      <td class="dim">${row.diam}</td>
+      <td class="dim">${row.cutLen} ft</td>
+      <td class="num">${row.cuts}</td>
+      <td class="dim">${row.sec}s</td>
+      <td class="num">${formatTime(row.total)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  const totalTr = document.createElement('tr');
+  totalTr.className = 'total';
+  totalTr.innerHTML = `
+    <td>TOTAL</td><td></td><td></td>
+    <td class="num">${r.totalCuts}</td><td></td>
+    <td class="num">${formatTime(r.totalSec)}</td>
+  `;
+  tbody.appendChild(totalTr);
+
+  // Stat grid
+  document.getElementById('brushCuts').textContent = r.brushCuts;
+  document.getElementById('logCuts').textContent = r.logCutsTotal;
+  document.getElementById('totalCuts').textContent = r.totalCuts;
+  document.getElementById('totalTime').textContent = fmt(r.totalSec / 60, 1);
+  document.getElementById('totalSec').textContent = `${fmt(r.totalSec, 0)} sec total`;
+
+  // Time composition bar
+  const bar = document.getElementById('timeBar');
+  bar.innerHTML = '';
+  const segs = [
+    { cls: 'seg-brush', sec: r.brushSecTotal, label: 'Brush' },
+    { cls: 'seg-log12', sec: r.logBreakdown[0].total, label: '12–18' },
+    { cls: 'seg-log18', sec: r.logBreakdown[1].total, label: '18–24' },
+    { cls: 'seg-log24', sec: r.logBreakdown[2].total, label: '24+' }
+  ];
+  segs.forEach(s => {
+    if (s.sec <= 0) return;
+    const pct = (s.sec / r.totalSec) * 100;
+    const div = document.createElement('div');
+    div.className = s.cls;
+    div.style.width = pct + '%';
+    div.textContent = pct >= 8 ? s.label : '';
+    bar.appendChild(div);
+  });
+}
+
+/* =================== EVENT WIRING =================== */
+speciesCatSel.addEventListener('change', () => {
+  refillSpeciesRows(null);
+  render();
+});
+
+speciesSel.addEventListener('change', () => {
+  syncSpeciesChoiceBanner();
+  heightOverride = null;
+  crownOverride = null;
+  render();
+});
+dbhSlider.addEventListener('input', render);
+
+document.getElementById('dbhOversize').addEventListener('change', (e) => {
+  const meta = document.getElementById('sliderMeta');
+  if (e.target.checked) {
+    dbhSlider.min = 49;
+    dbhSlider.max = 90;
+    dbhSlider.value = 49;
+    meta.innerHTML = '<span>49″</span><span>90″</span>';
+  } else {
+    dbhSlider.min = 6;
+    dbhSlider.max = 48;
+    if (parseFloat(dbhSlider.value) > 48) dbhSlider.value = 24;
+    meta.innerHTML = '<span>6″</span><span>48″</span>';
+  }
+  render();
+});
+
+document.getElementById('heightUp').addEventListener('click', () => {
+  heightOverride = (parseInt(heightInput.value) || 0) + 1;
+  render();
+});
+document.getElementById('heightDown').addEventListener('click', () => {
+  heightOverride = Math.max(1, (parseInt(heightInput.value) || 0) - 1);
+  render();
+});
+heightInput.addEventListener('change', () => {
+  const v = parseInt(heightInput.value);
+  if (!isNaN(v) && v > 0) heightOverride = v;
+  render();
+});
+document.getElementById('resetHeight').addEventListener('click', () => {
+  heightOverride = null;
+  render();
+});
+document.getElementById('crownUp').addEventListener('click', () => {
+  crownOverride = (parseInt(crownInput.value) || 0) + 1;
+  render();
+});
+document.getElementById('crownDown').addEventListener('click', () => {
+  crownOverride = Math.max(1, (parseInt(crownInput.value) || 0) - 1);
+  render();
+});
+crownInput.addEventListener('change', () => {
+  const v = parseInt(crownInput.value);
+  if (!isNaN(v) && v > 0) crownOverride = v;
+  render();
+});
+document.getElementById('resetCrown').addEventListener('click', () => {
+  crownOverride = null;
+  render();
+});
+
+document.getElementById('trimSeg').addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#trimSeg button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  trimPct = parseInt(e.target.dataset.v);
+  render();
+});
+
+// Calculate button — reveals the hero on first press, then re-renders.
+// Live updates from inputs continue to flow into the (now visible) hero.
+document.getElementById('calcBtn').addEventListener('click', () => {
+  const hero = document.getElementById('hero');
+  hero.classList.remove('hero--hidden');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* =================== PictureThis helper (species ID — outside TreeQ) =================== */
+const PICTURETHIS_APP_STORE = 'https://apps.apple.com/app/id1252497129';
+const PICTURETHIS_PLAY =
+  'https://play.google.com/store/apps/details?id=cn.danatech.xingseus';
+
+function openIdentifyModal() {
+  document.getElementById('identifyModal').classList.add('open');
+}
+
+function closeIdentifyModal() {
+  document.getElementById('identifyModal').classList.remove('open');
+}
+
+function openPictureThisForDevice() {
+  const ua = navigator.userAgent || '';
+  if (/iPhone|iPad|iPod/i.test(ua)) {
+    window.location.href = PICTURETHIS_APP_STORE;
+    return;
+  }
+  if (/Android/i.test(ua)) {
+    window.location.href = PICTURETHIS_PLAY;
+    return;
+  }
+  openIdentifyModal();
+}
+
+document.getElementById('btnPictureThis').addEventListener('click', openPictureThisForDevice);
+document.getElementById('identifyModalClose').addEventListener('click', closeIdentifyModal);
+document.getElementById('identifyModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('identifyModal')) closeIdentifyModal();
+});
+
+/* =================== BOOT =================== */
+(async () => {
+  try {
+    await loadSpecies();
+    await render();
+  } catch (err) {
+    console.error('Boot failed:', err);
+    document.getElementById('heroTitle').textContent = 'Cannot reach API';
+    document.getElementById('heroSub').textContent = err.message || 'Check console';
+  }
+})();
+
+/* ========== Supabase Auth (Google) — calculator remains public ========== */
+(function initTreeqAuth() {
+  if (!sbClient || !sbClient.auth) return;
+  var elOut = document.getElementById('auth-signed-out');
+  var elIn = document.getElementById('auth-signed-in');
+  var elEmail = document.getElementById('auth-user-email');
+  var btnIn = document.getElementById('btn-google-sign-in');
+  var btnOut = document.getElementById('btn-sign-out');
+
+  function refreshAuthUI(session) {
+    if (!elOut || !elIn || !elEmail) return;
+    if (session && session.user) {
+      elOut.classList.add('auth-hidden');
+      elIn.classList.remove('auth-hidden');
+      elEmail.textContent = session.user.email || '';
+    } else {
+      elIn.classList.add('auth-hidden');
+      elOut.classList.remove('auth-hidden');
+    }
+  }
+
+  sbClient.auth.onAuthStateChange(function (_event, session) {
+    refreshAuthUI(session);
+  });
+
+  sbClient.auth.getSession().then(function (res) {
+    refreshAuthUI(res.data && res.data.session);
+  });
+
+  if (btnIn) {
+    btnIn.addEventListener('click', function () {
+      sbClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + window.location.pathname.split('?')[0]
+        }
+      });
+    });
+  }
+  if (btnOut) {
+    btnOut.addEventListener('click', function () {
+      sbClient.auth.signOut();
+    });
+  }
+})();
+</script>
+</body>
+</html>
