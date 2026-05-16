@@ -3,7 +3,25 @@
     "allow": [
       "Bash(npm install*)",
       "Bash(cd *)",
-      "Bash(npm run*)"
+      "Bash(npm run*)",
+      "Bash(python3 *)",
+      "Bash(curl -s -o /dev/null -w \"GET /              -> %{http_code}\\\\n\" http://127.0.0.1:8788/)",
+      "Bash(curl -s -o /dev/null -w \"GET /api/species   -> %{http_code}\\\\n\" http://127.0.0.1:8788/api/species)",
+      "Bash(curl -s -o /dev/null -w \"GET /api/estimate  -> %{http_code}\\\\n\" \"http://127.0.0.1:8788/api/estimate?species=silver_maple&dbh=18&trim=0\")",
+      "Bash(curl -s -o /dev/null -w \"GET /api/saved-trees \\(no auth\\) -> %{http_code}\\\\n\" http://127.0.0.1:8788/api/saved-trees)",
+      "Bash(curl -s \"http://127.0.0.1:8788/api/estimate?species=silver_maple&dbh=18&trim=0\")",
+      "Bash(curl -s http://127.0.0.1:8788/api/species)",
+      "Bash(curl -s http://127.0.0.1:8788/)",
+      "Bash(npx wrangler *)",
+      "Bash(curl -s -o /dev/null -w \"GET /              -> %{http_code}\\\\n\" https://d901a6f5.treeqapp.pages.dev/)",
+      "Bash(curl -s -o /dev/null -w \"GET /api/species   -> %{http_code}\\\\n\" https://d901a6f5.treeqapp.pages.dev/api/species)",
+      "Bash(curl -s -o /dev/null -w \"GET /api/estimate  -> %{http_code}\\\\n\" \"https://d901a6f5.treeqapp.pages.dev/api/estimate?species=silver_maple&dbh=18&trim=0\")",
+      "Bash(curl -s -o /dev/null -w \"GET /api/saved-trees \\(no auth\\) -> %{http_code}\\\\n\" https://d901a6f5.treeqapp.pages.dev/api/saved-trees)",
+      "Bash(curl -s \"https://d901a6f5.treeqapp.pages.dev/api/estimate?species=silver_maple&dbh=18&trim=0\")",
+      "Bash(curl -s https://d901a6f5.treeqapp.pages.dev/)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }

@@ -445,6 +445,14 @@ arborists) can opt into a second layout: filter or group by **genus**, finer
 taxonomic cues, cultivar-aware rows where calibration supports it, etc. Keeps the
 default experience simple for crews; does not replace the approachable categories.
 
+**Paid-tier add-on — photo species ID:** Keep the current PictureThis shortcut as a
+manual helper for the free/basic flow. For paid tiers, evaluate an in-app
+plant-identification API (for example Plant.id or a comparable licensed vision
+service) routed through TreeQ's backend: user takes/uploads a photo, the backend
+returns candidate species with confidence, and TreeQ maps candidates to calibrated
+`species-db.js` keys via a curated alias table. This should ship only after cost,
+accuracy, and terms are reviewed.
+
 **Tests / QA debt:** Playwright or manual checks that still expect the hero title as
 `${dbh}″ ${speciesName}` **without** a `(Latin)` suffix should be updated to match
 the new format or to assert against `speciesScientificName` separately.

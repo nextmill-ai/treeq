@@ -336,6 +336,29 @@
     flex-direction: column;
     gap: 10px;
   }
+  /* Mirrors old picker “trigger” clarity: full common + Latin always visible (native selects truncate when closed). */
+  .species-choice-banner {
+    margin-top: 4px;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+  }
+  .species-choice-banner[hidden] { display: none !important; }
+  .species-choice-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    font-size: var(--t-body);
+    line-height: 1.35;
+  }
+  .species-choice-common { font-weight: 700; color: var(--ink); }
+  .species-choice-latin {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--ink-3);
+  }
   .select-tier-label {
     font-size: 10px;
     font-weight: 700;
@@ -549,6 +572,36 @@
     color: var(--ink-faint); text-transform: uppercase;
   }
 
+  /* ---------- Species card — PictureThis shortcut (header, top-right) ---------- */
+  .species-id-help-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 7px 12px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--forest);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.14s, border-color 0.14s, transform 0.08s;
+  }
+  .species-id-help-btn:hover {
+    border-color: var(--forest-tint);
+    background: var(--surface);
+  }
+  .species-id-help-btn:active {
+    transform: scale(0.97);
+    background: var(--line);
+  }
+  .species-id-help-btn svg { flex-shrink: 0; width: 16px; height: 16px; }
+
   /* ---------- Modal (PictureThis helper — desktop fallback) ---------- */
   .modal-bg {
     position: fixed; inset: 0;
@@ -583,29 +636,6 @@
     font-family: inherit;
   }
   .modal-close:active { background: var(--line); }
-
-  /* ---------- Help me ID — inline button between crown & trim ---------- */
-  .help-id-wrap {
-    padding: 4px var(--pad) 4px;
-    display: flex;
-    justify-content: center;
-  }
-  .help-id-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 11px 22px;
-    background: var(--forest);
-    color: #fff;
-    border: 0;
-    border-radius: var(--r-pill);
-    font-size: 15px; font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(45,90,61,0.28);
-    transition: background 0.14s, transform 0.1s;
-  }
-  .help-id-btn:hover  { background: var(--forest-tint); }
-  .help-id-btn:active { background: var(--forest-deep); transform: scale(0.97); }
-  .help-id-btn svg    { flex-shrink: 0; }
 
   a.help-id-store {
     display: flex;
@@ -662,15 +692,7 @@
       </div>
     </div>
     <div class="topbar-actions">
-      <div id="auth-signed-out">
-        <button type="button" class="text-btn" id="btn-google-sign-in">Sign in with Google</button>
-      </div>
-      <div id="auth-signed-in" class="auth-hidden">
-        <div class="auth-email-row">
-          <span class="auth-email" id="auth-user-email"></span>
-          <button type="button" class="text-btn" id="btn-sign-out">Sign out</button>
-        </div>
-      </div>
+      <a href="/spartan_pricing_tool.html" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--forest);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">💲 Spartan Pricing</a>
       <div class="topbar-version">v2.3</div>
     </div>
   </header>
@@ -736,6 +758,10 @@
   <div class="card" id="species-card">
     <div class="card-row">
       <span class="row-label">Species</span>
+      <button type="button" class="species-id-help-btn" id="btnPictureThis" aria-label="Not sure of the species? Open PictureThis to identify from a photo, then choose the match below.">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.25"/><path d="M16.5 7.5h.01M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12H4z"/></svg>
+        <span>Not sure?</span>
+      </button>
     </div>
     <div class="card-content select-wrap species-cascade">
       <div>
@@ -745,6 +771,12 @@
       <div>
         <div class="select-tier-label">Species</div>
         <select id="species" aria-label="Species"></select>
+      </div>
+      <div class="species-choice-banner" id="speciesChoiceBanner" hidden aria-live="polite">
+        <div class="species-choice-line">
+          <span class="species-choice-common" id="speciesChoiceCommon"></span>
+          <span class="species-choice-latin" id="speciesChoiceLatin"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -798,14 +830,6 @@
       </div>
       <div class="auto-tag" id="crownTag">Auto from species + DBH</div>
     </div>
-  </div>
-
-  <!-- PictureThis — between crown radius and pre-existing trim -->
-  <div class="help-id-wrap">
-    <button type="button" class="help-id-btn" id="btnPictureThis">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.25"/><path d="M16.5 7.5h.01M4 20V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v12H4z"/></svg>
-      Identify with PictureThis
-    </button>
   </div>
 
   <!-- Pre-existing trim -->
@@ -880,7 +904,9 @@
   <div class="modal">
     <button type="button" class="modal-close" id="identifyModalClose" aria-label="Close">×</button>
     <h2>Identify with PictureThis</h2>
-    <p>Open the PictureThis app, snap the tree, then pick the matching species in the list above.</p>
+    <p>Open the PictureThis app on your phone, take a photo of the tree, note the suggested species name, then return here and pick the closest match from the Species menus.</p>
+    <p style="margin-bottom:12px;"><strong>No automatic hand-off:</strong> PictureThis does not publish a partner API that sends identified species back into other apps. Integration today is manual (identify there → choose here).</p>
+    <p style="margin-bottom:16px;font-size:14px;color:var(--ink-3);">If we ever want <strong>photo → suggestions inside TreeQ</strong>, we’d wire a plant-identification API (e.g. third-party vision services such as Plant.id) through our own backend — separate licensing and accuracy review.</p>
     <p style="margin-bottom:16px;"><strong>Note:</strong> TreeQ isn’t affiliated with PictureThis.</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <a class="help-id-store help-id-store-ios" href="https://apps.apple.com/app/id1252497129" target="_blank" rel="noopener noreferrer">App Store — iPhone &amp; iPad</a>
@@ -915,6 +941,9 @@ const sbClient = (function () {
 
 /** Payload from GET /api/species (categories → groups → rows) */
 let SPECIES_PICKER = { categories: [], groupOrderByCategory: {}, species: [] };
+
+/** Tray-one categories: single alphabetical list, no optgroup subdivisions. */
+const PICKER_FLAT_CATEGORIES = new Set(['Broadleaf · more kinds']);
 
 const API_BASE = (window.__TREEQ_API_BASE__ ?? '').replace(/\/$/, '');
 
@@ -952,19 +981,58 @@ function speciesPickerLabel(spec) {
   return lat ? `${spec.name} (${lat})` : spec.name;
 }
 
+/** Shows selected species + Latin outside the dropdown (mobile browsers often clip option text). */
+function syncSpeciesChoiceBanner() {
+  const banner = document.getElementById('speciesChoiceBanner');
+  const commonEl = document.getElementById('speciesChoiceCommon');
+  const latinEl = document.getElementById('speciesChoiceLatin');
+  if (!banner || !commonEl || !latinEl) return;
+  const key = speciesSel.value;
+  const row = SPECIES_PICKER.species.find((s) => s.key === key);
+  if (!row) {
+    banner.hidden = true;
+    speciesSel.removeAttribute('title');
+    return;
+  }
+  banner.hidden = false;
+  commonEl.textContent = row.name;
+  const lat = (row.scientificName || '').trim();
+  latinEl.textContent = lat ? `(${lat})` : '';
+  latinEl.hidden = !lat;
+  speciesSel.title = speciesPickerLabel(row);
+}
+
 /* =================== INITIAL LOAD =================== */
 function refillSpeciesRows(preserveKey) {
   const cat = speciesCatSel.value;
-  const grpOrder = SPECIES_PICKER.groupOrderByCategory[cat] || [];
   const inCat = SPECIES_PICKER.species.filter((s) => s.category === cat);
+  speciesSel.innerHTML = '';
+
+  let firstKey = null;
+
+  if (PICKER_FLAT_CATEGORIES.has(cat)) {
+    const sorted = [...inCat].sort((a, b) => a.name.localeCompare(b.name));
+    for (const spec of sorted) {
+      if (firstKey === null) firstKey = spec.key;
+      const opt = document.createElement('option');
+      opt.value = spec.key;
+      opt.textContent = speciesPickerLabel(spec);
+      speciesSel.appendChild(opt);
+    }
+    const want =
+      preserveKey && inCat.some((s) => s.key === preserveKey) ? preserveKey : firstKey;
+    if (want) speciesSel.value = want;
+    syncSpeciesChoiceBanner();
+    return;
+  }
+
+  const grpOrder = SPECIES_PICKER.groupOrderByCategory[cat] || [];
   const byGrp = {};
   inCat.forEach((s) => {
     if (!byGrp[s.group]) byGrp[s.group] = [];
     byGrp[s.group].push(s);
   });
-  speciesSel.innerHTML = '';
 
-  let firstKey = null;
   const seen = new Set(grpOrder);
   const extraGroups = Object.keys(byGrp)
     .filter((g) => !seen.has(g))
@@ -986,6 +1054,7 @@ function refillSpeciesRows(preserveKey) {
   const want =
     preserveKey && inCat.some((s) => s.key === preserveKey) ? preserveKey : firstKey;
   if (want) speciesSel.value = want;
+  syncSpeciesChoiceBanner();
 }
 
 async function loadSpecies() {
@@ -1153,6 +1222,7 @@ speciesCatSel.addEventListener('change', () => {
 });
 
 speciesSel.addEventListener('change', () => {
+  syncSpeciesChoiceBanner();
   heightOverride = null;
   crownOverride = null;
   render();

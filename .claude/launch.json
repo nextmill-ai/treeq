@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Netlify Dev",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ'; npm run dev"],
+      "port": 8888,
+      "autoPort": true
+    },
+    {
+      "name": "Wrangler Pages Dev",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ\\deploy'; npm run dev"],
+      "port": 8788,
+      "autoPort": true
+    }
+  ]
+}
