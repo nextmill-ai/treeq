@@ -432,6 +432,25 @@ These came out of the brainstorm and should be settled before starting P3+:
 
 ---
 
+## Species picker & taxonomy (near-term)
+
+**Shipped (v2.3 thin client):** Species list is organized for **non-arborists**
+(intuitive categories such as Maples, Oaks, **Soft hardwoods**, **Nut trees**,
+etc.). Every species row and the estimate hero show **common name + Latin**
+(`scientificName` in `species-db.js`; exposed on `/api/species` and in `compute()`
+as `speciesScientificName`).
+
+**Roadmap — "Pro mode" (future toggle):** Power users (e.g. ISA / consulting
+arborists) can opt into a second layout: filter or group by **genus**, finer
+taxonomic cues, cultivar-aware rows where calibration supports it, etc. Keeps the
+default experience simple for crews; does not replace the approachable categories.
+
+**Tests / QA debt:** Playwright or manual checks that still expect the hero title as
+`${dbh}″ ${speciesName}` **without** a `(Latin)` suffix should be updated to match
+the new format or to assert against `speciesScientificName` separately.
+
+---
+
 ## What's NOT in this roadmap (intentionally)
 
 Per the brief, these are out of scope right now:
@@ -460,4 +479,3 @@ Prices intentionally omitted.
 **Labor:** Climber · Ground Worker · Equipment Operator
 
 Source: `Clarity Market.pdf` (Resources tab), uploaded 2026-05-09.
-                                                                                                                                                                                                                                                                                                           

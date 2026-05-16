@@ -204,6 +204,31 @@ When stopping execution: write the reason in HISTORY below with timestamp, then 
 
 ---
 
+## 2026-05-15 · Agent queue (v2.3 thin client + Latin names)
+
+Ran the seven-step checklist from Cameron’s paste (canonical workspace). Summary:
+
+| Step | Result |
+|------|--------|
+| 0 Baseline | `git status -sb` — dirty: `index.html`, `deploy/public/index.html`, species/math/deploy/Netlify mirrors, `HANDOFF.md`, `ROADMAP.md`, etc.; untracked `.env.local`, `research/oss-references.md`, `tests/node_modules/`. |
+| 1 Species invariant | **PASS** — `node --input-type=module` check on `deploy/functions/lib/species-db.js`: `missing scientificName: []`. |
+| 2 `npm run sync:estimator-libs` | **PASS**. |
+| 3 HTML parity | **PASS** — `fc /b` via `cmd /c` (PowerShell `fc` is an alias): no differences between root `index.html` and `deploy/public/index.html`. |
+| 4 Math smoke | **SKIP (expected)** — `tests/verify-math-smoke.mjs` exits **2**: thin client no longer exposes `compute()` in the browser; server branch from `math.js` still matches prior totals (`totalSec` 1270 for silver_maple 18/0 in log). |
+| 5 Playwright | **T1 legacy** — `T1-smoke.mjs` fails on v2.3 (`file:///…/api/species` unsupported + missing `#species-picker-label`). Marked **LEGACY** in file header. **Added** `tests/v23-picker-smoke.mjs`: `file://` + mocked `fetch` for `/api/species` and `/api/estimate`, asserts `#species` options include parentheses and `#heroTitle` includes Latin after boot — **PASS** (`node tests/v23-picker-smoke.mjs`). |
+| 6 Local API curl | **BLOCKED** — `npx netlify dev` briefly served `species` + `estimate`, then **CLI terminated**: esbuild could not resolve `@supabase/supabase-js` (and peers) for other functions (`upload-doc`, etc.) in the npx-installed CLI context. **Staging curl not attempted successfully** — `https://treeqapp.com/api/species` returned Netlify 404 HTML (path not deployed or different host). *Unblock:* `npm install` at repo root so Netlify can bundle all functions, then re-run `netlify dev` and the two curl one-liners. |
+| 7 ROADMAP | **Read-only OK** — “Species picker & taxonomy (near-term)” matches shipped v2.3 (categories + Latin in picker/hero/API); Pro mode toggle and test-debt bullets still accurate (`tests/v23-picker-smoke.mjs` addresses picker/Latin smoke). |
+
+### Follow-up — 2026-05-15 (items 1–3)
+
+**Local Netlify (`npm install` + `./node_modules/.bin/netlify dev`):** ✅ Both curl checks green — `/api/species` has `scientificName` on every row (0 missing); `/api/estimate?species=silver_maple&dbh=24&trim=5` returns `speciesScientificName` (**Acer saccharinum**).
+
+**Production URLs:**
+- **`https://treeqapp.com`** — `/api/species` and `/.netlify/functions/species` both **404**: production Netlify has not deployed the thin-calculator redirects/functions (or DNS points at static-only legacy). Fix by redeploying this repo via Netlify with current `netlify.toml`.
+- **`https://treeqapp.pages.dev`** (and preview `d901a6f5.treeqapp.pages.dev`) — `/api/species` returns **200** but payload is **stale**: rows are only `{ key, name, group }` (no `scientificName` / `category`). Thin `index.html` in **this repo** expects the new shape — **re-publish `deploy/`** to Cloudflare Pages so Workers match `deploy/functions/`.
+
+---
+
 ## 2026-05-10 — overnight session #2 · resumed unattended; switched to BONUS WORK
 
 Picked up where session #1 paused. Per the rules ("do not start a ticket if the previous ticket's verification failed"), T1 verification failed on S7 → falling through to BONUS WORK (research mode). Research is read-only and can't trip kill criteria, so this is the safe path through the night.
@@ -823,3 +848,88 @@ new files via drag-and-drop — functions need the whole `netlify/` tree.
    exercise treeq-ai end-to-end. Check `/admin.html` to confirm the
    Notion sync runs cleanly via the "Sync now" button.
 5. Once green locally: `npx netlify deploy --prod` (full folder upload).
+
+---
+
+## 2026-05-15 — One-hour agent queue (v2.3 thin client + Latin names)
+
+**Canonical workspace:** `C:\Users\camer\Projects\Claude Cowork\TreeQ\` (not OneDrive).
+
+Paste the block below into a new Cursor agent chat and run top to bottom. Stop on first hard failure; document in this file under **HISTORY** if something is blocked.
+
+### 0) Baseline (5 min)
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ"
+git status -sb
+# Expect: know what is dirty before touching files
+```
+
+### 1) Species DB invariant — every picker species has Latin (10 min)
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ"
+node --input-type=module -e "
+import { SPECIES } from './deploy/functions/lib/species-db.js';
+const bad = Object.entries(SPECIES).filter(([k,v]) => v.pickerCategory && !String(v.scientificName||'').trim());
+console.log('missing scientificName:', bad.map(x=>x[0]));
+process.exit(bad.length ? 1 : 0);
+"
+```
+
+If this fails, fix `deploy/functions/lib/species-db.js`, then run `npm run sync:estimator-libs`.
+
+### 2) Estimator lib sync (2 min)
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ"
+npm run sync:estimator-libs
+```
+
+### 3) HTML parity — root vs deploy mirror (10 min)
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ"
+fc /b index.html deploy\public\index.html
+# If FC reports differences, diff the two files and reconcile (or document intentional drift)
+```
+
+### 4) Math smoke — server `compute()` still stable (10 min)
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ\tests"
+node verify-math-smoke.mjs
+# If thin index.html no longer embeds compute(), this may exit 2 — then either skip with note or update verify-math-smoke.mjs to use server-only baseline
+```
+
+### 5) Playwright legacy test audit (15 min)
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ\tests"
+node T1-smoke.mjs
+```
+
+`tests/T1-smoke.mjs` targets the **old** genus-tile picker (`#species-picker-modal`, etc.). Current v2.3 `index.html` uses **cascade `<select>`** + `/api/species`. If T1 fails: **do not brute-force DOM fixes** — add a comment at the top of `T1-smoke.mjs` marking it legacy, OR scaffold `tests/v23-picker-smoke.mjs` that: loads `index.html` over `file://`, mocks `fetch` to return canned `/api/species` + `/api/estimate` JSON, asserts `#species option` labels contain parentheses and `#heroTitle` contains Latin after calc. Prefer the new v2.3 smoke file over patching the old test.
+
+### 6) Manual API contract check (local Netlify dev) (10 min)
+
+With Netlify env configured if needed:
+
+```powershell
+Set-Location "C:\Users\camer\Projects\Claude Cowork\TreeQ"
+npx netlify dev
+# In another terminal:
+curl -s http://localhost:8888/api/species | node -e "let s='';process.stdin.on('data',d=>s+=d);process.stdin.on('end',()=>{const j=JSON.parse(s); const m=j.species.filter(x=>!x.scientificName); console.log('rows missing scientificName:', m.length); process.exit(m.length?1:0);});"
+curl -s "http://localhost:8888/api/estimate?species=silver_maple&dbh=24&trim=5" | node -e "let s='';process.stdin.on('data',d=>s+=d);process.stdin.on('end',()=>{const j=JSON.parse(s); if(!j.speciesScientificName) process.exit(1); console.log('estimate OK:', j.speciesName, j.speciesScientificName);});"
+```
+
+If `netlify dev` is blocked on missing secrets, skip with a note and use deployed staging URL instead (same curls).
+
+### 7) Roadmap cross-check (2 min)
+
+Read `ROADMAP.md` section **Species picker & taxonomy (near-term)** — ensure Pro mode toggle + test-debt bullets still match shipped behavior.
+
+---
+
+**Acceptance:** steps 1–2 green; step 3 either identical binaries or reconciled diff; steps 4–6 documented pass/skip reason; step 7 read-only OK.
+

@@ -1,3 +1,6 @@
+// LEGACY (pre–v2.3): targets the genus-tile modal picker (#species-picker-modal).
+// v2.3+ uses cascade <select> + /api/species over HTTP; use v23-picker-smoke.mjs instead.
+//
 // T1 — Picker smoke test (9 scenarios)
 // Run: node T1-smoke.mjs
 import { chromium } from 'playwright';

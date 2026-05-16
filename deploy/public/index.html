@@ -331,6 +331,19 @@
     border-color: var(--forest);
     box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
   }
+  .species-cascade {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .select-tier-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 2px 0 0 2px;
+  }
   .location-pair {
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
   }
@@ -724,8 +737,15 @@
     <div class="card-row">
       <span class="row-label">Species</span>
     </div>
-    <div class="card-content select-wrap">
-      <select id="species"></select>
+    <div class="card-content select-wrap species-cascade">
+      <div>
+        <div class="select-tier-label">Category</div>
+        <select id="speciesCategory" aria-label="Species category"></select>
+      </div>
+      <div>
+        <div class="select-tier-label">Species</div>
+        <select id="species" aria-label="Species"></select>
+      </div>
     </div>
   </div>
 
@@ -893,11 +913,13 @@ const sbClient = (function () {
    only the UI shell (calibration stays server-side).
    ============================================================ */
 
-let SPECIES_LIST = [];        // [{key, name, group}, ...]
+/** Payload from GET /api/species (categories → groups → rows) */
+let SPECIES_PICKER = { categories: [], groupOrderByCategory: {}, species: [] };
 
 const API_BASE = (window.__TREEQ_API_BASE__ ?? '').replace(/\/$/, '');
 
 /* =================== UI ELEMENTS =================== */
+const speciesCatSel = document.getElementById('speciesCategory');
 const speciesSel = document.getElementById('species');
 const dbhSlider  = document.getElementById('dbh');
 const dbhVal     = document.getElementById('dbhVal');
@@ -924,46 +946,71 @@ function formatTime(sec) {
   return s === 0 ? `${m}m` : `${m}m ${s}s`;
 }
 
+/** Common + Latin for picker rows (values stay `key`; label is for display only). */
+function speciesPickerLabel(spec) {
+  const lat = (spec.scientificName || '').trim();
+  return lat ? `${spec.name} (${lat})` : spec.name;
+}
+
 /* =================== INITIAL LOAD =================== */
+function refillSpeciesRows(preserveKey) {
+  const cat = speciesCatSel.value;
+  const grpOrder = SPECIES_PICKER.groupOrderByCategory[cat] || [];
+  const inCat = SPECIES_PICKER.species.filter((s) => s.category === cat);
+  const byGrp = {};
+  inCat.forEach((s) => {
+    if (!byGrp[s.group]) byGrp[s.group] = [];
+    byGrp[s.group].push(s);
+  });
+  speciesSel.innerHTML = '';
+
+  let firstKey = null;
+  const seen = new Set(grpOrder);
+  const extraGroups = Object.keys(byGrp)
+    .filter((g) => !seen.has(g))
+    .sort();
+  const fullOrder = [...grpOrder, ...extraGroups];
+  for (const g of fullOrder) {
+    if (!byGrp[g]?.length) continue;
+    const og = document.createElement('optgroup');
+    og.label = g;
+    for (const spec of byGrp[g]) {
+      if (firstKey === null) firstKey = spec.key;
+      const opt = document.createElement('option');
+      opt.value = spec.key;
+      opt.textContent = speciesPickerLabel(spec);
+      og.appendChild(opt);
+    }
+    speciesSel.appendChild(og);
+  }
+  const want =
+    preserveKey && inCat.some((s) => s.key === preserveKey) ? preserveKey : firstKey;
+  if (want) speciesSel.value = want;
+}
+
 async function loadSpecies() {
   const resp = await fetch(API_BASE + '/api/species');
   if (!resp.ok) throw new Error('Failed to load species list');
   const data = await resp.json();
-  SPECIES_LIST = data.species;
+  SPECIES_PICKER = {
+    categories: data.categories || [],
+    groupOrderByCategory: data.groupOrderByCategory || {},
+    species: data.species || [],
+  };
 
-  // Populate the <select> with optgroups.
-  // Group order: Cameron's residential-removal frequency. Alphabetical within.
-  speciesSel.innerHTML = '';
-  const byGroup = {};
-  SPECIES_LIST.forEach(s => {
-    if (!byGroup[s.group]) byGroup[s.group] = [];
-    byGroup[s.group].push(s);
-  });
-  const order = [
-    "Ashes",
-    "Maples",
-    "Conifers",
-    "Locusts",
-    "Other Hardwoods",
-    "Oaks",
-    "Pears & Apples",
-    "Walnuts & Hickories",
-    "Cherries & Plums",
-    "Birches"
-  ];
-  order.forEach(g => {
-    if (!byGroup[g]) return;
-    const og = document.createElement('optgroup');
-    og.label = g;
-    byGroup[g].slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(spec => {
-      const opt = document.createElement('option');
-      opt.value = spec.key;
-      opt.textContent = spec.name;
-      og.appendChild(opt);
-    });
-    speciesSel.appendChild(og);
-  });
-  speciesSel.value = 'silver_maple';
+  speciesCatSel.innerHTML = '';
+  for (const c of SPECIES_PICKER.categories) {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    speciesCatSel.appendChild(opt);
+  }
+
+  const preferredKey = 'silver_maple';
+  const prefRow = SPECIES_PICKER.species.find((s) => s.key === preferredKey);
+  if (prefRow) speciesCatSel.value = prefRow.category;
+  else if (SPECIES_PICKER.species[0]) speciesCatSel.value = SPECIES_PICKER.species[0].category;
+  refillSpeciesRows(prefRow ? preferredKey : null);
 }
 
 /* =================== ESTIMATE FETCH =================== */
@@ -1032,7 +1079,10 @@ async function render() {
   const crownUsed  = (crownOverride !== null) ? crownOverride : r.autoCrown;
 
   // Hero
-  document.getElementById('heroTitle').textContent = `${dbh}″ ${r.speciesName}`;
+  const latHero = (r.speciesScientificName || '').trim();
+  document.getElementById('heroTitle').textContent = latHero
+    ? `${dbh}″ ${r.speciesName} (${latHero})`
+    : `${dbh}″ ${r.speciesName}`;
   document.getElementById('heroSub').textContent = `${r.speciesGroup} · Open-field · 10/10 operator`;
 
   // Tree profile
@@ -1097,6 +1147,11 @@ async function render() {
 }
 
 /* =================== EVENT WIRING =================== */
+speciesCatSel.addEventListener('change', () => {
+  refillSpeciesRows(null);
+  render();
+});
+
 speciesSel.addEventListener('change', () => {
   heightOverride = null;
   crownOverride = null;

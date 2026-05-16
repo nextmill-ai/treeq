@@ -119,6 +119,7 @@ export function compute(speciesKey, dbh_in, trimPct) {
 
   return {
     speciesName: sp.name,
+    speciesScientificName: sp.scientificName ?? '',
     speciesGroup: sp.group,
     handlingProfile: sp.brushHandling,
 
