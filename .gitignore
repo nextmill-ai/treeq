@@ -9,3 +9,6 @@ deploy/.wrangler/
 # Generated — canonical source is /shared at repo root
 treeq/shared/
 skilltree/shared/
+
+# Supabase CLI local cache (not for sync)
+treeq/supabase/.temp/
