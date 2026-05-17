@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Quote — TreeQ</title>
+<link rel="icon" type="image/webp" href="/icons/treeq-app-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
+<style>
+  :root {
+    --forest: #2d5a3d; --cream: #f4f8f1; --cream-2: #e8efe2;
+    --gold: #e9c466; --ink: #14241b; --ink-2: #4a5a4f;
+    --muted: #7a8a7e; --line: #d8e2d2; --danger: #b3261e;
+    --r-md: 12px; --r-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100vh; background: #ddd; font-family: 'Inter', sans-serif; color: var(--ink); }
+  .frame { max-width: 480px; min-height: 100vh; margin: 0 auto; background: var(--cream); box-shadow: 0 0 32px rgba(0,0,0,.08); padding-bottom: 40px; }
+  .top {
+    display: flex; align-items: center; gap: .6rem; padding: 12px 16px;
+    background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10;
+  }
+  .top img { width: 36px; height: 36px; border-radius: 9px; }
+  .top h1 { font-size: 1.05rem; font-weight: 700; flex: 1; }
+  .top a { font-size: .8rem; color: var(--forest); text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; }
+
+  .hero { padding: 20px 16px 12px; }
+  .hero .num { font-size: 1.6rem; font-weight: 800; color: var(--forest); }
+  .hero .total { font-size: 2rem; font-weight: 800; }
+  .hero .row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .qstatus {
+    display: inline-block; font-size: .72rem; padding: 3px 10px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .04em; font-weight: 700;
+  }
+  .qstatus.draft { background: #eaeaea; }
+  .qstatus.sent  { background: #fff4cf; color: #7a5a00; }
+  .qstatus.won   { background: #d6edd9; color: #18532a; }
+  .qstatus.lost  { background: #f7d6d6; color: #8c1f1f; }
+  .qstatus.dead  { background: #e0e0e0; color: #777; }
+
+  .section { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); margin: 12px 16px; padding: 14px; }
+  .section h2 { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 10px; font-weight: 700; }
+  .meta-row { display: flex; align-items: center; padding: 6px 0; }
+  .meta-row .lbl { color: var(--muted); width: 100px; font-size: .82rem; }
+  .meta-row .val { flex: 1; font-size: .9rem; }
+  .meta-row .val a { color: var(--forest); text-decoration: none; }
+
+  .line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .line:last-child { border-bottom: none; }
+  .line .lbl-block { flex: 1; }
+  .line .ll { font-weight: 600; font-size: .9rem; }
+  .line .ld { font-size: .78rem; color: var(--muted); }
+  .line .lv { font-weight: 600; }
+  .total-row { font-weight: 800; font-size: 1.05rem; padding-top: 10px; }
+
+  textarea#notes {
+    width: 100%; padding: 10px 12px; font-size: .95rem; font-family: inherit;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; min-height: 80px;
+  }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn { padding: 10px 14px; font-size: .9rem; font-family: inherit; font-weight: 600;
+    border: none; border-radius: var(--r-sm); cursor: pointer; }
+  .btn-primary { background: var(--forest); color: #fff; }
+  .btn-success { background: #2c7c40; color: #fff; }
+  .btn-warn   { background: var(--gold); color: var(--ink); }
+  .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  .audit { font-size: .82rem; color: var(--ink-2); }
+  .audit .e { padding: 5px 0; border-bottom: 1px dashed var(--line); }
+  .audit .e:last-child { border-bottom: none; }
+  .audit .when { color: var(--muted); font-size: .75rem; }
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 20px;
+    font-size: .9rem; opacity: 0; transition: opacity .25s; z-index: 100; pointer-events: none;
+  }
+  #toast.show { opacity: 1; }
+  .auth-gate { padding: 40px 20px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="top">
+    <img src="/icons/treeq-app-icon.webp" alt="TreeQ">
+    <h1 id="page-title">Quote</h1>
+    
+  </div>
+
+  <div id="auth-gate" class="auth-gate" style="display:none">
+    <p>Please <a href="/login.html" style="color:var(--forest);font-weight:600">sign in</a>.</p>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="hero">
+      <div class="num" id="q-num">#—</div>
+      <div class="row">
+        <span class="qstatus draft" id="q-status">draft</span>
+        <span style="color:var(--muted);font-size:.82rem" id="q-date"></span>
+      </div>
+      <div class="total" id="q-total">$0</div>
+    </div>
+
+    <div class="section">
+      <h2>Customer / Property</h2>
+      <div class="meta-row">
+        <div class="lbl">Customer</div>
+        <div class="val" id="m-cust">—</div>
+      </div>
+      <div class="meta-row">
+        <div class="lbl">Property</div>
+        <div class="val" id="m-prop">—</div>
+      </div>
+      <div class="meta-row">
+        <div class="lbl">Created by</div>
+        <div class="val" id="m-by">—</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Line items</h2>
+      <div id="lines"><div style="color:var(--muted);font-size:.85rem">Loading…</div></div>
+      <div class="line total-row">
+        <div class="lbl-block">Total</div>
+        <div class="lv" id="lines-total">$0</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Notes</h2>
+      <textarea id="notes" placeholder="Internal notes (autosaved)"></textarea>
+    </div>
+
+    <div class="section">
+      <h2>Actions</h2>
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-edit" onclick="openInBuilder()">Open in Builder</button>
+        <button class="btn btn-warn" id="btn-send" onclick="transitionTo('sent')">Mark as Sent</button>
+        <button class="btn btn-success" id="btn-won" onclick="transitionTo('won')">Won</button>
+        <button class="btn btn-ghost"  id="btn-lost" onclick="transitionTo('lost')">Lost</button>
+        <button class="btn btn-ghost"  id="btn-reopen" onclick="transitionTo('draft')">Reopen as Draft</button>
+        <button class="btn btn-danger" id="btn-archive" onclick="archiveQuote()">Archive</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>History</h2>
+      <div class="audit" id="audit"><div style="color:var(--muted);font-size:.85rem">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="/assets/auth-client.js"></script>
+<script>
+'use strict';
+
+const params = new URLSearchParams(location.search);
+const QUOTE_ID = params.get('id');
+let _quote = null;
+let _lines = [];
+let _changes = [];
+let _notesTimer = null;
+
+async function init() {
+  if (!QUOTE_ID) { location.href = '/quotes.html'; return; }
+  const session = await TQAuth.getSession();
+  if (!session) {
+    document.getElementById('auth-gate').style.display = '';
+    return;
+  }
+  document.getElementById('app').style.display = '';
+
+  document.getElementById('notes').addEventListener('blur', () => {
+    saveNotes();
+  });
+
+  await loadQuote();
+}
+
+async function loadQuote() {
+  try {
+    const data = await TQAuth.apiJson('/.netlify/functions/crm-quotes?id=' + encodeURIComponent(QUOTE_ID));
+    _quote = data.quote;
+    _lines = data.lines || [];
+    _changes = data.state_changes || [];
+    render();
+  } catch (e) {
+    toast('Failed to load: ' + e.message);
+  }
+}
+
+function render() {
+  document.getElementById('page-title').textContent = 'Quote #' + _quote.quote_number;
+  document.title = 'Quote #' + _quote.quote_number + ' — TreeQ';
+  document.getElementById('q-num').textContent = '#' + _quote.quote_number;
+  const stEl = document.getElementById('q-status');
+  stEl.textContent = _quote.status;
+  stEl.className = 'qstatus ' + _quote.status;
+  document.getElementById('q-date').textContent = TQAuth.fmtDate(_quote.created_at);
+  document.getElementById('q-total').textContent = TQAuth.fmtMoney(_quote.total_cents);
+
+  const cust = _quote.crm_customers;
+  document.getElementById('m-cust').innerHTML = cust
+    ? `<a href="/customer-detail.html?id=${encodeURIComponent(cust.id)}">${escHtml(cust.name)}</a>`
+    : '<span style="color:var(--muted)">No customer linked</span>';
+
+  const prop = _quote.crm_properties;
+  document.getElementById('m-prop').textContent = prop
+    ? [prop.address_line1, prop.city, prop.state, prop.zip].filter(Boolean).join(', ')
+    : '—';
+
+  document.getElementById('m-by').textContent = _quote.created_by_user_id ? '✓' : '—';
+
+  document.getElementById('notes').value = _quote.notes || '';
+
+  const linesEl = document.getElementById('lines');
+  if (_lines.length === 0) {
+    linesEl.innerHTML = '<div style="color:var(--muted);font-size:.85rem">No line items.</div>';
+  } else {
+    linesEl.innerHTML = _lines.map(l => `
+      <div class="line">
+        <div class="lbl-block">
+          <div class="ll">${escHtml(l.label)}</div>
+          ${l.detail ? `<div class="ld">${escHtml(l.detail)}</div>` : ''}
+        </div>
+        <div class="lv">${TQAuth.fmtMoney(l.amount_cents)}</div>
+      </div>
+    `).join('');
+  }
+  document.getElementById('lines-total').textContent = TQAuth.fmtMoney(_quote.total_cents);
+
+  // Audit trail
+  const auditEl = document.getElementById('audit');
+  if (_changes.length === 0) {
+    auditEl.innerHTML = '<div style="color:var(--muted);font-size:.85rem">No history yet.</div>';
+  } else {
+    auditEl.innerHTML = _changes.map(c => {
+      const arrow = c.from_status ? `${escHtml(c.from_status)} → ${escHtml(c.to_status)}` : `Created (${escHtml(c.to_status)})`;
+      const when = new Date(c.changed_at).toLocaleString();
+      return `<div class="e">
+        <div>${arrow}${c.notes ? ' — ' + escHtml(c.notes) : ''}</div>
+        <div class="when">${escHtml(when)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Adjust button enabled states
+  const s = _quote.status;
+  document.getElementById('btn-send').disabled  = s !== 'draft';
+  document.getElementById('btn-won').disabled   = s !== 'sent';
+  document.getElementById('btn-lost').disabled  = s !== 'sent';
+  document.getElementById('btn-reopen').disabled = s === 'draft' || s === 'won';
+}
+
+async function saveNotes() {
+  const notes = document.getElementById('notes').value;
+  if (notes === (_quote.notes || '')) return;
+  try {
+    await TQAuth.apiJson('/.netlify/functions/crm-quotes?id=' + encodeURIComponent(QUOTE_ID), { method: 'PATCH', body: { notes } });
+    _quote.notes = notes;
+    toast('Notes saved');
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+async function transitionTo(to_status) {
+  try {
+    await TQAuth.apiJson('/.netlify/functions/crm-quotes/transition', {
+      method: 'POST',
+      body: { id: QUOTE_ID, to_status },
+    });
+    toast('Status: ' + to_status);
+    await loadQuote();
+  } catch (e) {
+    // Fallback for hosts that don't route the subpath; use action=transition
+    if (/Method not allowed|not found/i.test(e.message)) {
+      try {
+        await TQAuth.apiJson('/.netlify/functions/crm-quotes?action=transition', {
+          method: 'POST', body: { id: QUOTE_ID, to_status },
+        });
+        toast('Status: ' + to_status);
+        await loadQuote();
+        return;
+      } catch (e2) { toast(e2.message); return; }
+    }
+    toast(e.message);
+  }
+}
+
+async function archiveQuote() {
+  if (!confirm('Archive this quote?')) return;
+  try {
+    await TQAuth.apiJson('/.netlify/functions/crm-quotes?id=' + encodeURIComponent(QUOTE_ID), { method: 'DELETE' });
+    location.href = '/quotes.html';
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+function openInBuilder() {
+  location.href = '/quote-builder.html?quote_id=' + encodeURIComponent(QUOTE_ID);
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let _toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+init();
+</script>
+<script src="/assets/bottom-nav.js"></script>
+</body>
+</html>

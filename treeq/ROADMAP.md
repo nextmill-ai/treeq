@@ -33,9 +33,9 @@ months for a Big Reveal. Each phase produces a usable app on its own.
 |-------|-------|-------|
 | **P1** | Favorites (no auth) | Local-storage favorites + a "Favorites" toggle on the species picker |
 | **P2** | Auth foundation | Google/Apple/Facebook login, minimal profile, account settings page |
-| **P3** | Tree history | Save calculation results to the user's profile + GPS stamp button |
+| **P3** | Tree history | Save calculation results to the user's profile + GPS stamp button (✅ Stage 1: saved_trees table + favorites shipped 2026-05) |
 | **P4** | Resources page | Equipment toggles + size/reach matrices, stored on the profile |
-| **P5** | Team management | Employees + subcontractors, roles, proficiency-per-equipment matrix |
+| **P5** | Team management | Employees + subcontractors, roles, proficiency-per-equipment matrix (✅ Stage 1: account-level roles + invitations + members shipped 2026-05-17. Crew/proficiency matrix still pending.) |
 | **P6** | Jobber integration | Pull active employees from Jobber API, sync deactivations |
 | **P7** | Pricing engine v1 | First pricing layer that consumes everything in P3–P6 |
 | **P8** | Other FSM integrations | ServiceTitan, Aspire, ArboStar, etc. |

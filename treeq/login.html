@@ -4,166 +4,297 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>TreeQ — Sign in</title>
+<link rel="icon" type="image/webp" href="/icons/treeq-app-icon.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
 <style>
   :root {
-    --forest: #2d5a3d;
-    --cream: #f4f8f1;
-    --gold: #e9c466;
-    --ink: #14241b;
+    --forest: #2d5a3d; --forest-d: #1f4129;
+    --cream: #f4f8f1; --gold: #e9c466;
+    --ink: #14241b; --ink-2: #4a5a4f;
+    --muted: #7a8a7e; --line: #d8e2d2;
+    --danger: #b3261e;
+    --r-md: 12px; --r-sm: 8px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body {
-    min-height: 100vh;
-    background: #ddd;
+    min-height: 100vh; background: #ddd;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
+    color: var(--ink); -webkit-font-smoothing: antialiased;
   }
   .frame {
-    max-width: 480px;
-    min-height: 100vh;
-    margin: 0 auto;
-    background: var(--cream);
-    box-shadow: 0 0 32px rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    max-width: 480px; min-height: 100vh; margin: 0 auto;
+    background: var(--cream); box-shadow: 0 0 32px rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center;
     padding: 24px 20px;
   }
-  .panel {
-    width: 100%;
-    text-align: center;
+  .panel { width: 100%; text-align: center; }
+  .logo {
+    width: 80px; height: 80px; margin: 0 auto 20px;
+    border-radius: 20px; background: var(--forest);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
   }
+  .logo img { width: 64px; height: 64px; }
+  h1 { font-size: 1.8rem; font-weight: 800; color: var(--forest); margin-bottom: 8px; }
+  .tagline { font-size: 1rem; color: var(--ink-2); margin-bottom: 32px; }
+
+  .invite-banner {
+    background: var(--gold); color: var(--ink);
+    border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 20px;
+    text-align: left; font-size: .9rem; line-height: 1.4;
+    display: none;
+  }
+  .invite-banner.show { display: block; }
+  .invite-banner strong { display: block; margin-bottom: 4px; font-size: .95rem; }
+  .invite-banner.error { background: #f7d6d6; color: #8c1f1f; }
+
   .btn-google {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    max-width: 320px;
-    min-height: 48px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 12px;
-    background: var(--forest);
-    color: var(--cream);
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 600;
+    width: 100%; padding: 14px 18px;
+    background: #fff; color: #333;
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    font-size: 1rem; font-weight: 600; font-family: inherit;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(45, 90, 61, 0.25);
-    transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    transition: background .15s;
   }
-  .btn-google:hover:not(:disabled) {
-    background: #244a32;
+  .btn-google:hover { background: #f8f8f8; }
+  .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 20px 0; color: var(--muted); font-size: .82rem;
   }
-  .btn-google:active:not(:disabled) {
-    transform: scale(0.98);
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
   }
-  .btn-google:disabled {
-    opacity: 0.65;
-    cursor: wait;
+
+  .field { text-align: left; margin-bottom: 12px; }
+  .field label { display: block; font-size: .82rem; color: var(--ink-2); margin-bottom: 6px; font-weight: 500; }
+  .field input {
+    width: 100%; padding: 11px 13px; font-size: .95rem; font-family: inherit;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff;
   }
-  .btn-google .g-icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    background: var(--cream);
-    border-radius: 4px;
-    display: grid;
-    place-items: center;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--forest);
+  .btn-magic {
+    width: 100%; padding: 12px;
+    background: var(--forest); color: #fff;
+    border: none; border-radius: var(--r-md);
+    font-size: .95rem; font-weight: 600; font-family: inherit;
+    cursor: pointer;
   }
-  .loading {
-    margin-top: 20px;
-    font-size: 14px;
-    color: var(--forest);
-    font-weight: 500;
-    min-height: 1.4em;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+  .btn-magic:disabled { opacity: .5; cursor: not-allowed; }
+
+  .msg { margin-top: 14px; font-size: .85rem; color: var(--ink-2); min-height: 1.2em; }
+  .msg.error { color: var(--danger); }
+  .msg.success { color: #18532a; }
+
+  .footer-link {
+    margin-top: 24px; font-size: .82rem; color: var(--muted);
   }
-  .loading.visible {
-    opacity: 1;
+  .footer-link a { color: var(--forest); text-decoration: none; font-weight: 500; }
+
+  .signed-in {
+    display: none; padding: 20px; background: #fff;
+    border: 1px solid var(--line); border-radius: var(--r-md);
   }
-  .spinner {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    vertical-align: middle;
-    border: 2px solid rgba(45, 90, 61, 0.25);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+  .signed-in.show { display: block; }
 </style>
 </head>
 <body>
   <div class="frame">
     <div class="panel">
-      <button type="button" class="btn-google" id="btnGoogle" aria-busy="false">
-        <span class="g-icon" aria-hidden="true">G</span>
-        <span>Sign in with Google</span>
-      </button>
-      <p class="loading" id="loading" role="status" aria-live="polite"></p>
+      <div class="logo">
+        <img src="/icons/treeq-app-icon.webp" alt="TreeQ" onerror="this.style.display='none'">
+      </div>
+      <h1>TreeQ</h1>
+      <p class="tagline">Quote builder &amp; pricing engine for tree services.</p>
+
+      <div class="invite-banner" id="invite-banner">
+        <strong id="invite-title">You're invited</strong>
+        <span id="invite-detail"></span>
+      </div>
+
+      <div id="signin-block">
+        <button class="btn-google" id="btn-google" onclick="signInGoogle()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="divider">or magic link</div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button class="btn-magic" id="btn-magic" onclick="sendMagicLink()">Send magic link</button>
+
+        <div class="msg" id="msg"></div>
+      </div>
+
+      <div class="signed-in" id="signed-in">
+        <p style="font-size:.95rem;margin-bottom:12px">You're already signed in as <strong id="signed-in-email"></strong>.</p>
+        <button class="btn-magic" onclick="continueApp()" style="margin-bottom:8px">Continue to TreeQ</button>
+        <button class="btn-google" onclick="signOutNow()" style="background:transparent">Sign out</button>
+      </div>
+
+      <p class="footer-link"><a href="/dashboard.html">← Back to home</a></p>
     </div>
   </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 <script>
-(function () {
-  const SUPABASE_URL = 'https://bhbubaopejjxijiqmujy.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+'use strict';
 
-  const btn = document.getElementById('btnGoogle');
-  const loadingEl = document.getElementById('loading');
+const params = new URLSearchParams(location.search);
+const INVITE_TOKEN = params.get('invite') || '';
+const RETURN_TO = params.get('return') || '/dashboard.html';
 
-  function setLoading(on) {
-    btn.disabled = on;
-    btn.setAttribute('aria-busy', on ? 'true' : 'false');
-    if (on) {
-      loadingEl.classList.add('visible');
-      loadingEl.innerHTML = '<span class="spinner" aria-hidden="true"></span>Redirecting…';
+const sb = window.supabase.createClient(
+  window.__SUPABASE_URL__,
+  window.__SUPABASE_ANON_KEY__,
+  { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+);
+
+function setMsg(text, cls) {
+  const el = document.getElementById('msg');
+  el.textContent = text || '';
+  el.className = 'msg' + (cls ? ' ' + cls : '');
+}
+
+async function lookupInvite() {
+  if (!INVITE_TOKEN) return;
+  const banner = document.getElementById('invite-banner');
+  const title  = document.getElementById('invite-title');
+  const detail = document.getElementById('invite-detail');
+  try {
+    const r = await fetch('/.netlify/functions/invitations/lookup?token=' + encodeURIComponent(INVITE_TOKEN));
+    if (!r.ok) {
+      const body = await r.json().catch(() => ({}));
+      banner.classList.add('show', 'error');
+      title.textContent = 'Invitation problem';
+      detail.textContent = body.error || 'This invite link is invalid or expired.';
+      return;
+    }
+    const inv = await r.json();
+    banner.classList.add('show');
+    title.textContent = `You're invited to join ${inv.account_name || 'a TreeQ team'}`;
+    detail.textContent = `Role: ${inv.role}. Sign in with ${inv.email} to accept.`;
+    const emailInput = document.getElementById('email');
+    if (emailInput && !emailInput.value) emailInput.value = inv.email || '';
+  } catch (e) {
+    banner.classList.add('show', 'error');
+    title.textContent = 'Invitation problem';
+    detail.textContent = 'Could not validate the invite link.';
+  }
+}
+
+function buildRedirect() {
+  // Where Supabase redirects after OAuth callback. Carry both the invite
+  // token (so the trigger fires) and return URL.
+  const u = new URL(location.origin + '/login.html');
+  if (INVITE_TOKEN) u.searchParams.set('invite', INVITE_TOKEN);
+  u.searchParams.set('return', RETURN_TO);
+  return u.toString();
+}
+
+async function signInGoogle() {
+  setMsg('Redirecting to Google…');
+  const opts = {
+    provider: 'google',
+    options: {
+      redirectTo: buildRedirect(),
+    },
+  };
+  if (INVITE_TOKEN) {
+    // Pass the token via OAuth metadata so handle_new_user() picks it up
+    opts.options.queryParams = { invitation_token: INVITE_TOKEN };
+    // Note: Supabase will forward this query string to Google; on first signup
+    // Supabase stores it inside raw_user_meta_data.invitation_token automatically
+    // when it's passed via this `queryParams` field.
+    opts.options.data = { invitation_token: INVITE_TOKEN };
+  }
+  const { error } = await sb.auth.signInWithOAuth(opts);
+  if (error) setMsg(error.message || 'Sign-in failed', 'error');
+}
+
+async function sendMagicLink() {
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  if (!email || !email.includes('@')) { setMsg('Enter a valid email', 'error'); return; }
+  const btn = document.getElementById('btn-magic');
+  btn.disabled = true;
+  setMsg('Sending…');
+  const opts = {
+    email,
+    options: { emailRedirectTo: buildRedirect() },
+  };
+  if (INVITE_TOKEN) opts.options.data = { invitation_token: INVITE_TOKEN };
+  const { error } = await sb.auth.signInWithOtp(opts);
+  btn.disabled = false;
+  if (error) setMsg(error.message || 'Failed to send link', 'error');
+  else setMsg('Check your inbox — the link signs you in instantly.', 'success');
+}
+
+async function attachTokenIfNeeded() {
+  // Edge case: user already had a session (so the trigger fired on prior signup)
+  // but they clicked an invite link from another account's owner. We can't move
+  // them to that account silently — that requires explicit "switch account"
+  // flow. For now, just surface the situation.
+  if (!INVITE_TOKEN) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  // If they already have a profile linked to a different account, do nothing
+  // automatic. The owner of the inviting account can re-invite if needed.
+}
+
+async function checkExistingSession() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    document.getElementById('signin-block').style.display = 'none';
+    document.getElementById('signed-in').classList.add('show');
+    document.getElementById('signed-in-email').textContent = session.user.email || '';
+    if (!INVITE_TOKEN) {
+      // No pending invite — go to the return URL automatically after a short pause
+      setTimeout(continueApp, 300);
     } else {
-      loadingEl.classList.remove('visible');
-      loadingEl.textContent = '';
+      // Invite present + already signed in — let user decide manually
+      await attachTokenIfNeeded();
     }
   }
+}
 
-  if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
-    loadingEl.classList.add('visible');
-    loadingEl.textContent = 'Supabase client failed to load.';
-    btn.disabled = true;
-    return;
-  }
+function continueApp() {
+  // Only redirect to same-origin paths to avoid open-redirect abuse
+  let safe = '/dashboard.html';
+  try {
+    const parsed = new URL(RETURN_TO, location.origin);
+    if (parsed.origin === location.origin) safe = parsed.pathname + parsed.search + parsed.hash;
+  } catch (_) {}
+  location.href = safe;
+}
 
-  const { createClient } = window.supabase;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+async function signOutNow() {
+  await sb.auth.signOut();
+  try { sessionStorage.clear(); } catch (_) {}
+  location.reload();
+}
 
-  btn.addEventListener('click', async function () {
-    setLoading(true);
-    try {
-      await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin
-        }
-      });
-    } catch (e) {
-      setLoading(false);
-      loadingEl.classList.add('visible');
-      loadingEl.textContent = 'Could not start sign-in. Try again.';
-    }
-  });
-})();
+async function init() {
+  if (INVITE_TOKEN) await lookupInvite();
+  await checkExistingSession();
+}
+
+init();
 </script>
 </body>
 </html>

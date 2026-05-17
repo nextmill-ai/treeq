@@ -684,15 +684,20 @@
   <header class="topbar">
     <div class="brand-block">
       <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5h6"/><path d="M5 22V11l7-4 7 4v11"/><path d="M9 22v-6h6v6"/></svg>
+        <img src="icons/treeq-app-icon.webp" alt="TreeQ" width="32" height="32" style="display:block;">
       </div>
       <div>
-        <div class="brand-name">TreeQ</div>
-        <div class="brand-sub">Next Million</div>
+        <div class="brand-name">Advanced Billing</div>
       </div>
     </div>
     <div class="topbar-actions">
-      <a href="/spartan_pricing_tool.html" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--forest);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">💲 Spartan Pricing</a>
+      <div id="auth-signed-in" class="auth-hidden">
+        <div class="auth-email-row">
+          <span class="auth-email" id="auth-user-email"></span>
+          <button type="button" class="text-btn" id="btn-sign-out">Sign out</button>
+        </div>
+      </div>
+      <a href="/spartan_pricing_tool.html" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--forest);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Quote Builder</a>
       <div class="topbar-version">v2.3</div>
     </div>
   </header>

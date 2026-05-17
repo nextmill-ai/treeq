@@ -60,6 +60,18 @@
 [functions."jobber-webhook"]
   timeout = 30
 
+[functions."saved-trees"]
+  timeout = 30
+
+[functions."favorites"]
+  timeout = 15
+
+[functions."resources"]
+  timeout = 15
+
+[functions."team"]
+  timeout = 15
+
 # Friendly API aliases — /api/* ⇒ /.netlify/functions/* (thin calculator: species, estimate).
 [[redirects]]
   from = "/api/species"
@@ -103,6 +115,30 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/saved-trees"
+  to   = "/.netlify/functions/saved-trees"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/favorites"
+  to   = "/.netlify/functions/favorites"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/resources"
+  to   = "/.netlify/functions/resources"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/team"
+  to   = "/.netlify/functions/team"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/quick-estimate.html"
   [headers.values]
@@ -115,5 +151,15 @@
 
 [[headers]]
   for = "/admin.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/my-trees.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/settings.html"
   [headers.values]
     Cache-Control = "no-store"

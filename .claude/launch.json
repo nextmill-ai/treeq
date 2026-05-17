@@ -14,6 +14,20 @@
       "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ\\treeq\\deploy'; npm run dev"],
       "port": 8788,
       "autoPort": true
+    },
+    {
+      "name": "Spartan Static",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ\\treeq'; py -m http.server 3031"],
+      "port": 3031,
+      "autoPort": true
+    },
+    {
+      "name": "TreeQ Static",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location 'C:\\Users\\camer\\Projects\\Claude Cowork\\TreeQ\\treeq'; python -m http.server 8791"],
+      "port": 8791,
+      "autoPort": true
     }
   ]
 }

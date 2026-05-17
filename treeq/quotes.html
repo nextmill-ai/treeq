@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Quotes — TreeQ</title>
+<link rel="icon" type="image/webp" href="/icons/treeq-app-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
+<style>
+  :root {
+    --forest: #2d5a3d; --cream: #f4f8f1; --cream-2: #e8efe2;
+    --gold: #e9c466; --ink: #14241b; --ink-2: #4a5a4f;
+    --muted: #7a8a7e; --line: #d8e2d2;
+    --r-md: 12px; --r-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100vh; background: #ddd; font-family: 'Inter', sans-serif; color: var(--ink); }
+  .frame { max-width: 480px; min-height: 100vh; margin: 0 auto; background: var(--cream); box-shadow: 0 0 32px rgba(0,0,0,.08); padding-bottom: 80px; }
+  .top {
+    display: flex; align-items: center; gap: .6rem; padding: 12px 16px;
+    background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10;
+  }
+  .top img { width: 36px; height: 36px; border-radius: 9px; }
+  .top h1 { font-size: 1.05rem; font-weight: 700; flex: 1; }
+  .top a { font-size: .8rem; color: var(--forest); text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; }
+
+  .filters { padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 61px; z-index: 9; }
+  .pills { display: flex; gap: 6px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 2px; }
+  .pill {
+    padding: 6px 12px; font-size: .82rem; font-weight: 600;
+    border: 1px solid var(--line); background: #fff; border-radius: 999px; cursor: pointer; white-space: nowrap;
+  }
+  .pill.active { background: var(--forest); color: #fff; border-color: var(--forest); }
+  .filters input { width: 100%; padding: 10px 12px; font-size: .95rem; font-family: inherit;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; }
+
+  .list { padding: 0 16px; }
+  .item {
+    display: flex; align-items: center; gap: 10px; background: #fff;
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 10px 14px; margin: 10px 0; text-decoration: none; color: inherit;
+  }
+  .qnum { font-weight: 700; color: var(--forest); min-width: 38px; }
+  .meta { flex: 1; min-width: 0; }
+  .meta .l1 { font-weight: 600; font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .meta .l2 { font-size: .78rem; color: var(--muted); }
+  .qstatus {
+    display: inline-block; font-size: .68rem; padding: 2px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .04em; font-weight: 700; background: var(--cream); color: var(--ink-2);
+  }
+  .qstatus.draft { background: #eaeaea; }
+  .qstatus.sent  { background: #fff4cf; color: #7a5a00; }
+  .qstatus.won   { background: #d6edd9; color: #18532a; }
+  .qstatus.lost  { background: #f7d6d6; color: #8c1f1f; }
+  .qstatus.dead  { background: #e0e0e0; color: #777; }
+  .qtotal { font-weight: 700; text-align: right; }
+
+  .empty { text-align: center; padding: 40px 16px; color: var(--muted); }
+  .fab {
+    position: fixed; bottom: 24px; right: 50%; transform: translateX(240px);
+    width: 56px; height: 56px; border-radius: 50%; background: var(--forest);
+    color: #fff; font-size: 28px; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.2); z-index: 20;
+  }
+  @media (max-width: 480px) { .fab { right: 16px; transform: none; } }
+
+  .pager { display: flex; justify-content: space-between; padding: 12px 16px; align-items: center; }
+  .pager button { padding: 8px 14px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-family: inherit; cursor: pointer; }
+  .pager button:disabled { opacity: .4; cursor: not-allowed; }
+  .auth-gate { padding: 40px 20px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="top">
+    <img src="/icons/treeq-app-icon.webp" alt="TreeQ">
+    <h1>Quotes</h1>
+    
+  </div>
+
+  <div id="auth-gate" class="auth-gate" style="display:none">
+    <p>Please <a href="/login.html" style="color:var(--forest);font-weight:600">sign in</a>.</p>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="filters">
+      <div class="pills" id="status-pills">
+        <button class="pill active" data-status="">All</button>
+        <button class="pill" data-status="draft">Draft</button>
+        <button class="pill" data-status="sent">Sent</button>
+        <button class="pill" data-status="won">Won</button>
+        <button class="pill" data-status="lost">Lost</button>
+      </div>
+      <input type="text" id="search-input" placeholder="Search by quote # or notes…" autocomplete="off">
+    </div>
+
+    <div id="list" class="list">
+      <div class="empty">Loading…</div>
+    </div>
+
+    <div class="pager" id="pager" style="display:none">
+      <button id="prev-btn" onclick="changePage(-1)">← Prev</button>
+      <span id="page-info" style="font-size:.85rem;color:var(--muted)"></span>
+      <button id="next-btn" onclick="changePage(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<button class="fab" id="fab" aria-label="New quote" onclick="newQuote()" style="display:none">+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="/assets/auth-client.js"></script>
+<script>
+'use strict';
+
+const PAGE_SIZE = 50;
+let _filterStatus = '';
+let _searchQ = '';
+let _offset = 0;
+let _total = 0;
+let _searchTimer = null;
+
+async function init() {
+  const session = await TQAuth.getSession();
+  if (!session) {
+    document.getElementById('auth-gate').style.display = '';
+    return;
+  }
+  document.getElementById('app').style.display = '';
+  document.getElementById('fab').style.display = '';
+
+  document.querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      _filterStatus = p.dataset.status || '';
+      _offset = 0;
+      loadList();
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    clearTimeout(_searchTimer);
+    _searchQ = e.target.value;
+    _offset = 0;
+    _searchTimer = setTimeout(loadList, 300);
+  });
+
+  await loadList();
+}
+
+async function loadList() {
+  const el = document.getElementById('list');
+  el.innerHTML = '<div class="empty">Loading…</div>';
+  const params = new URLSearchParams();
+  params.set('limit', String(PAGE_SIZE));
+  params.set('offset', String(_offset));
+  if (_filterStatus) params.set('status', _filterStatus);
+  if (_searchQ)      params.set('q', _searchQ);
+  try {
+    const data = await TQAuth.apiJson('/.netlify/functions/crm-quotes?' + params.toString());
+    const quotes = data.quotes || [];
+    _total = data.total ?? quotes.length;
+    if (quotes.length === 0) {
+      el.innerHTML = '<div class="empty">No quotes match.</div>';
+      document.getElementById('pager').style.display = 'none';
+      return;
+    }
+    el.innerHTML = quotes.map(q => {
+      const cust = q.crm_customers?.name || 'No customer';
+      const prop = q.crm_properties ? [q.crm_properties.address_line1, q.crm_properties.city].filter(Boolean).join(', ') : '';
+      const date = TQAuth.fmtDate(q.created_at);
+      return `<a class="item" href="/quote-detail.html?id=${encodeURIComponent(q.id)}">
+        <span class="qnum">#${q.quote_number}</span>
+        <span class="meta">
+          <div class="l1">${escHtml(cust)}</div>
+          <div class="l2">${escHtml(prop || date)}${prop && date ? ' · ' + escHtml(date) : ''}</div>
+        </span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <span class="qstatus ${q.status}">${q.status}</span>
+          <span class="qtotal">${TQAuth.fmtMoney(q.total_cents)}</span>
+        </span>
+      </a>`;
+    }).join('');
+
+    const pager = document.getElementById('pager');
+    pager.style.display = (_total > PAGE_SIZE) ? 'flex' : 'none';
+    document.getElementById('prev-btn').disabled = _offset === 0;
+    document.getElementById('next-btn').disabled = _offset + PAGE_SIZE >= _total;
+    document.getElementById('page-info').textContent = `${_offset + 1}–${Math.min(_offset + PAGE_SIZE, _total)} of ${_total}`;
+  } catch (e) {
+    el.innerHTML = '<div class="empty">Error: ' + escHtml(e.message) + '</div>';
+  }
+}
+
+function changePage(delta) {
+  _offset = Math.max(0, _offset + delta * PAGE_SIZE);
+  loadList();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function newQuote() {
+  location.href = '/quote-builder.html';
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+init();
+</script>
+<script src="/assets/bottom-nav.js"></script>
+</body>
+</html>

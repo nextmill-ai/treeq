@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Customers — TreeQ</title>
+<link rel="icon" type="image/webp" href="/icons/treeq-app-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
+<style>
+  :root {
+    --forest: #2d5a3d; --forest-d: #1f4129;
+    --cream: #f4f8f1; --cream-2: #e8efe2;
+    --gold: #e9c466; --ink: #14241b; --ink-2: #4a5a4f;
+    --muted: #7a8a7e; --line: #d8e2d2; --danger: #b3261e;
+    --r-md: 12px; --r-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100vh; background: #ddd; font-family: 'Inter', -apple-system, sans-serif; color: var(--ink); }
+  .frame { max-width: 480px; min-height: 100vh; margin: 0 auto; background: var(--cream); box-shadow: 0 0 32px rgba(0,0,0,.08); padding-bottom: 80px; }
+  .top {
+    display: flex; align-items: center; gap: .6rem; padding: 12px 16px;
+    background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10;
+  }
+  .top img { width: 36px; height: 36px; border-radius: 9px; }
+  .top h1 { font-size: 1.05rem; font-weight: 700; flex: 1; }
+  .top a { font-size: .8rem; color: var(--forest); text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; }
+  .search { padding: 12px 16px; }
+  .search input {
+    width: 100%; padding: 12px 14px; font-size: 1rem; font-family: inherit;
+    border: 1px solid var(--line); border-radius: var(--r-md); background: #fff;
+  }
+  .list { padding: 0 16px; }
+  .item {
+    display: block; background: #fff; border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 12px 14px; margin-bottom: 8px; text-decoration: none; color: inherit;
+  }
+  .item .name { font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
+  .item .meta { font-size: .82rem; color: var(--muted); }
+  .empty { text-align: center; padding: 40px 16px; color: var(--muted); }
+  .fab {
+    position: fixed; bottom: 24px; right: 50%; transform: translateX(240px);
+    width: 56px; height: 56px; border-radius: 50%; background: var(--forest);
+    color: #fff; font-size: 28px; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    z-index: 20;
+  }
+  @media (max-width: 480px) { .fab { right: 16px; transform: none; } }
+  .modal-ov {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4); display: none;
+    align-items: flex-end; justify-content: center; z-index: 50;
+  }
+  .modal-ov.show { display: flex; }
+  .modal {
+    background: var(--cream); width: 100%; max-width: 480px; border-radius: 16px 16px 0 0;
+    padding: 20px 20px 28px; max-height: 90vh; overflow-y: auto;
+  }
+  .modal h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+  .field { margin-bottom: .9rem; }
+  .field label { display: block; font-size: .82rem; color: var(--ink-2); margin-bottom: .3rem; font-weight: 500; }
+  .field input, .field textarea {
+    width: 100%; padding: 10px 12px; font-size: 1rem; font-family: inherit;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff;
+  }
+  .row { display: flex; gap: 8px; margin-top: 16px; }
+  .btn { flex: 1; padding: 12px; font-size: 1rem; font-family: inherit; font-weight: 600;
+    border: none; border-radius: var(--r-sm); cursor: pointer; }
+  .btn-primary { background: var(--forest); color: #fff; }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+  #toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 20px;
+    font-size: .9rem; opacity: 0; transition: opacity .25s; z-index: 100; pointer-events: none;
+  }
+  #toast.show { opacity: 1; }
+  .auth-gate { padding: 40px 20px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="top">
+    <img src="/icons/treeq-app-icon.webp" alt="TreeQ">
+    <h1>Customers</h1>
+    
+  </div>
+
+  <div id="auth-gate" class="auth-gate" style="display:none">
+    <p>Please <a href="/login.html" style="color:var(--forest);font-weight:600">sign in</a> to view your customers.</p>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="search">
+      <input type="text" id="search-input" placeholder="Search by name, email, or phone…" autocomplete="off">
+    </div>
+    <div id="list" class="list">
+      <div class="empty">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<button class="fab" id="fab" aria-label="Add customer" onclick="openNewModal()" style="display:none">+</button>
+
+<div class="modal-ov" id="new-modal-ov">
+  <div class="modal">
+    <h2>New customer</h2>
+    <div class="field">
+      <label for="new-name">Name *</label>
+      <input type="text" id="new-name" placeholder="Jane Homeowner">
+    </div>
+    <div class="field">
+      <label for="new-phone">Phone</label>
+      <input type="tel" id="new-phone" placeholder="(555) 123-4567">
+    </div>
+    <div class="field">
+      <label for="new-email">Email</label>
+      <input type="email" id="new-email" placeholder="jane@example.com">
+    </div>
+    <div class="field">
+      <label for="new-notes">Notes</label>
+      <textarea id="new-notes" rows="2" placeholder="optional"></textarea>
+    </div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="closeNewModal()">Cancel</button>
+      <button class="btn btn-primary" id="btn-create" onclick="createCustomer()">Create</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="/assets/auth-client.js"></script>
+<script>
+'use strict';
+
+let _searchTimer = null;
+let _customerCount = 0;
+
+async function init() {
+  const session = await TQAuth.getSession();
+  if (!session) {
+    document.getElementById('auth-gate').style.display = '';
+    return;
+  }
+  document.getElementById('app').style.display = '';
+  document.getElementById('fab').style.display = '';
+
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    clearTimeout(_searchTimer);
+    const q = e.target.value;
+    _searchTimer = setTimeout(() => loadList(q), 300);
+  });
+
+  await loadList('');
+}
+
+async function loadList(q) {
+  const el = document.getElementById('list');
+  el.innerHTML = '<div class="empty">Loading…</div>';
+  try {
+    const url = '/.netlify/functions/customers' + (q ? ('?q=' + encodeURIComponent(q)) : '');
+    const data = await TQAuth.apiJson(url);
+    const customers = data.customers || [];
+    _customerCount = data.total ?? customers.length;
+    if (customers.length === 0) {
+      el.innerHTML = '<div class="empty">' + (q ? 'No matches.' : 'No customers yet. Tap + to add one.') + '</div>';
+      return;
+    }
+    el.innerHTML = customers.map(c => {
+      const meta = [c.primary_phone, c.primary_email].filter(Boolean).join(' · ');
+      return `<a class="item" href="/customer-detail.html?id=${encodeURIComponent(c.id)}">
+        <div class="name">${escHtml(c.name)}</div>
+        ${meta ? `<div class="meta">${escHtml(meta)}</div>` : ''}
+      </a>`;
+    }).join('');
+  } catch (e) {
+    el.innerHTML = '<div class="empty">Error: ' + escHtml(e.message) + '</div>';
+  }
+}
+
+function openNewModal() {
+  document.getElementById('new-modal-ov').classList.add('show');
+  setTimeout(() => document.getElementById('new-name').focus(), 50);
+}
+function closeNewModal() {
+  document.getElementById('new-modal-ov').classList.remove('show');
+  ['new-name','new-phone','new-email','new-notes'].forEach(id => document.getElementById(id).value = '');
+}
+
+async function createCustomer() {
+  const name = document.getElementById('new-name').value.trim();
+  if (!name) { toast('Name required'); return; }
+  const body = {
+    name,
+    primary_phone: document.getElementById('new-phone').value.trim() || null,
+    primary_email: document.getElementById('new-email').value.trim() || null,
+    notes: document.getElementById('new-notes').value.trim() || null,
+  };
+  const btn = document.getElementById('btn-create');
+  btn.disabled = true;
+  try {
+    const r = await TQAuth.apiJson('/.netlify/functions/customers', { method: 'POST', body });
+    toast('Created');
+    closeNewModal();
+    location.href = '/customer-detail.html?id=' + encodeURIComponent(r.customer.id);
+  } catch (e) {
+    toast(e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let _toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+init();
+</script>
+<script src="/assets/bottom-nav.js"></script>
+</body>
+</html>

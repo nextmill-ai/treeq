@@ -1,0 +1,691 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Settings — TreeQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --forest: #2d5a3d;
+    --forest-light: #3a7350;
+    --cream: #f4f8f1;
+    --gold: #e9c466;
+    --text: #1a2e1f;
+    --muted: #6b7c6e;
+    --border: #d4e6d0;
+    --card-bg: #fff;
+    --danger: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: var(--cream); color: var(--text); min-height: 100dvh; }
+
+  .topbar {
+    background: var(--forest); color: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1rem; height: 56px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-brand { font-weight: 700; font-size: 1.15rem; letter-spacing: .02em; }
+  .topbar-brand span { color: var(--gold); }
+  .topbar-nav { display: flex; gap: .5rem; }
+  .topbar-nav a {
+    color: rgba(255,255,255,.8); text-decoration: none;
+    font-size: .85rem; padding: .25rem .5rem; border-radius: 6px;
+  }
+  .topbar-nav a:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+  .page { max-width: 640px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  /* section cards */
+  .section-card {
+    background: var(--card-bg); border: 1.5px solid var(--border);
+    border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden;
+  }
+  .section-header {
+    padding: .85rem 1.1rem .65rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700; font-size: .95rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .section-body { padding: 1rem 1.1rem; }
+
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: .82rem; font-weight: 600; color: var(--muted); margin-bottom: .35rem; }
+  input[type="text"], input[type="email"], select {
+    width: 100%; padding: .55rem .75rem;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: .9rem; font-family: inherit; color: var(--text);
+    background: #fff;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--forest-light); }
+  input:disabled, select:disabled { background: var(--cream); color: var(--muted); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: .35rem;
+    padding: .55rem 1.1rem; border-radius: 8px;
+    font-size: .875rem; font-weight: 600; cursor: pointer;
+    border: none; transition: background .15s;
+  }
+  .btn-primary   { background: var(--forest); color: #fff; }
+  .btn-primary:hover { background: var(--forest-light); }
+  .btn-ghost     { background: transparent; color: var(--forest); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { background: var(--border); }
+  .btn-danger    { background: var(--danger); color: #fff; }
+  .btn-danger:hover { opacity: .85; }
+  .btn:disabled  { opacity: .5; cursor: not-allowed; }
+
+  .row-actions { display: flex; gap: .5rem; margin-top: 1rem; }
+
+  /* profile avatar row */
+  .profile-row {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+  }
+  .avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--forest); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 700; flex-shrink: 0;
+  }
+  .profile-info { flex: 1; }
+  .profile-email { font-size: .82rem; color: var(--muted); margin-top: .15rem; }
+
+  /* nav tabs inside settings */
+  .tab-bar {
+    display: flex; gap: .25rem; margin-bottom: 1.25rem;
+    border-bottom: 2px solid var(--border); padding-bottom: 0;
+  }
+  .tab-btn {
+    padding: .55rem .9rem;
+    font-size: .875rem; font-weight: 600;
+    border: none; background: none; cursor: pointer;
+    color: var(--muted); border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+  }
+  .tab-btn.active { color: var(--forest); border-bottom-color: var(--forest); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* coming soon badge */
+  .badge-soon {
+    font-size: .72rem; font-weight: 700; letter-spacing: .05em;
+    background: var(--gold); color: var(--text);
+    border-radius: 4px; padding: .15rem .4rem; vertical-align: middle;
+  }
+
+  /* auth gate */
+  #auth-gate { text-align: center; padding: 3rem 1rem; }
+  #auth-gate p { color: var(--muted); margin-bottom: 1rem; }
+
+  /* toast */
+  #toast {
+    position: fixed; bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text); color: #fff;
+    padding: .6rem 1.25rem; border-radius: 999px;
+    font-size: .875rem; font-weight: 500;
+    transition: transform .25s ease;
+    pointer-events: none; white-space: nowrap; z-index: 100;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Unified shell — matches customers.html / quotes.html */
+  body { background: #ddd !important; }
+  .top {
+    display: flex; align-items: center; gap: .6rem; padding: 12px 16px;
+    background: #fff; border-bottom: 1px solid var(--border, #d4e6d0);
+    position: sticky; top: 0; z-index: 10;
+    max-width: 480px; margin: 0 auto;
+  }
+  .top img { width: 40px; height: 40px; border-radius: 10px; }
+  .top h1 { font-size: 1.05rem; font-weight: 700; flex: 1; color: var(--text, #1a2e1f); }
+  .page { max-width: 480px !important; margin: 0 auto !important;
+    background: var(--cream, #f4f8f1); min-height: 100vh;
+    box-shadow: 0 0 32px rgba(0,0,0,.08); padding: 1rem 1rem 80px; }
+  .topbar { display: none !important; } /* legacy rule */
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="/icons/treeq-app-icon.webp" alt="TreeQ">
+  <h1>Settings</h1>
+</header>
+
+<main class="page">
+
+  <!-- signed-out gate -->
+  <div id="auth-gate" style="display:none">
+    <p>Sign in to manage your settings.</p>
+    <a href="login.html?next=settings.html" class="btn btn-primary">Sign in</a>
+  </div>
+
+  <!-- signed-in content -->
+  <div id="app" style="display:none">
+
+    <!-- profile section -->
+    <div class="section-card">
+      <div class="section-header">Account</div>
+      <div class="section-body">
+        <div class="profile-row">
+          <div class="avatar" id="avatar-initials">?</div>
+          <div class="profile-info">
+            <div id="profile-name" style="font-weight:600">—</div>
+            <div class="profile-email" id="profile-email">—</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Full name</label>
+          <input type="text" id="field-name" placeholder="Your name">
+        </div>
+        <div class="field">
+          <label>Company name</label>
+          <input type="text" id="field-company" placeholder="Spartan Tree & Landscape">
+        </div>
+        <div class="field">
+          <label>Market city</label>
+          <input type="text" id="field-city" placeholder="Rochester, NY">
+        </div>
+
+        <div class="row-actions">
+          <button class="btn btn-primary" id="btn-save-profile" onclick="saveProfile()">Save changes</button>
+          <button class="btn btn-ghost" onclick="signOut()">Sign out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- tabbed settings -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('favorites')">Favorites</button>
+      <button class="tab-btn" onclick="switchTab('resources')">Resources <span class="badge-soon">P4</span></button>
+      <button class="tab-btn" onclick="switchTab('team')">Team <span class="badge-soon">P5</span></button>
+    </div>
+
+    <!-- Favorites tab -->
+    <div id="tab-favorites" class="tab-panel active">
+      <div class="section-card">
+        <div class="section-header">Favorite species</div>
+        <div class="section-body">
+          <p style="font-size:.875rem;color:var(--muted);margin-bottom:1rem">
+            Favorite species appear at the top of the species picker so you can
+            select them without scrolling. Tap the heart icon on any species in
+            the calculator to add it here.
+          </p>
+          <div id="favorites-list" style="display:flex;flex-wrap:wrap;gap:.5rem">
+            <span style="color:var(--muted);font-size:.875rem">Loading…</span>
+          </div>
+          <p style="margin-top:.75rem;font-size:.8rem;color:var(--muted)" id="favorites-hint"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resources tab (P4 stub) -->
+    <div id="tab-resources" class="tab-panel">
+      <div class="section-card">
+        <div class="section-header">Equipment inventory <span class="badge-soon">Coming in P4</span></div>
+        <div class="section-body">
+          <p style="font-size:.875rem;color:var(--muted)">
+            Tell TreeQ what equipment your company owns (grapple-saw trucks, cranes,
+            bucket trucks, skid steers, etc.) and the pricing engine will automatically
+            factor it into job quotes. Available after Phase 4 ships.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team tab -->
+    <div id="tab-team" class="tab-panel">
+      <!-- TEAM-MGMT-INJECTED -->
+      <div class="section-card">
+        <div class="section-header">Your team</div>
+        <div class="section-body">
+          <p style="font-size:.875rem;color:var(--muted);margin-bottom:1rem">
+            Invite teammates to your account. Owners can manage roles and remove members.
+          </p>
+          <div id="members-list" style="display:flex;flex-direction:column;gap:.5rem">
+            <span style="color:var(--muted);font-size:.875rem">Loading…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-top:1rem">
+        <div class="section-header">Invite a teammate</div>
+        <div class="section-body">
+          <div class="field">
+            <label for="invite-email">Email</label>
+            <input type="email" id="invite-email" placeholder="teammate@example.com">
+          </div>
+          <div class="field">
+            <label for="invite-role">Role</label>
+            <select id="invite-role">
+              <option value="estimator">Estimator (build &amp; send quotes)</option>
+              <option value="admin">Admin (manage team + quotes)</option>
+              <option value="viewer">Viewer (read-only)</option>
+            </select>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-primary" id="btn-invite" onclick="createInvite()">Generate invite link</button>
+          </div>
+          <div id="invite-result" style="margin-top:.75rem;display:none">
+            <p style="font-size:.875rem;color:var(--muted);margin-bottom:.4rem">
+              Share this link with your teammate. Expires in 7 days.
+            </p>
+            <div style="display:flex;gap:.5rem;align-items:center">
+              <input type="text" id="invite-link" readonly style="flex:1;font-size:.8rem">
+              <button class="btn btn-ghost" type="button" onclick="copyInviteLink()">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-top:1rem">
+        <div class="section-header">Pending invitations</div>
+        <div class="section-body">
+          <div id="invites-list" style="display:flex;flex-direction:column;gap:.5rem">
+            <span style="color:var(--muted);font-size:.875rem">Loading…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- danger zone -->
+    <div class="section-card" style="margin-top:1.25rem">
+      <div class="section-header" style="color:var(--danger)">Danger zone</div>
+      <div class="section-body" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;font-size:.875rem;color:var(--muted)">
+          Delete your account and all saved data. This cannot be undone.
+        </div>
+        <button class="btn btn-danger" onclick="confirmDeleteAccount()" disabled title="Not yet available">
+          Delete account
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /#app -->
+</main>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script>
+'use strict';
+
+const SUPABASE_URL  = window.__SUPABASE_URL__  || '';
+const SUPABASE_ANON = window.__SUPABASE_ANON_KEY__ || '';
+
+const sbClient = (SUPABASE_URL && SUPABASE_ANON)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+  : null;
+
+let currentSession = null;
+let speciesMap = {};        // key -> name
+
+// ── init ──────────────────────────────────────────────────────────────────
+async function init() {
+  if (!sbClient) {
+    document.getElementById('auth-gate').style.display = '';
+    return;
+  }
+
+  const { data: { session } } = await sbClient.auth.getSession();
+  if (!session) {
+    document.getElementById('auth-gate').style.display = '';
+    return;
+  }
+  currentSession = session;
+  document.getElementById('app').style.display = '';
+
+  const user = session.user;
+  document.getElementById('profile-email').textContent = user.email || '';
+
+  await Promise.all([
+    loadProfile(user),
+    loadSpeciesMap(),
+    loadFavorites(session.access_token),
+  ]);
+}
+
+// ── profile ───────────────────────────────────────────────────────────────
+async function loadProfile(user) {
+  const meta = user.user_metadata || {};
+  const name = meta.full_name || meta.name || '';
+  document.getElementById('profile-name').textContent = name || user.email || '';
+  document.getElementById('field-name').value = name;
+  document.getElementById('avatar-initials').textContent =
+    name ? name.charAt(0).toUpperCase() : (user.email || '?').charAt(0).toUpperCase();
+
+  // Load account row for company + city
+  const { data } = await sbClient
+    .from('accounts')
+    .select('name, market_city')
+    .limit(1)
+    .maybeSingle();
+
+  if (data) {
+    document.getElementById('field-company').value = data.name || '';
+    document.getElementById('field-city').value = data.market_city || '';
+  }
+}
+
+async function saveProfile() {
+  const btn = document.getElementById('btn-save-profile');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    const name    = document.getElementById('field-name').value.trim();
+    const company = document.getElementById('field-company').value.trim();
+    const city    = document.getElementById('field-city').value.trim();
+
+    // Update Supabase auth display name
+    if (name) {
+      await sbClient.auth.updateUser({ data: { full_name: name } });
+    }
+
+    // Update accounts row (via service role — for now direct client RLS allows select on own account)
+    // Note: the profiles trigger sets accounts.name on first sign-up; subsequent updates go here.
+    const { error } = await sbClient
+      .from('accounts')
+      .update({ name: company || name, market_city: city || null })
+      .eq('id', (await getAccountId()));
+
+    if (error) throw new Error(error.message);
+
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('avatar-initials').textContent = name ? name.charAt(0).toUpperCase() : '?';
+    toast('Settings saved');
+  } catch (e) {
+    toast('Save failed: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Save changes';
+  }
+}
+
+async function getAccountId() {
+  const { data } = await sbClient.from('profiles').select('account_id').maybeSingle();
+  return data?.account_id;
+}
+
+async function signOut() {
+  await sbClient.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+// ── favorites ─────────────────────────────────────────────────────────────
+async function loadSpeciesMap() {
+  try {
+    const r = await fetch('/api/species');
+    if (!r.ok) return;
+    const d = await r.json();
+    for (const s of (d.species || [])) speciesMap[s.key] = s.name;
+  } catch { /* non-fatal */ }
+}
+
+async function loadFavorites(token) {
+  const listEl = document.getElementById('favorites-list');
+  const hint   = document.getElementById('favorites-hint');
+  try {
+    const r = await fetch('/api/favorites', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    const keys = d.favorites || [];
+    if (!keys.length) {
+      listEl.innerHTML = '<span style="color:var(--muted);font-size:.875rem">No favorites yet — tap the heart on any species in the calculator.</span>';
+      hint.textContent = '';
+      return;
+    }
+    hint.textContent = `${keys.length} species favorited`;
+    listEl.innerHTML = keys.map(k => `
+      <div style="display:flex;align-items:center;gap:.4rem;background:var(--cream);border:1.5px solid var(--border);border-radius:999px;padding:.3rem .75rem .3rem .6rem;font-size:.875rem">
+        <span>♥</span>
+        <span>${escHtml(speciesMap[k] || k)}</span>
+        <button onclick="removeFavorite('${k}')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;line-height:1;padding:0 0 0 .25rem">&times;</button>
+      </div>`).join('');
+  } catch (e) {
+    listEl.innerHTML = `<span style="color:var(--muted)">Could not load favorites: ${e.message}</span>`;
+  }
+}
+
+async function removeFavorite(key) {
+  if (!currentSession) return;
+  try {
+    const r = await fetch('/api/favorites', {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${currentSession.access_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ species_key: key }),
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    await loadFavorites(currentSession.access_token);
+    toast(`Removed ${speciesMap[key] || key} from favorites`);
+  } catch (e) {
+    toast('Could not remove: ' + e.message);
+  }
+}
+
+// ── tabs ──────────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const panels = ['favorites', 'resources', 'team'];
+    b.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === `tab-${name}`);
+  });
+}
+
+// ── misc ──────────────────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function confirmDeleteAccount() {
+  toast('Account deletion not yet available — coming soon.');
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+// ── Team / Invitations management (Task 11) ──────────────────────────────
+async function teamApi(path, opts) {
+  const o = Object.assign({}, opts || {});
+  const headers = new Headers(o.headers || {});
+  if (o.body && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+  if (currentSession?.access_token) headers.set('Authorization', 'Bearer ' + currentSession.access_token);
+  o.headers = headers;
+  if (o.body && typeof o.body === 'object') o.body = JSON.stringify(o.body);
+  const r = await fetch(path, o);
+  let body = null;
+  try { body = await r.json(); } catch (_) {}
+  if (!r.ok && r.status !== 204) {
+    const msg = body?.error || ('HTTP ' + r.status);
+    throw new Error(msg);
+  }
+  return body;
+}
+
+let _myRole = 'owner';
+
+async function loadTeam() {
+  try {
+    const profile = await sbClient
+      .from('profiles')
+      .select('role')
+      .eq('id', currentSession.user.id)
+      .maybeSingle();
+    _myRole = profile?.data?.role || 'owner';
+  } catch (_) {}
+
+  const listEl = document.getElementById('members-list');
+  const invListEl = document.getElementById('invites-list');
+  if (listEl) listEl.innerHTML = '<span style="color:var(--muted);font-size:.875rem">Loading…</span>';
+  if (invListEl) invListEl.innerHTML = '<span style="color:var(--muted);font-size:.875rem">Loading…</span>';
+
+  try {
+    const data = await teamApi('/.netlify/functions/members');
+    renderMembers(data.members || []);
+  } catch (e) {
+    if (listEl) listEl.innerHTML = '<span style="color:var(--muted);font-size:.875rem">Error loading team: ' + escHtml(e.message) + '</span>';
+  }
+
+  try {
+    const inv = await teamApi('/.netlify/functions/invitations');
+    renderInvites(inv.invitations || []);
+  } catch (e) {
+    // Non-owners get 403 — that's fine, just hide
+    if (invListEl) invListEl.innerHTML = '<span style="color:var(--muted);font-size:.875rem">No pending invitations.</span>';
+  }
+}
+
+function renderMembers(members) {
+  const el = document.getElementById('members-list');
+  if (!el) return;
+  if (members.length === 0) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:.875rem">No teammates yet.</span>';
+    return;
+  }
+  const canManage = _myRole === 'owner';
+  el.innerHTML = members.map(m => {
+    const name = escHtml(m.full_name || m.email || 'Unknown');
+    const email = escHtml(m.email || '');
+    const isSelf = m.is_self;
+    const roleControl = canManage && !isSelf
+      ? `<select onchange="changeMemberRole('${m.id}', this.value)" style="font-size:.85rem">
+           ${['owner','admin','estimator','viewer'].map(r => `<option value="${r}"${r===m.role?' selected':''}>${r}</option>`).join('')}
+         </select>`
+      : `<span style="font-size:.85rem;color:var(--muted)">${escHtml(m.role)}</span>`;
+    const removeBtn = canManage && !isSelf
+      ? `<button class="btn btn-ghost" style="padding:.3rem .6rem;font-size:.85rem" onclick="removeMember('${m.id}', '${name.replace(/'/g, "\\'")}')">Remove</button>`
+      : '';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.5rem;border:1px solid var(--line, #e5e7eb);border-radius:8px">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:.95rem">${name}${isSelf ? ' <span style="color:var(--muted);font-weight:400">(you)</span>' : ''}</div>
+        ${email ? `<div style="font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis">${email}</div>` : ''}
+      </div>
+      ${roleControl}
+      ${removeBtn}
+    </div>`;
+  }).join('');
+}
+
+function renderInvites(invites) {
+  const el = document.getElementById('invites-list');
+  if (!el) return;
+  if (invites.length === 0) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:.875rem">No pending invitations.</span>';
+    return;
+  }
+  el.innerHTML = invites.map(i => {
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.5rem;border:1px solid var(--line, #e5e7eb);border-radius:8px">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:.9rem">${escHtml(i.email)}</div>
+        <div style="font-size:.8rem;color:var(--muted)">Role: ${escHtml(i.role)} · Expires ${new Date(i.expires_at).toLocaleDateString()}</div>
+      </div>
+      <button class="btn btn-ghost" style="padding:.3rem .6rem;font-size:.85rem" onclick="copyInviteUrl('${i.invite_url.replace(/'/g, "\\'")}')">Copy link</button>
+      <button class="btn btn-ghost" style="padding:.3rem .6rem;font-size:.85rem;color:var(--danger,#c44)" onclick="revokeInvite('${i.id}')">Revoke</button>
+    </div>`;
+  }).join('');
+}
+
+async function createInvite() {
+  const email = document.getElementById('invite-email').value.trim();
+  const role = document.getElementById('invite-role').value;
+  if (!email) { toast('Email required'); return; }
+  const btn = document.getElementById('btn-invite');
+  btn.disabled = true;
+  try {
+    const r = await teamApi('/.netlify/functions/invitations', { method: 'POST', body: { email, role } });
+    const url = r.invitation.invite_url;
+    document.getElementById('invite-link').value = url;
+    document.getElementById('invite-result').style.display = '';
+    document.getElementById('invite-email').value = '';
+    toast('Invite link generated');
+    await loadTeam();
+  } catch (e) {
+    toast(e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function copyInviteLink() {
+  const inp = document.getElementById('invite-link');
+  inp.select();
+  document.execCommand('copy');
+  toast('Link copied');
+}
+
+function copyInviteUrl(url) {
+  navigator.clipboard?.writeText(url).then(() => toast('Link copied'), () => toast('Copy failed'));
+}
+
+async function revokeInvite(id) {
+  if (!confirm('Revoke this invitation?')) return;
+  try {
+    await teamApi('/.netlify/functions/invitations?id=' + encodeURIComponent(id), { method: 'DELETE' });
+    toast('Invitation revoked');
+    await loadTeam();
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+async function changeMemberRole(id, role) {
+  try {
+    await teamApi('/.netlify/functions/members?id=' + encodeURIComponent(id), { method: 'PATCH', body: { role } });
+    toast('Role updated');
+    await loadTeam();
+  } catch (e) {
+    toast(e.message);
+    await loadTeam();
+  }
+}
+
+async function removeMember(id, name) {
+  if (!confirm('Remove ' + name + ' from this account?')) return;
+  try {
+    await teamApi('/.netlify/functions/members?id=' + encodeURIComponent(id), { method: 'DELETE' });
+    toast('Removed');
+    await loadTeam();
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+// Hook into existing tab switch so loadTeam fires when tab is opened
+const _origSwitchTab = window.switchTab;
+window.switchTab = function (name) {
+  if (typeof _origSwitchTab === 'function') _origSwitchTab(name);
+  if (name === 'team' && currentSession) loadTeam();
+};
+
+// Also load team eagerly on init so badge counts are accurate
+const _origInit = init;
+init = async function () {
+  await _origInit();
+  if (currentSession) {
+    try { await loadTeam(); } catch (_) {}
+  }
+};
+
+
+init();
+</script>
+<script src="/assets/bottom-nav.js"></script>
+</body>
+</html>

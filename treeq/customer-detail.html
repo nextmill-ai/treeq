@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Customer — TreeQ</title>
+<link rel="icon" type="image/webp" href="/icons/treeq-app-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  window.__SUPABASE_URL__ = 'https://bhbubaopejjxijiqmujy.supabase.co';
+  window.__SUPABASE_ANON_KEY__ = 'sb_publishable_CT6kIbqjVG5sbWLn_E1hQw_Hir_U65U';
+</script>
+<style>
+  :root {
+    --forest: #2d5a3d; --cream: #f4f8f1; --cream-2: #e8efe2;
+    --gold: #e9c466; --ink: #14241b; --ink-2: #4a5a4f;
+    --muted: #7a8a7e; --line: #d8e2d2; --danger: #b3261e;
+    --r-md: 12px; --r-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100vh; background: #ddd; font-family: 'Inter', sans-serif; color: var(--ink); }
+  .frame { max-width: 480px; min-height: 100vh; margin: 0 auto; background: var(--cream); box-shadow: 0 0 32px rgba(0,0,0,.08); padding-bottom: 40px; }
+  .top {
+    display: flex; align-items: center; gap: .6rem; padding: 12px 16px;
+    background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10;
+  }
+  .top img { width: 36px; height: 36px; border-radius: 9px; }
+  .top h1 { font-size: 1.05rem; font-weight: 700; flex: 1; min-width: 0; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .top a { font-size: .8rem; color: var(--forest); text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; }
+  .section { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); margin: 16px; padding: 14px; }
+  .section h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 10px; font-weight: 700; }
+  .field { margin-bottom: .7rem; }
+  .field label { display: block; font-size: .78rem; color: var(--ink-2); margin-bottom: .25rem; font-weight: 500; }
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 9px 11px; font-size: .95rem; font-family: inherit;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff;
+  }
+  .row { display: flex; gap: 8px; }
+  .btn { padding: 10px 14px; font-size: .9rem; font-family: inherit; font-weight: 600;
+    border: none; border-radius: var(--r-sm); cursor: pointer; }
+  .btn-primary { background: var(--forest); color: #fff; }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+  .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+  .prop-card, .quote-card {
+    border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 8px;
+    background: var(--cream-2);
+  }
+  .prop-addr { font-weight: 600; font-size: .95rem; }
+  .prop-meta { font-size: .8rem; color: var(--muted); }
+  .quote-card { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .quote-num { font-weight: 700; color: var(--forest); }
+  .quote-status {
+    display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .04em; font-weight: 700; background: var(--cream); color: var(--ink-2);
+  }
+  .quote-status.draft { background: #eaeaea; }
+  .quote-status.sent  { background: #fff4cf; color: #7a5a00; }
+  .quote-status.won   { background: #d6edd9; color: #18532a; }
+  .quote-status.lost  { background: #f7d6d6; color: #8c1f1f; }
+  .quote-status.dead  { background: #e0e0e0; color: #777; }
+  .quote-total { margin-left: auto; font-weight: 700; }
+  .empty { color: var(--muted); font-size: .85rem; padding: 6px 2px; }
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 20px;
+    font-size: .9rem; opacity: 0; transition: opacity .25s; z-index: 100; pointer-events: none;
+  }
+  #toast.show { opacity: 1; }
+  .auth-gate { padding: 40px 20px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="top">
+    <img src="/icons/treeq-app-icon.webp" alt="TreeQ">
+    <h1 id="customer-name">Customer</h1>
+    
+  </div>
+
+  <div id="auth-gate" class="auth-gate" style="display:none">
+    <p>Please <a href="/login.html" style="color:var(--forest);font-weight:600">sign in</a>.</p>
+  </div>
+
+  <div id="app" style="display:none">
+    <!-- Customer info -->
+    <div class="section">
+      <h2>Contact</h2>
+      <div class="field"><label>Name</label><input type="text" id="c-name"></div>
+      <div class="row">
+        <div class="field" style="flex:1"><label>Phone</label><input type="tel" id="c-phone"></div>
+        <div class="field" style="flex:1"><label>Email</label><input type="email" id="c-email"></div>
+      </div>
+      <div class="field"><label>Notes</label><textarea id="c-notes" rows="2"></textarea></div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn btn-primary" onclick="saveCustomer()">Save changes</button>
+        <button class="btn btn-danger" onclick="archiveCustomer()">Archive</button>
+      </div>
+    </div>
+
+    <!-- Properties -->
+    <div class="section">
+      <h2>Properties</h2>
+      <div id="props-list"><div class="empty">Loading…</div></div>
+      <div style="margin-top:10px;border-top:1px dashed var(--line);padding-top:10px">
+        <div class="field"><label>Add a property</label></div>
+        <div class="field"><input type="text" id="np-line1" placeholder="123 Main Street"></div>
+        <div class="row">
+          <div class="field" style="flex:2"><input type="text" id="np-city" placeholder="City"></div>
+          <div class="field" style="flex:1"><input type="text" id="np-state" placeholder="State"></div>
+          <div class="field" style="flex:1"><input type="text" id="np-zip" placeholder="Zip"></div>
+        </div>
+        <button class="btn btn-primary" onclick="addProperty()">Add property</button>
+      </div>
+    </div>
+
+    <!-- Quotes -->
+    <div class="section">
+      <h2>Quotes</h2>
+      <div id="quotes-list"><div class="empty">Loading…</div></div>
+      <div style="margin-top:10px">
+        <button class="btn btn-primary" id="btn-new-quote" onclick="newQuoteForCustomer()" disabled>New quote</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="/assets/auth-client.js"></script>
+<script>
+'use strict';
+
+const params = new URLSearchParams(location.search);
+const CUSTOMER_ID = params.get('id');
+let _customer = null;
+let _properties = [];
+
+async function init() {
+  if (!CUSTOMER_ID) { location.href = '/customers.html'; return; }
+  const session = await TQAuth.getSession();
+  if (!session) {
+    document.getElementById('auth-gate').style.display = '';
+    return;
+  }
+  document.getElementById('app').style.display = '';
+
+  await loadCustomer();
+  await loadQuotes();
+}
+
+async function loadCustomer() {
+  try {
+    const data = await TQAuth.apiJson('/.netlify/functions/customers?id=' + encodeURIComponent(CUSTOMER_ID));
+    _customer = data.customer;
+    _properties = data.properties || [];
+    document.getElementById('customer-name').textContent = _customer.name;
+    document.title = _customer.name + ' — TreeQ';
+    document.getElementById('c-name').value = _customer.name || '';
+    document.getElementById('c-phone').value = _customer.primary_phone || '';
+    document.getElementById('c-email').value = _customer.primary_email || '';
+    document.getElementById('c-notes').value = _customer.notes || '';
+    renderProperties();
+  } catch (e) {
+    toast('Failed to load: ' + e.message);
+  }
+}
+
+function renderProperties() {
+  const el = document.getElementById('props-list');
+  if (_properties.length === 0) {
+    el.innerHTML = '<div class="empty">No properties yet.</div>';
+  } else {
+    el.innerHTML = _properties.map(p => {
+      const cityState = [p.city, p.state, p.zip].filter(Boolean).join(', ');
+      return `<div class="prop-card" data-id="${p.id}">
+        <div class="prop-addr">${escHtml(p.address_line1)}</div>
+        ${cityState ? `<div class="prop-meta">${escHtml(cityState)}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('btn-new-quote').disabled = _properties.length === 0;
+}
+
+async function saveCustomer() {
+  const body = {
+    name: document.getElementById('c-name').value.trim(),
+    primary_phone: document.getElementById('c-phone').value.trim() || null,
+    primary_email: document.getElementById('c-email').value.trim() || null,
+    notes: document.getElementById('c-notes').value.trim() || null,
+  };
+  if (!body.name) { toast('Name required'); return; }
+  try {
+    await TQAuth.apiJson('/.netlify/functions/customers?id=' + encodeURIComponent(CUSTOMER_ID), { method: 'PATCH', body });
+    toast('Saved');
+    document.getElementById('customer-name').textContent = body.name;
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+async function archiveCustomer() {
+  if (!confirm('Archive this customer? You can restore it later.')) return;
+  try {
+    await TQAuth.apiJson('/.netlify/functions/customers?id=' + encodeURIComponent(CUSTOMER_ID), { method: 'DELETE' });
+    location.href = '/customers.html';
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+async function addProperty() {
+  const address_line1 = document.getElementById('np-line1').value.trim();
+  if (!address_line1) { toast('Address required'); return; }
+  const body = {
+    customer_id: CUSTOMER_ID,
+    address_line1,
+    city: document.getElementById('np-city').value.trim() || null,
+    state: document.getElementById('np-state').value.trim() || null,
+    zip: document.getElementById('np-zip').value.trim() || null,
+  };
+  try {
+    const r = await TQAuth.apiJson('/.netlify/functions/properties', { method: 'POST', body });
+    _properties.push(r.property);
+    renderProperties();
+    ['np-line1','np-city','np-state','np-zip'].forEach(id => document.getElementById(id).value = '');
+    toast('Property added');
+  } catch (e) {
+    toast(e.message);
+  }
+}
+
+async function loadQuotes() {
+  const el = document.getElementById('quotes-list');
+  try {
+    const data = await TQAuth.apiJson('/.netlify/functions/crm-quotes?customer_id=' + encodeURIComponent(CUSTOMER_ID));
+    const quotes = data.quotes || [];
+    if (quotes.length === 0) {
+      el.innerHTML = '<div class="empty">No quotes yet.</div>';
+      return;
+    }
+    el.innerHTML = quotes.map(q => `
+      <a class="quote-card" href="/quote-detail.html?id=${encodeURIComponent(q.id)}">
+        <span class="quote-num">#${q.quote_number}</span>
+        <span class="quote-status ${q.status}">${q.status}</span>
+        <span class="quote-total">${TQAuth.fmtMoney(q.total_cents)}</span>
+      </a>
+    `).join('');
+  } catch (e) {
+    el.innerHTML = '<div class="empty">Error: ' + escHtml(e.message) + '</div>';
+  }
+}
+
+function newQuoteForCustomer() {
+  const propId = _properties[0]?.id;
+  const params = new URLSearchParams();
+  params.set('customer_id', CUSTOMER_ID);
+  if (propId) params.set('property_id', propId);
+  location.href = '/quote-builder.html?' + params.toString();
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let _toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+init();
+</script>
+<script src="/assets/bottom-nav.js"></script>
+</body>
+</html>

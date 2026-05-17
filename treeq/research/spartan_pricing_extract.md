@@ -128,6 +128,35 @@ For load-count floors: solid cu yd = π × (DBH/24)² × log_ht_ft / 27; ×1.3 s
 - Cameron Miller — 585-501-6111 — cameron@spartantreeny.com
 - "ASK" items always escalate to Cameron.
 
-## 11. Critical rule
+## 11. Job minimums (service-level floors)
+
+These are the minimum billable amounts per service on a quote. If the computed subtotal for a service falls below its floor, the quote is padded to the floor. The floor line participates in hazard and job multipliers (it is treated as tree work).
+
+| Service | Minimum | Scope |
+|---|---|---|
+| Tree Removal | $500 | Per job (all trees combined) |
+| Tree Trimming | $400 | Per job |
+| Takedown | $300 | Per job |
+| Land Clearing | $500 | Per job (all clearing combined) |
+| Landscaping | $350 | Per job |
+| Hauling / Logs | $500 | Per load line item |
+
+**Line-item minimums** (do not cascade to job minimum):
+- Stump grinding — primary stump: $100 min; each add-on stump: $25 min
+- Topsoil & seed backfill (stump): $150 min per job
+- Mulching / Edging / Stone: 3-yd min each
+- Polymeric Sand: 30-sqft min
+- Powerwashing: 200-sqft min
+- Topsoil delivered (no install): 3-yd min
+- Topsoil + Seeding: 3-yd min
+- Ground Protection Mats: 8-mat min
+- PHC EHS Static Cabling: 2-unit min
+- PHC COBRA Dynamic: 2-unit min
+- Yard Cleanup: 2-hr min
+- Bucket Truck: 2-hr min
+- Crane (45-ton): 4-hr min
+- Forestry Mulching: 8-hr (full day) min
+
+## 12. Critical rule
 
 **"Minimums are inviolable"** — no discount or multiplier can push a line below its minimum.
